@@ -1,0 +1,144 @@
+[debug] > Exec(early(addDefaultCommands), None, None)
+[debug] > Exec(addDefaultCommands, None, None)
+[debug] > Exec(early(initialize), None, None)
+[debug] > Exec(initialize, None, None)
+[debug] > Exec(early(addPluginSbtFile="""C:\Users\heidi\AppData\Local\Temp\idea.sbt"""), None, None)
+[debug] > Exec(addPluginSbtFile="""C:\Users\heidi\AppData\Local\Temp\idea.sbt""", None, None)
+[debug] > Exec(boot, None, None)
+[debug] > Exec(writeSbtVersion, None, None)
+[debug] > Exec(reload, None, None)
+[debug] > Exec(sbtStashOnFailure, None, None)
+[debug] > Exec(onFailure loadFailed, None, None)
+[debug] > Exec(loadp, None, None)
+[info] welcome to sbt 1.6.2 (Eclipse Foundation Java 11.0.12)
+[debug]       Load.loadUnit: plugins took 212.2203ms
+[debug]       Load.loadUnit: defsScala took 0.4346ms
+[debug] [Loading] Scanning directory C:\Users\heidi\.sbt\1.0\plugins
+[debug] [Loading] Found non-root projects 
+[debug] [Loading] Done in C:\Users\heidi\.sbt\1.0\plugins, returning: ()
+[debug] deducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))
+[debug] Clause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))
+[debug]   :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)
+[debug] Plugins.deducer#function took 39.6647 ms
+[debug]           Load.resolveProject(global-plugins) took 104.5191ms
+[debug]         Load.loadTransitive: finalizeProject(Project(id global-plugins, base: C:\Users\heidi\.sbt\1.0\plugins, plugins: List(<none>))) took 197.7323ms
+[debug] [Loading] Done in C:\Users\heidi\.sbt\1.0\plugins, returning: (global-plugins)
+[debug]       Load.loadUnit: loadedProjectsRaw took 243.7875ms
+[debug]       Load.loadUnit: cleanEvalClasses took 1.0316ms
+[debug]     Load.loadUnit(file:/C:/Users/heidi/.sbt/1.0/plugins/, ...) took 476.2682ms
+[debug]   Load.apply: load took 8885.5681ms
+[debug]   Load.apply: resolveProjects took 18.9555ms
+[debug]   Load.apply: finalTransforms took 173.2131ms
+[debug]   Load.apply: config.delegates took 15.0666ms
+[debug]   Load.apply: Def.make(settings)... took 846.1801ms
+[debug]   Load.apply: structureIndex took 209.4014ms
+[debug]   Load.apply: mkStreams took 3.4231ms
+[info] loading global plugins from C:\Users\heidi\.sbt\1.0\plugins
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[debug] Load.defaultLoad until apply took 13730.5448ms
+[debug]           Load.loadUnit: plugins took 57.0074ms
+[debug]           Load.loadUnit: defsScala took 0.0095ms
+[debug] [Loading] Scanning directory C:\Users\heidi\IdeaProjects\Numerical data visualization 2\project
+[debug]             Load.loadUnit: mkEval took 14.8294ms
+[debug] [Loading] Found non-root projects 
+[debug] [Loading] Done in C:\Users\heidi\IdeaProjects\Numerical data visualization 2\project, returning: ()
+[debug] deducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))
+[debug] Clause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))
+[debug]   :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)
+[debug] Plugins.deducer#function took 5.9987 ms
+[info] loading settings for project numerical-data-visualization-2-build from idea.sbt ...
+[debug]               Load.resolveProject(numerical-data-visualization-2-build) took 6.109ms
+[debug]             Load.loadTransitive: finalizeProject(Project(id numerical-data-visualization-2-build, base: C:\Users\heidi\IdeaProjects\Numerical data visualization 2\project, plugins: List(<none>))) took 12.9589ms
+[debug] [Loading] Done in C:\Users\heidi\IdeaProjects\Numerical data visualization 2\project, returning: (numerical-data-visualization-2-build)
+[debug]           Load.loadUnit: loadedProjectsRaw took 4762.4944ms
+[debug]           Load.loadUnit: cleanEvalClasses took 9.1643ms
+[debug]         Load.loadUnit(file:/C:/Users/heidi/IdeaProjects/Numerical%20data%20visualization%202/project/, ...) took 4831.0417ms
+[debug]       Load.apply: load took 4834.3843ms
+[debug]       Load.apply: resolveProjects took 0.1965ms
+[debug]       Load.apply: finalTransforms took 20.7198ms
+[debug]       Load.apply: config.delegates took 1.0583ms
+[debug]       Load.apply: Def.make(settings)... took 160.1015ms
+[debug]       Load.apply: structureIndex took 58.7015ms
+[debug]       Load.apply: mkStreams took 0.005ms
+[info] loading project definition from C:\Users\heidi\IdeaProjects\Numerical data visualization 2\project
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[warn] Unrecognized repository Scala Plugin Bundled Repository, ignoring it
+[warn] Unrecognized repository Scala Plugin Bundled Repository, ignoring it
+[debug]     Load.loadUnit: plugins took 9495.4477ms
+[debug]     Load.loadUnit: defsScala took 0.0045ms
+[debug] [Loading] Scanning directory C:\Users\heidi\IdeaProjects\Numerical data visualization 2
+[debug]       Load.loadUnit: mkEval took 0.7992ms
+[debug] [Loading] Found non-root projects 
+[debug] [Loading] Done in C:\Users\heidi\IdeaProjects\Numerical data visualization 2, returning: ()
+[debug] deducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))
+[debug] Clause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(org.jetbrains.sbt.StructurePlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(org.jetbrains.sbt.IdeaShellPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(org.jetbrains.sbt.indices.SbtIntellijIndicesPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(org.jetbrains.sbt.StructurePlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(org.jetbrains.sbt.IdeaShellPlugin)))
+[debug] Clause(And(Set(Atom(sbt.plugins.CorePlugin), Atom(sbt.plugins.JvmPlugin))),Set(Atom(org.jetbrains.sbt.indices.SbtIntellijIndicesPlugin))))
+[debug]   :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.SemanticdbPlugin,org.jetbrains.sbt.indices.SbtIntellijIndicesPlugin,sbt.plugins.JUnitXmlReportPlugin,org.jetbrains.sbt.IdeaShellPlugin,org.jetbrains.sbt.StructurePlugin,sbt.plugins.MiniDependencyTreePlugin)
+[debug] Plugins.deducer#function took 4.3005 ms
+[info] loading settings for project numerical-data-visualization-2 from build.sbt ...
+[debug]         Load.resolveProject(numerical-data-visualization-2) took 51.1427ms
+[debug]       Load.loadTransitive: finalizeProject(Project(id numerical-data-visualization-2, base: C:\Users\heidi\IdeaProjects\Numerical data visualization 2, plugins: List(<none>))) took 57.5468ms
+[debug] [Loading] Done in C:\Users\heidi\IdeaProjects\Numerical data visualization 2, returning: (numerical-data-visualization-2)
+[debug]     Load.loadUnit: loadedProjectsRaw took 3117.8083ms
+[debug]     Load.loadUnit: cleanEvalClasses took 30.4755ms
+[debug]   Load.loadUnit(file:/C:/Users/heidi/IdeaProjects/Numerical%20data%20visualization%202/, ...) took 12644.669ms
+[debug] Load.apply: load took 12648.513ms
+[debug] Load.apply: resolveProjects took 0.2331ms
+[debug] Load.apply: finalTransforms took 39.8106ms
+[debug] Load.apply: config.delegates took 0.3379ms
+[debug] Load.apply: Def.make(settings)... took 99.5169ms
+[debug] Load.apply: structureIndex took 30.0774ms
+[debug] Load.apply: mkStreams took 0.0115ms
+[info] set current project to Numerical data visualization 2 (in build file:/C:/Users/heidi/IdeaProjects/Numerical%20data%20visualization%202/)
+[debug] > Exec(sbtPopOnFailure, None, None)
+[debug] > Exec(resumeFromFailure, None, None)
+[debug] > Exec(notifyUsersAboutShell, None, None)
+[debug] > Exec(iflast shell, None, None)
+[debug] > Exec(; set ideaPort in Global := 50050 ; idea-shell, None, None)
+[debug] > Exec(set ideaPort in Global := 50050, None, None)
+[info] Defining Global / ideaPort
+[info] The new value will be used by Compile / compile, Test / compile
+[debug] Defining 
+[debug] 	Global / ideaPort
+[debug] 
+[debug] The new value will be used by 
+[debug] 	Compile / compile
+[debug] 	Test / compile
+[info] Reapplying settings...
+[info] set current project to Numerical data visualization 2 (in build file:/C:/Users/heidi/IdeaProjects/Numerical%20data%20visualization%202/)
+[debug] > Exec(idea-shell, None, None)

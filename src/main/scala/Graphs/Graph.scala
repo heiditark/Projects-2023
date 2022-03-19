@@ -2,7 +2,7 @@ package Graphs
 
 trait Graph {
 
-  val data: Data
+ /* val data: Data
 
   def makeGraph()
 
@@ -12,6 +12,6 @@ trait Graph {
 
   def editAxes()
 
-  def changeColors()
+  def changeColors() */
 
 }

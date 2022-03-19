@@ -1,4 +1,5 @@
 
+import Graphs.LineDiagram
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
 import scalafx.scene.layout.Pane
@@ -12,9 +13,9 @@ readable code.
 object Interface extends JFXApp {
 
 stage = new JFXApp.PrimaryStage {
-    title.value = "Hello Stage"
-    width = 600
-    height = 450
+    title.value = "Visualization of numerical data"
+    width = 1920
+    height = 1080
 }
 
 /*
@@ -25,5 +26,7 @@ and set the current window scene.
 val root = new Pane //Simple pane component
 val scene = new Scene(root) //Scene acts as a container for the scene graph
 stage.scene = scene
+
+root.children += ???
 
 }

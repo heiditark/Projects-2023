@@ -15,8 +15,8 @@ object Interface extends JFXApp {
 
 stage = new JFXApp.PrimaryStage {
     title.value = "Visualization of numerical data"
-    width = 500
-    height = 400
+    width = 1291
+    height = 693
 }
 
 /*
@@ -29,6 +29,7 @@ val scene = new Scene(root){ //Scene acts as a container for the scene graph
 }
 stage.scene = scene
 
+// To make a line diagram
 def addDots() = {
   var dotCount = LineDiagram.arrangedDataPoints.length
   def addDot(index: Int) = LineDiagram.doDots()(index)
@@ -37,6 +38,20 @@ def addDots() = {
   }
 }
 
-    addDots()
+// To make a line diagram
+def addLines() = {
+  var lineCount = LineDiagram.arrangedDataPoints.length - 1
+  def addLine(index: Int) = LineDiagram.doLines()(index)
+  for(i <- 0 until lineCount){
+    root.children += addLine(i)
+  }
+}
+
+def makeLineDiagram() = {
+   addDots()
+   addLines()
+ }
+
+ makeLineDiagram()
 
 }

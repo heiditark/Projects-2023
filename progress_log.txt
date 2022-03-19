@@ -1,0 +1,6 @@
+1. I've added the class structu without any methods to my project. I'm having problems with scalafx which has limited the progression.
+I'm planning on going to a lab session on Thursday to get this fixed. In the meanwhile when I haven't been able to progress the project
+I've been doing research from the references that the assistan suggested me. I'm late on from my schedule but I'm planning on making a new one
+since I know better now than a couple of week back on what I really need to invest my time on. All in all I've used 5 hrs on the project.
+
+EDIT: I had to make a new project since I couldn't get the sbt working. I'll delete the other one once I've copied the classes to this project.

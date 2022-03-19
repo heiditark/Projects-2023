@@ -2,7 +2,7 @@ package Graphs
 import javafx.scene.shape._
 
 
-class LineDiagram extends Graph {
+object LineDiagram extends Graph {
 
   // Test dataPoints
   val dataPoints = Map((0 -> 100), (100 -> 200), (200 -> 300))
@@ -24,15 +24,19 @@ class LineDiagram extends Graph {
     }
   }
 
-  // Adds dots in scalafx
-  def doDots() = {
+  // Makes dots in scalafx with radius of 10
+  def doDots(): Array[javafx.scene.Node] = {
+    var circles = new Array[javafx.scene.Node](arrangedDataPoints.length)
     for( index <- arrangedDataPoints.indices ) {
-      var circle = new Circle()
-      circle.setCenterX( arrangedDataPoints(index)._1 )
-      circle.setCenterY( arrangedDataPoints(index)._2 )
-      circle.setRadius( 50 )
+      var circle = new Circle {
+        setCenterX(arrangedDataPoints(index)._1)
+        setCenterY(arrangedDataPoints(index)._2)
+        setRadius(10)
+      }
+      circles(index) = circle
     }
-  }
+    circles
+}
 
 
 }

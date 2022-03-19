@@ -3,6 +3,7 @@ import Graphs.LineDiagram
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
 import scalafx.scene.layout.Pane
+import scalafx.Includes._
 
 
 /*
@@ -14,8 +15,8 @@ object Interface extends JFXApp {
 
 stage = new JFXApp.PrimaryStage {
     title.value = "Visualization of numerical data"
-    width = 1920
-    height = 1080
+    width = 500
+    height = 400
 }
 
 /*
@@ -24,9 +25,18 @@ and set the current window scene.
 */
 
 val root = new Pane //Simple pane component
-val scene = new Scene(root) //Scene acts as a container for the scene graph
+val scene = new Scene(root){ //Scene acts as a container for the scene graph
+}
 stage.scene = scene
 
-root.children += ???
+def addDots() = {
+  var dotCount = LineDiagram.arrangedDataPoints.length
+  def addDot(index: Int) = LineDiagram.doDots()(index)
+  for(i <- 0 until dotCount){
+    root.children += addDot(i)
+  }
+}
+
+    addDots()
 
 }

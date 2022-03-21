@@ -6,6 +6,7 @@ import scalafx.scene.layout._
 import scalafx.Includes._
 import scalafx.geometry.Insets
 import scalafx.scene.control.Button
+import scalafx.scene.paint.Color
 import scalafx.scene.paint.Color._
 
 object Interface extends JFXApp {
@@ -16,40 +17,49 @@ stage = new JFXApp.PrimaryStage {
     height = 693
 }
 
-/*
-Create root gui component, add it to a Scene
-and set the current window scene.
-*/
+// Parts of the interface
+val diagram = new Pane
+val topMenu = new VBox(20)
+val sideBar = new HBox {
+  minWidth = 190
+}
+
+// Background color of topMenu and sideBar
+topMenu.background = new Background(Array(new BackgroundFill((Color.rgb(215, 215, 215)), CornerRadii.Empty, Insets.Empty)))
+sideBar.background = new Background(Array(new BackgroundFill((Color.rgb(186, 188, 190)), CornerRadii.Empty, Insets.Empty)))
+
+// Buttons 'Add' and 'File'
+val addGraphButton = new Button("Add")
+val fileButton = new Button("File")
+addGraphButton.onAction = (event) => makeLineDiagram()
+
+topMenu.children += (fileButton, addGraphButton)
+
+
 
 val root = new BorderPane {
-    padding = Insets(25)
-    center = new Pane
+  center = diagram
+  top = topMenu
+  left = sideBar
 }
+
 val scene = new Scene(root)
 stage.scene = scene
 
-/* Button
-val button = new Button("Add a line diagram")
-button.onAction = (event) => {
-    makeLineDiagram()
-} */
+
+
+
+
+
 
 // To make a line diagram
 def addDots() = {
-  var dotCount = LineDiagram.arrangedDataPoints.length
-  def addDot(index: Int) = LineDiagram.doDots()(index)
-  for(i <- 0 until dotCount){
-    root.children += addDot(i)
-  }
+    diagram.children ++= LineDiagram.doDots()
 }
 
 // To make a line diagram
 def addLines() = {
-  var lineCount = LineDiagram.arrangedDataPoints.length - 1
-  def addLine(index: Int) = LineDiagram.doLines()(index)
-  for(i <- 0 until lineCount){
-    root.children += addLine(i)
-  }
+    diagram.children ++= LineDiagram.doLines()
 }
 
 def makeLineDiagram() = {
@@ -57,6 +67,5 @@ def makeLineDiagram() = {
    addLines()
  }
 
- makeLineDiagram()
 
 }

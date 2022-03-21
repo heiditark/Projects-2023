@@ -2,15 +2,12 @@
 import Graphs.LineDiagram
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
-import scalafx.scene.layout.Pane
+import scalafx.scene.layout._
 import scalafx.Includes._
+import scalafx.geometry.Insets
+import scalafx.scene.control.Button
+import scalafx.scene.paint.Color._
 
-
-/*
-Creation of a new primary stage (Application window).
-We can use Scala's anonymous subclass syntax to get quite
-readable code.
-*/
 object Interface extends JFXApp {
 
 stage = new JFXApp.PrimaryStage {
@@ -24,10 +21,18 @@ Create root gui component, add it to a Scene
 and set the current window scene.
 */
 
-val root = new Pane //Simple pane component
-val scene = new Scene(root){ //Scene acts as a container for the scene graph
+val root = new BorderPane {
+    padding = Insets(25)
+    center = new Pane
 }
+val scene = new Scene(root)
 stage.scene = scene
+
+/* Button
+val button = new Button("Add a line diagram")
+button.onAction = (event) => {
+    makeLineDiagram()
+} */
 
 // To make a line diagram
 def addDots() = {

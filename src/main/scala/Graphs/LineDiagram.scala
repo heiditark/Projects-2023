@@ -42,6 +42,8 @@ object LineDiagram extends Graph {
     circles
  }
 
+  def autoScale() = ???
+
 
 }
 

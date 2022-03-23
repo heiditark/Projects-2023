@@ -4,6 +4,7 @@ import scalafx.application.JFXApp
 import scalafx.scene.Scene
 import scalafx.scene.layout._
 import scalafx.Includes._
+import scalafx.geometry.Point2D.Zero.x
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Button
 import scalafx.scene.paint.Color
@@ -11,6 +12,7 @@ import scalafx.scene.paint.Color._
 import scalafx.scene.control.MenuItem
 import scalafx.scene.control.Menu
 import scalafx.scene.control.MenuBar
+import scalafx.scene.shape.Circle
 
 
 object Interface extends JFXApp {
@@ -81,6 +83,7 @@ def makeLineDiagram() = {
    addDots()
    addLines()
  }
-
+println(diagram.width)
+println(diagram.height)
 
 }

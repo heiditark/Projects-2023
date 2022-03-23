@@ -4,7 +4,7 @@ import javafx.scene.shape._
 
 object LineDiagram extends Graph {
 
-  val heightOfUI = 673
+  val heightOfUI = 450
   val widthOfUI = 1000
 
   // Test dataPoints
@@ -22,16 +22,21 @@ object LineDiagram extends Graph {
 
   // Autoscales datapoints to fit the measures of the Interface
   def autoscale(data: Vector[(Int, Int)]) = {
-    val scaleXBy = widthOfUI / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1 )
-   // val scaleYBy = heightOfUI / (arrangedDataPoints.last._2 - arrangedDataPoints.head._2 )
 
-    val autoScaledData = new Array[(Int, Int)](data.length)
+    // Scaling factor
+    val scaleXBy = widthOfUI.toDouble / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1).toDouble
+    val scaleYBy = heightOfUI.toDouble / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2).toDouble
+    val scale = if(scaleXBy < scaleYBy) scaleXBy else scaleYBy
+
+    println(scale)
+
+    val autoScaledData = new Array[(Double, Double)](data.length)
 
     // Puts the smallest datapoint on the very left
-    autoScaledData(1) = (data(1)._1 * 0, data(1)._2)
+    autoScaledData(0) = (data(0)._1 * 0, (data(0)._2 * scale))
 
     for(i <- 1 until data.length) {
-      autoScaledData(i) = (data(i)._1 * scaleXBy, data(i)._2)
+      autoScaledData(i) = (data(i)._1 * scale, (data(i)._2 * scale))
       println(autoScaledData(i))
     }
     autoScaledData.toVector
@@ -67,7 +72,7 @@ object LineDiagram extends Graph {
  }
 
 
-
+// (autoScaledData(i - 1)._1 + ((data(i)._1 - data(i - 1)._1) * scale), (autoScaledData(i - 1)._2 + ((data(i)._2 - data(i - 1)._2)) * scale))
 
 }
 

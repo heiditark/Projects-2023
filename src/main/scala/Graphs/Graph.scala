@@ -2,6 +2,7 @@ package Graphs
 
 trait Graph {
 
+
  /* val data: Data
 
   def makeGraph()

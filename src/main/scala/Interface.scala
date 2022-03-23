@@ -20,31 +20,32 @@ stage = new JFXApp.PrimaryStage {
     width = 1291
     height = 693
 }
+def width() = diagram.width
+def height() = diagram.height
 
 // Parts of the interface
 val diagram = new Pane
-// val topMenu = new VBox(20)
-val m = new Menu("Open")
+val m = new Menu("File")
 val add = new Menu("Add")
 val sideBar = new VBox {
   minWidth = 190
 }
 
-// Background color of topMenu and sideBar
-// topMenu.background = new Background(Array(new BackgroundFill((Color.rgb(215, 215, 215)), CornerRadii.Empty, Insets.Empty)))
+// Background color of sideBar
 sideBar.background = new Background(Array(new BackgroundFill((Color.rgb(186, 188, 190)), CornerRadii.Empty, Insets.Empty)))
 
- val m1 = new MenuItem("File")
+ val file = new MenuItem("Yes")
 
-  // To add graphs
+ // To add graphs
  val line = new MenuItem("Line diagram")
  val pie = new MenuItem("Pie diagram")
  val bar = new MenuItem("Bar chart")
  val histo = new MenuItem("Histogram")
 
+  // When chosen what graph to use, calls the method which makes it
   line.onAction = (event) => makeLineDiagram()
 
-  m.items += m1
+  m.items += file
   add.items += (line, pie, bar, histo)
 
   val mb = new MenuBar()

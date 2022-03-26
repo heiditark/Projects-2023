@@ -1,8 +1,5 @@
 package Graphs
 import javafx.scene.shape.Rectangle
-import scalafx.geometry.Rectangle2D
-
-import scala.math._
 
 class BarChart extends Graph {
 
@@ -21,10 +18,10 @@ class BarChart extends Graph {
     (x, y)
   }
 
-  //Each key has equal width
+  //Each bar has equal width
   val width = (widthOfUI.toDouble - 20 ) / data.size
 
-  //Sets height of a key by using percentage
+  //Sets height of a bar with using percentage
   def height(key: String): Double = heightOfUI * percentage(key)
 
   //Makes bars using the methods above

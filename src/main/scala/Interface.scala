@@ -1,12 +1,12 @@
 
 import Graphs.LineDiagram
+import Graphs.BarChart
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
 import scalafx.scene.layout._
 import scalafx.Includes._
 import scalafx.geometry.Point2D.Zero.x
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.chart.BarChart
 import scalafx.scene.control.Button
 import scalafx.scene.paint.Color
 import scalafx.scene.paint.Color._
@@ -65,10 +65,8 @@ val scene = new Scene(root)
 stage.scene = scene
 
 
-
-
-
-def makeBarChart() = diagram.children ++= BarChart.doBars()
+def makeBarChart() =
+  diagram.children ++= BarChart.doBars()
 
 // To make a line diagram
 def addDots() = {

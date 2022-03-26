@@ -34,7 +34,7 @@ val sideBar = new VBox {
 }
 
 // Background color of sideBar
-sideBar.background = new Background(Array(new BackgroundFill((Color.rgb(186, 188, 190)), CornerRadii.Empty, Insets.Empty)))
+sideBar.background = new Background(Array(new BackgroundFill(Color.rgb(186, 188, 190), CornerRadii.Empty, Insets.Empty)))
 
  val file = new MenuItem("Yes")
 

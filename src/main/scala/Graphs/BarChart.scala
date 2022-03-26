@@ -1,5 +1,7 @@
 package Graphs
+import javafx.scene.paint.Paint
 import javafx.scene.shape.Rectangle
+import scalafx.scene.paint.Color
 
 object BarCharProject extends Graph {
 
@@ -9,7 +11,6 @@ object BarCharProject extends Graph {
 
   // Counts percentage of each keys value
   def percentage(key: String) = data(key).toDouble / data.values.sum.toDouble
-
 
   def locationInInterface(key: String) = {
     val index = data.keys.toVector.indexOf(key)
@@ -24,8 +25,16 @@ object BarCharProject extends Graph {
   //Each bar has equal width
   val width = (widthOfUI.toDouble - 20 ) / data.size
 
-  //Sets height of a bar with using percentage
-  def height(key: String): Double = heightOfUI * percentage(key)
+  //Sets height of a bar with using percentage; korkein on suurin pros => loput percentagen verran pisimmästä
+  def height(key: String): Double = {
+    val biggestValue: (String, Int) = data.maxBy(_._2)
+    var height = data(key) match {
+      case _ if data(key) == biggestValue._2 => heightOfUI - 50
+      case a: Int => (heightOfUI - 50) * (a.toDouble / biggestValue._2.toDouble)
+    }
+    height
+  }
+
 
   //Makes bars using the methods above
   def doBars(): Array[javafx.scene.Node] = {
@@ -37,6 +46,7 @@ object BarCharProject extends Graph {
         setY(locationInInterface(key)._2)
         setWidth(width)
         setHeight(height(key))
+        setStroke(Color.rgb(186, 188, 190))
       }
       bars(index) = bar
       index += 1

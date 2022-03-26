@@ -6,6 +6,7 @@ import scalafx.scene.layout._
 import scalafx.Includes._
 import scalafx.geometry.Point2D.Zero.x
 import scalafx.geometry.{Insets, Pos}
+import scalafx.scene.chart.BarChart
 import scalafx.scene.control.Button
 import scalafx.scene.paint.Color
 import scalafx.scene.paint.Color._
@@ -42,16 +43,16 @@ sideBar.background = new Background(Array(new BackgroundFill((Color.rgb(186, 188
  val line = new MenuItem("Line diagram")
  val pie = new MenuItem("Pie diagram")
  val bar = new MenuItem("Bar chart")
- val histo = new MenuItem("Histogram")
 
   // When chosen what graph to use, calls the method which makes it
   line.onAction = (event) => makeLineDiagram()
+  bar.onAction = (event) =>
 
   m.items += file
-  add.items += (line, pie, bar, histo)
+  add.items :+ (line, pie, bar)
 
   val mb = new MenuBar()
-  mb.menus += (m, add)
+  mb.menus :+ (m, add)
 
 
 val root = new BorderPane {
@@ -67,7 +68,7 @@ stage.scene = scene
 
 
 
-
+def makeBarChart() = diagram.children ++= BarChart.doBars()
 
 // To make a line diagram
 def addDots() = {

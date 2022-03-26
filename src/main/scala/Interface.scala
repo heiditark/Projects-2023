@@ -81,5 +81,6 @@ sideBar.background = new Background(Array(new BackgroundFill((Color.rgb(186, 188
     addDots()
     addLines()
   }
+  makeBarChart()
 
 }

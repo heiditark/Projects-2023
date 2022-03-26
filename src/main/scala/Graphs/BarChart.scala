@@ -1,7 +1,7 @@
 package Graphs
 import javafx.scene.shape.Rectangle
 
-class BarChartProject extends Graph {
+object BarChartProject extends Graph {
 
   val data = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
   val heightOfUI = 600

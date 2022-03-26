@@ -1,6 +1,5 @@
 
-import Graphs.LineDiagram
-import Graphs.BarChartProject
+import Graphs.{BarCharProject, LineDiagram}
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
 import scalafx.scene.layout._
@@ -66,7 +65,7 @@ sideBar.background = new Background(Array(new BackgroundFill((Color.rgb(186, 188
 
 
   def makeBarChart() =
-    diagram.children ++= BarChartProject.doBars()
+    diagram.children ++= BarCharProject.doBars()
 
   // To make a line diagram
   def addDots() =
@@ -81,6 +80,7 @@ sideBar.background = new Background(Array(new BackgroundFill((Color.rgb(186, 188
     addDots()
     addLines()
   }
+
   makeBarChart()
 
 }

@@ -1,19 +1,22 @@
 package Graphs
 import javafx.scene.shape.Rectangle
 
-object BarChartProject extends Graph {
+object BarCharProject extends Graph {
 
-  val data = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
-  val heightOfUI = 600
-  val widthOfUI = 1000
-  val color = ???
+  val data: Map[String, Int] = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
+  val heightOfUI = 650
+  val widthOfUI = 1090
 
   // Counts percentage of each keys value
   def percentage(key: String) = data(key).toDouble / data.values.sum.toDouble
 
-  def locationInInterface(index: Int) = {
+
+  def locationInInterface(key: String) = {
+    val index = data.keys.toVector.indexOf(key)
     val x = width * index + 10
-    val y = 20
+    val y = heightOfUI - height(key) - 30
+
+    println(x+", "+y)
 
     (x, y)
   }
@@ -30,8 +33,8 @@ object BarChartProject extends Graph {
     var index = 0
     for(key <- data.keys) {
       var bar = new Rectangle {
-        setX(locationInInterface(index)._1)
-        setY(locationInInterface(index)._2)
+        setX(locationInInterface(key)._1)
+        setY(locationInInterface(key)._2)
         setWidth(width)
         setHeight(height(key))
       }

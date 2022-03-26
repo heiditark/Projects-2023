@@ -83,7 +83,5 @@ def makeLineDiagram() = {
    addDots()
    addLines()
  }
-println(diagram.width)
-println(diagram.height)
 
 }

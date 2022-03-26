@@ -4,11 +4,11 @@ import javafx.scene.shape._
 
 object LineDiagram extends Graph {
 
-  val heightOfUI = 450
+  val heightOfUI = 600
   val widthOfUI = 1000
 
   // Test dataPoints
-  val dataPoints = Map((0 -> 100), (100 -> 200), (200 -> 300), (300 -> 400), (350 -> 175))
+  val dataPoints = Map((0 -> 100), (100 -> 200), (200 -> 300), (300 -> 400), (350 -> 175) /*, (1 -> 0), (1000 -> 601), (1001 -> 0), (0 -> 600)*/)
 
   // Arranged data points
   var arrangedDataPoints = arrangeDataPoints(dataPoints)

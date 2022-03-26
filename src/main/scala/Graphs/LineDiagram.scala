@@ -23,17 +23,18 @@ object LineDiagram extends Graph {
   // Autoscales datapoints to fit the measures of the Interface
   def autoscale(data: Vector[(Int, Int)]) = {
 
-    // Scaling factor
-    val scaleXBy = widthOfUI.toDouble / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1).toDouble
-    val scaleYBy = heightOfUI.toDouble / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2).toDouble
-    val scale = if(scaleXBy < scaleYBy) scaleXBy else scaleYBy
+    // Scaling factor; pitäiskö olla ()^-1
+    val scaledByX = widthOfUI.toDouble / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1).toDouble
+    val scaledByY = heightOfUI.toDouble / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2).toDouble
+    val scale = if(scaledByX < scaledByY) scaledByX else scaledByY
+    val scaleFirstYBy = if (scale == scaledByY) 0 else scale
 
     println(scale)
 
     val autoScaledData = new Array[(Double, Double)](data.length)
 
     // Puts the smallest datapoint on the very left
-    autoScaledData(0) = (data(0)._1 * 0, (data(0)._2 * scale))
+    autoScaledData(0) = (data(0)._1 * 0, (data(0)._2 * scaleFirstYBy))
 
     for(i <- 1 until data.length) {
       autoScaledData(i) = (data(i)._1 * scale, (data(i)._2 * scale))
@@ -42,15 +43,19 @@ object LineDiagram extends Graph {
     autoScaledData.toVector
   }
 
+
+
+
   // Adds lines in scalafx
   def doLines() = {
     var lines = new Array[javafx.scene.Node](autoscaledDataPoints.length - 1)
+    val fix = 50
     for( index <- autoscaledDataPoints.drop(1).indices ) {
       var line = new Line {
         setStartX(autoscaledDataPoints(index)._1)
-        setStartY(autoscaledDataPoints(index)._2)
+        setStartY(autoscaledDataPoints(index)._2 - fix)
         setEndX(autoscaledDataPoints(index + 1)._1)
-        setEndY(autoscaledDataPoints(index + 1)._2)
+        setEndY(autoscaledDataPoints(index + 1)._2 - fix)
       }
       lines(index) = line
     }
@@ -60,10 +65,11 @@ object LineDiagram extends Graph {
   // Makes dots in scalafx with radius of 5
   def doDots(): Array[javafx.scene.Node] = {
     var circles = new Array[javafx.scene.Node](autoscaledDataPoints.length)
+    val fix = 50
     for( index <- autoscaledDataPoints.indices ) {
       var circle = new Circle {
         setCenterX(autoscaledDataPoints(index)._1)
-        setCenterY(autoscaledDataPoints(index)._2)
+        setCenterY(autoscaledDataPoints(index)._2 - fix)
         setRadius(5)
       }
       circles(index) = circle

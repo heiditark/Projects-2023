@@ -1,6 +1,6 @@
 
 import Graphs.LineDiagram
-import Graphs.BarChart
+import Graphs.BarChartProject
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
 import scalafx.scene.layout._
@@ -46,7 +46,7 @@ sideBar.background = new Background(Array(new BackgroundFill((Color.rgb(186, 188
 
   // When chosen what graph to use, calls the method which makes it
   line.onAction = (event) => makeLineDiagram()
-  bar.onAction = (event) =>
+  bar.onAction = (event) => makeBarChart()
 
   m.items += file
   add.items :+ (line, pie, bar)
@@ -55,32 +55,31 @@ sideBar.background = new Background(Array(new BackgroundFill((Color.rgb(186, 188
   mb.menus :+ (m, add)
 
 
-val root = new BorderPane {
-  center = diagram
-  top = mb
-  left = sideBar
-}
+  val root = new BorderPane {
+    center = diagram
+    top = mb
+    left = sideBar
+  }
 
-val scene = new Scene(root)
-stage.scene = scene
+  val scene = new Scene(root)
+  stage.scene = scene
 
 
-def makeBarChart() =
-  diagram.children ++= BarChart.doBars()
+  def makeBarChart() =
+    diagram.children ++= BarChartProject.doBars()
 
-// To make a line diagram
-def addDots() = {
+  // To make a line diagram
+  def addDots() =
     diagram.children ++= LineDiagram.doDots()
-}
 
-// To make a line diagram
-def addLines() = {
+
+  // To make a line diagram
+  def addLines() =
     diagram.children ++= LineDiagram.doLines()
-}
 
-def makeLineDiagram() = {
-   addDots()
-   addLines()
- }
+  def makeLineDiagram() = {
+    addDots()
+    addLines()
+  }
 
 }

@@ -1,7 +1,7 @@
 package Graphs
 import javafx.scene.shape.Rectangle
 
-class BarChart extends Graph {
+class BarChartProject extends Graph {
 
   val data = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
   val heightOfUI = 600
@@ -29,12 +29,12 @@ class BarChart extends Graph {
     var bars = new Array[javafx.scene.Node](data.size)
     var index = 0
     for(key <- data.keys) {
-      var bar = new Rectangle(
-        locationInInterface(index)._1,
-        locationInInterface(index)._2,
-        width,
-        height(key))
-
+      var bar = new Rectangle {
+        setX(locationInInterface(index)._1)
+        setY(locationInInterface(index)._2)
+        setWidth(width)
+        setHeight(height(key))
+      }
       bars(index) = bar
       index += 1
     }

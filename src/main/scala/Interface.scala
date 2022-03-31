@@ -22,6 +22,7 @@ stage = new JFXApp.PrimaryStage {
     width = 1291
     height = 693
 }
+
 def width() = diagram.width
 def height() = diagram.height
 

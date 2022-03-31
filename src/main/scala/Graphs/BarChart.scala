@@ -1,12 +1,11 @@
 package Graphs
-import javafx.scene.paint.Paint
 import javafx.scene.shape.Rectangle
 import scalafx.scene.paint.Color
 
 object BarCharProject extends Graph {
 
   val data: Map[String, Int] = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
-  val heightOfUI = 650
+  val heightOfUI = 600
   val widthOfUI = 1090
 
   // Counts percentage of each keys value
@@ -17,15 +16,13 @@ object BarCharProject extends Graph {
     val x = width * index + 10
     val y = heightOfUI - height(key) - 30
 
-    println(x+", "+y)
-
     (x, y)
   }
 
   //Each bar has equal width
   val width = (widthOfUI.toDouble - 20 ) / data.size
 
-  //Sets height of a bar with using percentage; korkein on suurin pros => loput percentagen verran pisimmästä
+  //Sets height of a bar so that key with biggest value has the biggest height. Other bars are made by scaling to the bar of biggest height.
   def height(key: String): Double = {
     val biggestValue: (String, Int) = data.maxBy(_._2)
     var height = data(key) match {

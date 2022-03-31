@@ -27,18 +27,22 @@ object LineDiagram extends Graph {
     val scaledByX = widthOfUI.toDouble / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1).toDouble
     val scaledByY = heightOfUI.toDouble / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2).toDouble
     val scale = if(scaledByX < scaledByY) scaledByX else scaledByY
-//    val scaleFirstYBy = if (scale == scaledByY) 0 else scale
+    val scaleFirstYBy = arrangedDataPoints.minBy(_._2)._2 match {
+      case a if a == arrangedDataPoints(0)._2 => 0
+      case _ => scale
+    }
 
     println(scale)
 
     val autoScaledData = new Array[(Double, Double)](data.length)
 
     // Puts the smallest datapoint on the very left
-    autoScaledData(0) = (data(0)._1 * 0, (data(0)._2 * scale))
+    autoScaledData(0) = (arrangedDataPoints(0)._1 * 0 + 20, (arrangedDataPoints(0)._2 * scaleFirstYBy + 20))
 
     for(i <- 1 until data.length) {
-      autoScaledData(i) = (data(i)._1 * scale, (data(i)._2 * scale))
-      println(autoScaledData(i))
+      autoScaledData(i) =
+        (autoScaledData(i - 1)._1 + ((arrangedDataPoints(i)._1 - arrangedDataPoints(i - 1)._1) * scale),
+          (autoScaledData(i - 1)._2 + ((arrangedDataPoints(i)._2 - arrangedDataPoints(i - 1)._2)) * scale))
     }
     autoScaledData.toVector
   }
@@ -77,6 +81,8 @@ object LineDiagram extends Graph {
 
 
 // (autoScaledData(i - 1)._1 + ((data(i)._1 - data(i - 1)._1) * scale), (autoScaledData(i - 1)._2 + ((data(i)._2 - data(i - 1)._2)) * scale))
+  //      autoScaledData(i) = (data(i)._1 * scale, (data(i)._2 * scale))
+  //      println(autoScaledData(i))
 
 }
 

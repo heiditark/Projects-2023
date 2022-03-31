@@ -4,3 +4,8 @@ I've been doing research from the references that the assistan suggested me. I'm
 since I know better now than a couple of week back on what I really need to invest my time on. All in all I've used 5 hrs on the project.
 
 EDIT: I had to make a new project since I couldn't get the sbt working. I'll delete the other one once I've copied the classes to this project.
+
+2. So far I've done all the graphs except pie diagram which I'm going to start doing in few days. I still need figure out few things in line diagram
+such as drawing the axis and adding the grid. After that I'm going to focus on how the user is able to edit the graphs from the interface.
+ When that is done I have only thing I've left is adding and reading a file containing the data points through the Interface.
+ I've used 25 hours on the project.

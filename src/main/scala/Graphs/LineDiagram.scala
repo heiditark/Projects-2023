@@ -32,8 +32,6 @@ object LineDiagram extends Graph {
       case _ => scale
     }
 
-    println(scale)
-
     val autoScaledData = new Array[(Double, Double)](data.length)
 
     // Puts the smallest datapoint on the very left

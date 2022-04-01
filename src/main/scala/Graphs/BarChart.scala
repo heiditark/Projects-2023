@@ -15,7 +15,6 @@ object BarCharProject extends Graph {
     val index = data.keys.toVector.indexOf(key)
     val x = width * index + 10
     val y = heightOfUI - height(key) - 30
-
     (x, y)
   }
 

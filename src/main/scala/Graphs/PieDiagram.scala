@@ -1,5 +1,6 @@
 package Graphs
 
+import scalafx.scene.paint.Color
 import scalafx.scene.shape.{Arc, ArcType}
 
 
@@ -14,30 +15,32 @@ object PieDiagram extends Graph {
   val pi = scala.math.Pi
 
   // Counts percentage of each keys value
-  def percentage(key: String) = (data(key).toDouble / data.values.sum.toDouble) * 100.toDouble
+  def percentage(key: String) = data(key).toDouble / data.values.sum.toDouble
 
-  def arcLength(key: String) = percentage(key) * 2 * pi
+  def arcLength(key: String) = percentage(key)  * 2 * pi * radius
 
-  def angle(key: String) = arcLength(key) / radius
+  def angle(key: String) = percentage(key) * 360
 
   def doSectors() = {
-    var startAngle2: Double = 360
-    println(startAngle2)
+    var startAngle2: Double = 90.0
     var sectors = new Array[javafx.scene.Node](data.size)
     var index = 0
 
     for(dataPoint <- data) {
-      var sector = new Arc {
+      var sector = new Arc() {
         centerX = centerPoint._1
         centerY = centerPoint._2
-        radiusY = radius
+        radiusX = radius
         radiusY = radius
         startAngle = startAngle2
-        length = arcLength(dataPoint._1)
+        length = angle(dataPoint._1)
+        fill = Color.rgb(186, 188, 190)
+        stroke = Color.Pink
+        strokeWidth = 3
       }
       sector.setType(ArcType.Round)
       sectors(index) = sector
-      startAngle2 = startAngle2 - angle(dataPoint._1)
+      startAngle2 = startAngle2 + angle(dataPoint._1)
       index += 1
     }
     sectors

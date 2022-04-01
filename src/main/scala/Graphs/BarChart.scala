@@ -43,6 +43,7 @@ object BarCharProject extends Graph {
         setWidth(width)
         setHeight(height(key))
         setStroke(Color.rgb(186, 188, 190))
+        setFill(Color.Pink)
       }
       bars(index) = bar
       index += 1

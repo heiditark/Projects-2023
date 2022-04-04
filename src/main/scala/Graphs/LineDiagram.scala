@@ -6,6 +6,7 @@ object LineDiagram extends Graph {
 
   val heightOfUI = 600
   val widthOfUI = 1000
+  val color = colorGenerator()
 
   // Test dataPoints
   val dataPoints = Map((0 -> 100), (100 -> 200), (200 -> 300), (300 -> 400), (350 -> 175) /*, (1 -> 0), (1000 -> 601), (1001 -> 0), (0 -> 600)*/)
@@ -71,16 +72,12 @@ object LineDiagram extends Graph {
         setCenterX(autoscaledDataPoints(index)._1)
         setCenterY(autoscaledDataPoints(index)._2)
         setRadius(5)
+        setFill(color)
       }
       circles(index) = circle
     }
     circles
- }
-
-
-// (autoScaledData(i - 1)._1 + ((data(i)._1 - data(i - 1)._1) * scale), (autoScaledData(i - 1)._2 + ((data(i)._2 - data(i - 1)._2)) * scale))
-  //      autoScaledData(i) = (data(i)._1 * scale, (data(i)._2 * scale))
-  //      println(autoScaledData(i))
+  }
 
 }
 

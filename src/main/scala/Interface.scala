@@ -64,15 +64,18 @@ val diagram = new Pane
 
 
   // MAKES GRAPHS
+  val width = diagram.width()
+  val height = diagram.height()
 
-  def emptyDiagram() = ???
+  def emptyDiagram() = diagram.getChildren.clear()
 
   def makePieDiagram() = {
+    emptyDiagram()
     diagram.children ++= PieDiagram.doSectors()
   }
 
   def makeBarChart() = {
-    // emptyDiagram()
+     emptyDiagram()
     diagram.children ++= BarCharProject.doBars()
   }
 
@@ -86,9 +89,9 @@ val diagram = new Pane
     diagram.children ++= LineDiagram.doLines()
 
   def makeLineDiagram() = {
-    // emptyDiagram()
-    addDots()
+    emptyDiagram()
     addLines()
+    addDots()
   }
 
 

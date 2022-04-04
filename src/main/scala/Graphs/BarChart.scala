@@ -7,6 +7,7 @@ object BarCharProject extends Graph {
   val data: Map[String, Int] = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
   val heightOfUI = 600
   val widthOfUI = 1090
+  val color = colorGenerator()
 
   // Counts percentage of each keys value
   def percentage(key: String) = data(key).toDouble / data.values.sum.toDouble
@@ -42,8 +43,9 @@ object BarCharProject extends Graph {
         setY(locationInInterface(key)._2)
         setWidth(width)
         setHeight(height(key))
-        setStroke(Color.rgb(186, 188, 190))
-        setFill(Color.Pink)
+        setStroke(Color.White)
+        setStrokeWidth(2)
+        setFill(color)
       }
       bars(index) = bar
       index += 1

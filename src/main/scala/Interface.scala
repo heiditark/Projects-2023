@@ -24,7 +24,10 @@ stage = new JFXApp.PrimaryStage {
 }
 
 // Parts of the interface
-val diagram = new Pane
+  val diagram = new Pane {
+    padding = Insets(10)
+  }
+
   val file2 = new Menu("File")
   val add = new Menu("Add")
   val sideBar = new VBox {
@@ -88,10 +91,14 @@ val diagram = new Pane
   def addLines() =
     diagram.children ++= LineDiagram.doLines()
 
+  def addAxis() =
+    diagram.children ++= LineDiagram.doAxis()
+
   def makeLineDiagram() = {
     emptyDiagram()
     addLines()
     addDots()
+    addAxis()
   }
 
 

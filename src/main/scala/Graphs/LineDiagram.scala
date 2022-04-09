@@ -9,8 +9,8 @@ object LineDiagram extends Graph {
   val color = colorGenerator()
 
   // Test dataPoints
-  val dataPoints:Map[Double,Double] = Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
-   // Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
+  val dataPoints:Map[Double,Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
+   Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
 
   //Flips the y-coordinates
   def flipYCoord(dataPoints2: Map[Double, Double]): Map[Double, Double] = dataPoints2.map{case (x, y) => x -> y * -1}
@@ -62,7 +62,10 @@ object LineDiagram extends Graph {
   def xAxisYPos() = {
     val pointClosest0: (Double, Double) = arrangedDataPoints.minBy{case (x,y) => y.abs}
     val diff: Double = (0.0 - pointClosest0._2) * scalingFactor()
-    val yPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._2 + diff
+    val yPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._2 match {
+      case a: Double if autoscaledDataPoints.maxBy{case (x,y) => y}._2 == a => a
+      case a => a + diff
+    }
 
     yPos
   }
@@ -70,8 +73,10 @@ object LineDiagram extends Graph {
   def yAxisXPos() = {
     val pointClosest0: (Double, Double) = arrangedDataPoints.minBy{case (x,y) => x.abs}
     val diff: Double = (0.0 - pointClosest0._1) * scalingFactor()
-    val yPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._1 + diff
-
+    val yPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._1 match {
+      case a: Double if autoscaledDataPoints.minBy{case (x,y) => x}._1 == a => a
+      case a => a + diff
+    }
     yPos
   }
 

@@ -10,7 +10,8 @@ object LineDiagram extends Graph {
 
   // Test dataPoints
   val dataPoints:Map[Double,Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
-   Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
+    Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
+   // Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
 
   //Flips the y-coordinates
   def flipYCoord(dataPoints2: Map[Double, Double]): Map[Double, Double] = dataPoints2.map{case (x, y) => x -> y * -1}
@@ -59,13 +60,10 @@ object LineDiagram extends Graph {
     autoScaledData.toVector
   }
 
-  def xAxisYPos() = {
+  def xAxisYPos(): Double = {
     val pointClosest0: (Double, Double) = arrangedDataPoints.minBy{case (x,y) => y.abs}
     val diff: Double = (0.0 - pointClosest0._2) * scalingFactor()
-    val yPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._2 match {
-      case a: Double if autoscaledDataPoints.maxBy{case (x,y) => y}._2 == a => a
-      case a => a + diff
-    }
+    val yPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._2 + diff
 
     yPos
   }

@@ -25,11 +25,18 @@ trait Graph {
 
   def addText(text: String, location: (Double, Double)) = {
     val size = text.length
-    var textField = new TextField()
-
-    textField.resizeRelocate(location._1, location._2, size, 3)
+    var textField = new Text()
     textField.setText(text)
 
+    val textFieldWidth = textField.getBoundsInLocal().getWidth()
+    val textFieldHeight = textField.getBoundsInLocal().getHeight()
+
+    textField.resizeRelocate(
+      location._1 - textFieldWidth / 2,
+      location._2 + textFieldHeight / 2,
+      size,
+      3
+    )
     textField
   }
 

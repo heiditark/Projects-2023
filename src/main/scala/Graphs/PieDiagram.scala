@@ -21,16 +21,6 @@ object PieDiagram extends Graph {
   //Counts angle using percentage of a key
   def angle(key: String) = percentage(key) * 360
 
-  def positionOfText(currentAngle: Double, length: Double): (Double, Double) = {
-    var angleAtMiddleDeg =  ( currentAngle + length / 2 ) * pi / 180
-    val x = ( radius + 10 ) * cos(angleAtMiddleDeg) + widthOfUI / 2
-    val y = ( radius + 10 ) * sin(angleAtMiddleDeg) + heightOfUI / 2
-
-    println(x,y)
-
-    (x, y)
-  }
-
   //Makes sectors and textboxs
   def doSectors() = {
     var startAngle2: Double = 90.0
@@ -55,10 +45,13 @@ object PieDiagram extends Graph {
       sectors(index) = sector
 
       //Adds textBox
-      val textBoxPosition = positionOfText(startAngle2, angle(dataPoint._1))
+      // Calculate the angle at the middle of the sector
+      val angleInBetween = toRadians(startAngle2 + angle(dataPoint._1) / 2)
+      // Calculate the x and y coordinates of the middle of the sector
+      val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 0.5
+      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 0.5
 
-      textBox(index) = addText(dataPoint._1,
-        (textBoxPosition._1, textBoxPosition._2))
+      textBox(index) = addText(dataPoint._1, (textBoxPositionX, textBoxPositionY))
 
       startAngle2 = startAngle2 + angle(dataPoint._1)
       index += 1

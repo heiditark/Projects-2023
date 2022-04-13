@@ -48,8 +48,8 @@ object PieDiagram extends Graph {
       // Calculate the angle at the middle of the sector
       val angleInBetween = toRadians(startAngle2 + angle(dataPoint._1) / 2)
       // Calculate the x and y coordinates of the middle of the sector
-      val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 0.5
-      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 0.5
+      val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 1.1
+      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 1.1 - 15
 
       textBox(index) = addText(dataPoint._1, (textBoxPositionX, textBoxPositionY))
 

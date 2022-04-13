@@ -34,6 +34,24 @@ object UIController {
     addAxis()
     addLines()
     addDots()
-  }*/
+  }
+
+
+
+
+  val sizeSlider = new Slider() {
+    min = 10
+    max = 100
+    value = 100
+  }
+  val resizeBtn = new Button("Resize")
+  resizeBtn.onAction = (event) => makeLineDiagram()
+  sideBar.children += sizeSlider
+  sideBar.children += resizeBtn
+
+  // var fileChooser = new FileChooser()
+  // file.onAction = (event) => selectedFile = fileChooser.showOpenDialog(stage)
+
+  */
 
 }

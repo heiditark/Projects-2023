@@ -1,13 +1,17 @@
 package Graphs
 import javafx.scene.shape._
+import scalafx.scene.paint.Color
 
 
 object LineDiagram extends Graph {
 
-  val color = colorGenerator()
+  var color = Color.Black
+ // var sizePercent = 1.0
+
+
 
   // Test dataPoints
-  val dataPoints:Map[Double,Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
+  val dataPoints: Map[Double, Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
    // Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
     Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
 
@@ -26,12 +30,13 @@ object LineDiagram extends Graph {
   println(autoscaledDataPoints)
 
   def scalingFactor() = {
+
     // Scaling factor
     val scaledByX = widthOfUI / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1)
     val scaledByY = heightOfUI / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2)
     val scale = if(scaledByX < scaledByY) scaledByX else scaledByY
 
-    scale
+    scale /** sizePercent*/
   }
 
   // Autoscales datapoints to fit the measures of the Interface
@@ -59,6 +64,7 @@ object LineDiagram extends Graph {
 
   // Adds lines in scalafx
   def doLines() = {
+    //sizePercent = size / 100.0
     var lines = new Array[javafx.scene.Node](autoscaledDataPoints.length - 1)
     for( index <- autoscaledDataPoints.drop(1).indices ) {
       var line = new Line {

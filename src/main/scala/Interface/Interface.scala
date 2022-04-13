@@ -12,6 +12,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.MenuItem
 import scalafx.scene.control.Menu
 import scalafx.scene.control.MenuBar
+import scalafx.stage.FileChooser
 
 
 
@@ -30,12 +31,18 @@ object Interface extends JFXApp {
   val add = new Menu("Add")
   val sideBar = new VBox {
     minWidth = 190
+    spacing = 20
+    margin = Insets(5)
   }
 
   // Background color of sideBar
   sideBar.background = new Background(Array(new BackgroundFill(Color.rgb(186, 188, 190), CornerRadii.Empty, Insets.Empty)))
 
-  val file = new MenuItem("Yes")
+
+
+  val file = new MenuItem("Add file")
+
+
 
   // To add graphs
   val line = new MenuItem("Line diagram")
@@ -54,6 +61,7 @@ object Interface extends JFXApp {
   menubar.menus += (file2, add)
 
 
+
   val root = new BorderPane {
     center = diagram
     top = menubar
@@ -69,12 +77,16 @@ object Interface extends JFXApp {
 
 
 
-
+  val colorPicker = new ColorPicker(Color.Black)
+  colorPicker.onAction = (event) => makeLineDiagram()
+  sideBar.children += colorPicker
 
 
   // MAKES GRAPHS, move to own class
-  val width = diagram.width()
-  val height = diagram.height()
+  val width = diagram.getPrefWidth
+  val height = diagram.getHeight
+
+  def changeColor() = colorPicker.getValue
 
   def emptyDiagram() = diagram.getChildren.clear()
 
@@ -86,6 +98,7 @@ object Interface extends JFXApp {
   def makeBarChart() = {
     emptyDiagram()
     diagram.children ++= BarCharProject.doBars()
+    diagram.children ++= BarCharProject.axis
   }
 
   // To make a line diagram
@@ -102,6 +115,7 @@ object Interface extends JFXApp {
     diagram.children ++= LineDiagram.grid
 
   def makeLineDiagram() = {
+    LineDiagram.color = changeColor()
     emptyDiagram()
     addGrid()
     addAxis()

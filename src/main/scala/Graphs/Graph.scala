@@ -12,7 +12,7 @@ trait Graph {
  /* val data: Data */
 
   val heightOfUI = 600.0
-  val widthOfUI = 1000.0
+  val widthOfUI = 1060.0
 
   //Generates a random color
   def colorGenerator() = {
@@ -101,8 +101,6 @@ trait Graph {
       gridLinesVertical(step2) = lineX
       step2 += 1
     }
-    println(gridLinesVertical.mkString("\n"))
-    println(gridLinesHorizontal.mkString("\n"))
 
     gridLinesVertical ++ gridLinesHorizontal
   }

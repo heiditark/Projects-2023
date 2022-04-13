@@ -5,8 +5,11 @@ import scalafx.scene.paint.Color
 
 object LineDiagram extends Graph {
 
-  var color = Color.Black
- // var sizePercent = 1.0
+  var colorDots = Color.Black
+  var sizing = 1.0
+  def widthUI2 = widthOfUI * sizing
+  def heightUI2 = heightOfUI * sizing
+
 
 
 
@@ -21,9 +24,9 @@ object LineDiagram extends Graph {
   // Sorts the data points in ascending order by x-coordinate and adds them in a vector
   def arrangeDataPoints(dataPoints2: Map[Double, Double]) = dataPoints2.toVector.sortWith(_._1 < _._1)
 
-  val yCoordsFlipped = flipYCoord(dataPoints)
-  val arrangedDataPoints = arrangeDataPoints(yCoordsFlipped)
-  val autoscaledDataPoints = autoscale(arrangedDataPoints)
+  def yCoordsFlipped = flipYCoord(dataPoints)
+  def arrangedDataPoints = arrangeDataPoints(yCoordsFlipped)
+  def autoscaledDataPoints = autoscale(arrangedDataPoints)
 
   // Nää vaa prinnttaa
   println(arrangedDataPoints)
@@ -32,11 +35,11 @@ object LineDiagram extends Graph {
   def scalingFactor() = {
 
     // Scaling factor
-    val scaledByX = widthOfUI / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1)
-    val scaledByY = heightOfUI / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2)
+    val scaledByX = widthUI2 / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1)
+    val scaledByY = heightUI2 / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2)
     val scale = if(scaledByX < scaledByY) scaledByX else scaledByY
 
-    scale /** sizePercent*/
+    scale
   }
 
   // Autoscales datapoints to fit the measures of the Interface
@@ -44,10 +47,10 @@ object LineDiagram extends Graph {
     val scale = scalingFactor()
     val firstY = arrangedDataPoints.minBy(_._2)._2 match {
       case a if a == arrangedDataPoints(0)._2 && a > 0 => 20
-      case a if a == arrangedDataPoints(0)._2 && a < 0 => heightOfUI
+      case a if a == arrangedDataPoints(0)._2 && a < 0 => heightUI2
       case a => (arrangedDataPoints(0)._2 - a) * scale  - 20
     }
-    println(scale)
+
 
     val autoScaledData = new Array[(Double, Double)](data.length)
 
@@ -86,7 +89,7 @@ object LineDiagram extends Graph {
         setCenterX(autoscaledDataPoints(index)._1)
         setCenterY(autoscaledDataPoints(index)._2)
         setRadius(5)
-        setFill(color)
+        setFill(colorDots)
       }
       circles(index) = circle
     }
@@ -109,8 +112,8 @@ object LineDiagram extends Graph {
     xPos
   }
 
-  val grid: Array[javafx.scene.Node] = addGrid(autoscaledDataPoints(0)._1, autoscaledDataPoints.minBy{case (x,y) => y}._2, scalingFactor())
-  val axis: Array[javafx.scene.Node] = addAxis(yAxisXPos(), xAxisYPos())
+  def grid: Array[javafx.scene.Node] = addGrid(autoscaledDataPoints(0)._1, autoscaledDataPoints.minBy{case (x,y) => y}._2, scalingFactor())
+  def axis: Array[javafx.scene.Node] = addAxis(yAxisXPos(), xAxisYPos())
 
 
 }

@@ -11,8 +11,8 @@ trait Graph {
 
  /* val data: Data */
 
-  val heightOfUI = 600.0
-  val widthOfUI = 1060.0
+  var heightOfUI = 600.0
+  var widthOfUI = 1060.0
 
   //Generates a random color
   def colorGenerator() = {
@@ -62,7 +62,6 @@ trait Graph {
       setEndX(x)
       setEndY(heightOfUI + 100)
     }
-    println(axis.mkString("\n"))
 
     axis
   }

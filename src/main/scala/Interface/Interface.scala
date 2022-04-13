@@ -1,6 +1,7 @@
 package Interface
 
 import Graphs.{BarCharProject, LineDiagram, PieDiagram}
+import javafx.beans.value.ChangeListener
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.geometry.Insets
@@ -77,18 +78,15 @@ object Interface extends JFXApp {
 
 
 
-  val colorPicker = new ColorPicker(Color.Black)
-  colorPicker.onAction = (event) => makeLineDiagram()
-  sideBar.children += colorPicker
-
 
   // MAKES GRAPHS, move to own class
   val width = diagram.getPrefWidth
   val height = diagram.getHeight
 
-  def changeColor() = colorPicker.getValue
-
-  def emptyDiagram() = diagram.getChildren.clear()
+  def emptyDiagram() = {
+    diagram.getChildren.clear()
+    sideBar.getChildren.clear()
+  }
 
   def makePieDiagram() = {
     emptyDiagram()
@@ -101,26 +99,44 @@ object Interface extends JFXApp {
     diagram.children ++= BarCharProject.axis
   }
 
+
+
   // To make a line diagram
-  def addDots() =
-    diagram.children ++= LineDiagram.doDots()
 
-  def addLines() =
-    diagram.children ++= LineDiagram.doLines()
+  val colorPickerDot = new ColorPicker(Color.Black)
+  colorPickerDot.onAction = (event) => makeLineDiagram()
 
-  def addAxis() =
-    diagram.children ++= LineDiagram.axis
+  val cbGrid = new CheckBox("Add Grid")
+  cbGrid.setIndeterminate(true)
+  cbGrid.onAction = (event) => makeLineDiagram()
+
+  val sizeSliderLine = new Slider() {
+    min = 0.6
+    max = 1.0
+    value = 1.0
+  }
+
+  val resizeBtn = new Button("Resize")
+  resizeBtn.onAction = (event) => makeLineDiagram()
+
+  def addDotsLinesAxis() =
+    diagram.children ++= LineDiagram.axis  ++ LineDiagram.doLines() ++ LineDiagram.doDots()
+
 
   def addGrid() =
     diagram.children ++= LineDiagram.grid
 
+
   def makeLineDiagram() = {
-    LineDiagram.color = changeColor()
     emptyDiagram()
-    addGrid()
-    addAxis()
-    addLines()
-    addDots()
+
+    LineDiagram.colorDots = colorPickerDot.getValue
+    LineDiagram.sizing = sizeSliderLine.getValue
+
+    sideBar.children += (colorPickerDot, cbGrid, sizeSliderLine, resizeBtn)
+
+    if(cbGrid.isSelected) addGrid()
+    addDotsLinesAxis()
   }
 
 

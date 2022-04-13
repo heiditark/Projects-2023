@@ -4,14 +4,12 @@ import javafx.scene.shape._
 
 object LineDiagram extends Graph {
 
-  val heightOfUI = 600
-  val widthOfUI = 1000
   val color = colorGenerator()
 
   // Test dataPoints
   val dataPoints:Map[Double,Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
-    Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
-   // Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
+   // Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
+    Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
 
   //Flips the y-coordinates
   def flipYCoord(dataPoints2: Map[Double, Double]): Map[Double, Double] = dataPoints2.map{case (x, y) => x -> y * -1}
@@ -29,8 +27,8 @@ object LineDiagram extends Graph {
 
   def scalingFactor() = {
     // Scaling factor
-    val scaledByX = widthOfUI.toDouble / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1)
-    val scaledByY = heightOfUI.toDouble / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2)
+    val scaledByX = widthOfUI / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1)
+    val scaledByY = heightOfUI / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2)
     val scale = if(scaledByX < scaledByY) scaledByX else scaledByY
 
     scale
@@ -44,7 +42,6 @@ object LineDiagram extends Graph {
       case a if a == arrangedDataPoints(0)._2 && a < 0 => heightOfUI
       case a => (arrangedDataPoints(0)._2 - a) * scale  - 20
     }
-
     println(scale)
 
     val autoScaledData = new Array[(Double, Double)](data.length)
@@ -59,25 +56,6 @@ object LineDiagram extends Graph {
     }
     autoScaledData.toVector
   }
-
-  def xAxisYPos(): Double = {
-    val pointClosest0: (Double, Double) = arrangedDataPoints.minBy{case (x,y) => y.abs}
-    val diff: Double = (0.0 - pointClosest0._2) * scalingFactor()
-    val yPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._2 + diff
-
-    yPos
-  }
-
-  def yAxisXPos() = {
-    val pointClosest0: (Double, Double) = arrangedDataPoints.minBy{case (x,y) => x.abs}
-    val diff: Double = (0.0 - pointClosest0._1) * scalingFactor()
-    val yPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._1 match {
-      case a: Double if autoscaledDataPoints.minBy{case (x,y) => x}._1 == a => a
-      case a => a + diff
-    }
-    yPos
-  }
-
 
   // Adds lines in scalafx
   def doLines() = {
@@ -97,7 +75,7 @@ object LineDiagram extends Graph {
   // Makes dots in scalafx with radius of 5
   def doDots(): Array[javafx.scene.Node] = {
     var circles = new Array[javafx.scene.Node](autoscaledDataPoints.length)
-    for( index <- autoscaledDataPoints.indices ) {
+    for(index <- autoscaledDataPoints.indices) {
       var circle = new Circle {
         setCenterX(autoscaledDataPoints(index)._1)
         setCenterY(autoscaledDataPoints(index)._2)
@@ -109,26 +87,25 @@ object LineDiagram extends Graph {
     circles
   }
 
-  def doAxis() = {
-    val axis = new Array[javafx.scene.Node](2)
+  def xAxisYPos(): Double = {
+    val pointClosest0: (Double, Double) = arrangedDataPoints.minBy{case (x,y) => y.abs}
+    val diff: Double = (0.0 - pointClosest0._2) * scalingFactor()
+    val yPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._2 + diff
 
-    //x
-    axis(0) = new Line {
-      setStartX(0)
-      setStartY(xAxisYPos())
-      setEndX(widthOfUI + 100)
-      setEndY(xAxisYPos())
-    }
-
-    //y
-    axis(1) = new Line {
-      setStartX(yAxisXPos())
-      setStartY(0)
-      setEndX(yAxisXPos())
-      setEndY(heightOfUI + 100)
-    }
-    axis
+    yPos
   }
+
+  def yAxisXPos() = {
+    val pointClosest0: (Double, Double) = arrangedDataPoints.minBy{case (x,y) => x.abs}
+    val diff: Double = (0.0 - pointClosest0._1) * scalingFactor()
+    val xPos = autoscaledDataPoints(arrangedDataPoints.indexOf(pointClosest0))._1 + diff
+
+    xPos
+  }
+
+  val grid: Array[javafx.scene.Node] = addGrid(autoscaledDataPoints(0)._1, autoscaledDataPoints.minBy{case (x,y) => y}._2, scalingFactor())
+  val axis: Array[javafx.scene.Node] = addAxis(yAxisXPos(), xAxisYPos())
+
 
 }
 

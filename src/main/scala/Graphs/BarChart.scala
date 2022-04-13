@@ -5,8 +5,6 @@ import scalafx.scene.paint.Color
 object BarCharProject extends Graph {
 
   val data: Map[String, Int] = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
-  val heightOfUI = 600
-  val widthOfUI = 1090
   val color = colorGenerator()
 
   // Counts percentage of each keys value

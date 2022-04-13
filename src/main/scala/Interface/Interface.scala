@@ -24,9 +24,7 @@ object Interface extends JFXApp {
   }
 
   // Parts of the interface
-  val diagram = new Pane {
-    padding = Insets(10)
-  }
+  val diagram = new Pane
 
   val file2 = new Menu("File")
   val add = new Menu("Add")
@@ -66,7 +64,15 @@ object Interface extends JFXApp {
   stage.scene = scene
 
 
-  // MAKES GRAPHS
+
+
+
+
+
+
+
+
+  // MAKES GRAPHS, move to own class
   val width = diagram.width()
   val height = diagram.height()
 
@@ -86,16 +92,18 @@ object Interface extends JFXApp {
   def addDots() =
     diagram.children ++= LineDiagram.doDots()
 
-
-  // To make a line diagram
   def addLines() =
     diagram.children ++= LineDiagram.doLines()
 
   def addAxis() =
-    diagram.children ++= LineDiagram.doAxis()
+    diagram.children ++= LineDiagram.axis
+
+  def addGrid() =
+    diagram.children ++= LineDiagram.grid
 
   def makeLineDiagram() = {
     emptyDiagram()
+    addGrid()
     addAxis()
     addLines()
     addDots()

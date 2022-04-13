@@ -1,5 +1,6 @@
 package Graphs
 
+import scalafx.scene.effect.Glow
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.{Arc, ArcType}
 
@@ -7,8 +8,6 @@ import scala.math._
 
 object PieDiagram extends Graph {
 
-  var heightOfUI = 600.0
-  var widthOfUI = 1000.0
 
   val data: Map[String, Int] = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
   val radius = heightOfUI / 2 - 50
@@ -42,6 +41,7 @@ object PieDiagram extends Graph {
         strokeWidth = 2
       }
       sector.setType(ArcType.Round)
+
       sectors(index) = sector
 
       //Adds textBox

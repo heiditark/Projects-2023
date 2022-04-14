@@ -47,8 +47,6 @@ object Interface extends JFXApp {
 
   val file = new MenuItem("Add file")
 
-
-
   // To add graphs
   val line = new MenuItem("Line diagram")
   val pie = new MenuItem("Pie diagram")
@@ -93,9 +91,26 @@ object Interface extends JFXApp {
     sideBar.getChildren.clear()
   }
 
+
+
+
+  //To make a bar chart
+
+  val cbPieInfo = new CheckBox("Info")
+  cbPieInfo.setIndeterminate(false)
+  cbPieInfo.onAction = (event) => makePieDiagram()
+
+  def doPieInfo() =
+    diagram.children ++= PieDiagram.info()
+
   def makePieDiagram() = {
     emptyDiagram()
+
     diagram.children ++= PieDiagram.doSectors()
+    if(cbPieInfo.isSelected) doPieInfo()
+
+    sideBar.add(new Text("Add Info:"),0,6)
+    sideBar.add(cbPieInfo, 0, 7)
   }
 
   //To make a bar chart

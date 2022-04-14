@@ -3,7 +3,7 @@ package Graphs
 
 import scalafx.scene.paint.Color
 import javafx.scene.shape._
-import scalafx.scene.text.{Font, Text}
+import scalafx.scene.text.{Font, Text, TextAlignment}
 
 import scala.math.pow
 import scala.util.Random
@@ -42,6 +42,7 @@ trait Graph {
       3
     )
   //  textField.setFont(Font.font("Proxima Nova"))
+    textField.setTextAlignment(TextAlignment.Left)
 
     textField
   }
@@ -140,14 +141,27 @@ trait Graph {
 
     for(index <- 0 until (heightOfUI / step).toInt) {
       val text = roundOneDecimal(first._1 + stepOG * index)
-      val coord = first._2 - 20 - step * index
+      val coord = first._2 - 15 - step * index
 
       stamps(index) = (text, coord)
     }
 
     val everyThree: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%3 == 0}.map(a => a._1)
 
-    everyThree.map(x => addText(x._1.toString,(yAxisXPos - 10, x._2)))
+    val text: Array[javafx.scene.Node] = everyThree.map(x => addText(x._1.toString,(yAxisXPos - 20, x._2)))
+    val line: Array[javafx.scene.Node] = everyThree.map(x => addStampLine(yAxisXPos - 5, x._2 + 17, yAxisXPos + 5, x._2 + 17))
+
+    text ++ line
+  }
+
+  def addStampLine(startX: Double, startY: Double, endX: Double, endY: Double): javafx.scene.Node = {
+    var line = new Line() {
+      setStartX(startX)
+      setStartY(startY)
+      setEndX(endX)
+      setEndY(endY)
+    }
+    line
   }
 
 }

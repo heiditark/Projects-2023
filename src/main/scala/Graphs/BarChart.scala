@@ -9,6 +9,8 @@ object BarCharProject extends Graph {
   val data: Map[String, Double] = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
  // Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
   var color = Color.Black
+  val yAxis = 30.0
+  val xAxis = 570.0
 
   // Counts percentage of each keys value
   def percentage(key: String) = data(key) / data.values.sum
@@ -79,17 +81,20 @@ object BarCharProject extends Graph {
       }
       gridLines(index) = line
     }
-    gridLines
+
+    val everyFour= gridLines.zipWithIndex.filter{case (y, index) => index%4 == 0}.map(a => a._1)
+
+    everyFour
   }
 
-  val axis = addAxis(30, 570)
+  val axis = addAxis(yAxis, xAxis)
 
   val valueHeight = data.map(og => og._2 -> height(og._1)).toVector.sortBy{case (x, height) => x}
   val scale = (valueHeight.last._2 - valueHeight.head._2) / (valueHeight.last._1 - valueHeight.head._1)
   val smallest = data.minBy{case (x, y) => y}._2 -> locationInInterface(data.minBy{case (x, y) => y}._1)._2
 
 
-  val stampsOnY = addStampsY(smallest, 20, scale, 20.0)
+  val stampsOnY = addStampsY(smallest, 20, scale, yAxis)
   val grid = addGrid(570, 20)
 
 }

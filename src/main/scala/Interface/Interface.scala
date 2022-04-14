@@ -98,11 +98,32 @@ object Interface extends JFXApp {
     diagram.children ++= PieDiagram.doSectors()
   }
 
+  //To make a bar chart
+
+  val colorPickerBar = new ColorPicker(Color.Black)
+  colorPickerBar.onAction = (event) => makeBarChart()
+
+  val cbGridBar = new CheckBox("Grid")
+  cbGridBar.setIndeterminate(true)
+  cbGridBar.onAction = (event) => makeBarChart()
+
+  def addGridBar() =
+    diagram.children ++= BarCharProject.grid
+
   def makeBarChart() = {
     emptyDiagram()
+
+    BarCharProject.color = colorPickerBar.getValue
+
+    if(cbGridBar.isSelected) addGridBar()
     diagram.children ++= BarCharProject.doBars()
     diagram.children ++= BarCharProject.axis
     diagram.children ++= BarCharProject.stampsOnY
+
+    sideBar.add(new Text("Color of Bar:"),0,1)
+    sideBar.add(colorPickerBar, 0, 2)
+    sideBar.add(new Text("Add Grid:"),0,6)
+    sideBar.add(cbGridBar, 0, 7)
   }
 
 
@@ -115,9 +136,9 @@ object Interface extends JFXApp {
   val colorPickerLine = new ColorPicker(Color.Black)
   colorPickerLine.onAction = (event) => makeLineDiagram()
 
-  val cbGrid = new CheckBox("Grid")
-  cbGrid.setIndeterminate(true)
-  cbGrid.onAction = (event) => makeLineDiagram()
+  val cbGridLine = new CheckBox("Grid")
+  cbGridLine.setIndeterminate(true)
+  cbGridLine.onAction = (event) => makeLineDiagram()
 
   val sizeSliderLine = new Slider() {
     min = 0.6
@@ -133,7 +154,7 @@ object Interface extends JFXApp {
     diagram.children ++= LineDiagram.axis  ++ LineDiagram.doLines() ++ LineDiagram.doDots()
 
 
-  def addGrid() =
+  def addGridLine() =
     diagram.children ++= LineDiagram.grid
 
 
@@ -152,9 +173,9 @@ object Interface extends JFXApp {
     sideBar.add(sizeSliderLine, 0, 12)
     sideBar.add(resizeBtn, 1, 12)
     sideBar.add(new Text("Add Grid:"),0,16)
-    sideBar.add(cbGrid, 0, 17)
+    sideBar.add(cbGridLine, 0, 17)
 
-    if(cbGrid.isSelected) addGrid()
+    if(cbGridLine.isSelected) addGridLine()
     addDotsLinesAxis()
   }
 

@@ -5,6 +5,7 @@ import scalafx.scene.paint.Color
 import javafx.scene.shape._
 import scalafx.scene.text.{Font, Text}
 
+import scala.math.pow
 import scala.util.Random
 
 trait Graph {
@@ -67,29 +68,12 @@ trait Graph {
     axis
   }
 
-  def addGrid(startX1: Double, startY1: Double, scale: Double): Array[javafx.scene.Node] = {
-    val countX = (widthOfUI / scale).toInt
+  def addGridHorizontal(startY1: Double, scale: Double) = {
     val countY = (heightOfUI / scale).toInt
-    var gridLinesVertical =
-      new Array[javafx.scene.Node]((0 until countX).count(b => b%10 == 0))
     var gridLinesHorizontal =
       new Array[javafx.scene.Node]((0 until countY).count(a => a%10 == 0))
-    var step1 = 0
-    var step2 = 0
+    var step = 0
 
-    //y
-    for(index <- (0 until countX).filter(a => a%10 == 0)) {
-      var lineY = new Line {
-        setStartX(startX1 + index * scale)
-        setStartY(0)
-        setEndX(startX1 + index * scale)
-        setEndY(heightOfUI + 100)
-        setStroke(Color.rgb(230, 230, 230))
-        //getStrokeDashArray.addAll(5d, 5d)
-      }
-      gridLinesVertical(step1) = lineY
-      step1 += 1
-    }
     //x
     for(index <- (0 until countY).filter(b => b%10 == 0)) {
       var lineX = new Line {
@@ -100,31 +84,70 @@ trait Graph {
         setStroke(Color.rgb(230, 230, 230))
         //getStrokeDashArray.addAll(5d, 5d)
       }
-      gridLinesHorizontal(step2) = lineX
-      step2 += 1
+      gridLinesHorizontal(step) = lineX
+      step += 1
+    }
+    gridLinesHorizontal
+  }
+
+
+  def addGridVertical(startX1: Double, scale: Double): Array[javafx.scene.Node] = {
+    val countX = (widthOfUI / scale).toInt
+    var gridLinesVertical =
+      new Array[javafx.scene.Node]((0 until countX).count(b => b%10 == 0))
+
+    var step = 0
+    //y
+    for(index <- (0 until countX).filter(a => a%10 == 0)) {
+      var lineY = new Line {
+        setStartX(startX1 + index * scale)
+        setStartY(0)
+        setEndX(startX1 + index * scale)
+        setEndY(heightOfUI + 100)
+        setStroke(Color.rgb(230, 230, 230))
+        //getStrokeDashArray.addAll(5d, 5d)
+      }
+      gridLinesVertical(step) = lineY
+      step += 1
     }
 
-    gridLinesVertical ++ gridLinesHorizontal
+    gridLinesVertical
   }
 
-  def addStampsX(OGValue: Map[_, Double], data: Vector[Double], xAxisYPos: Double): Vector[javafx.scene.Node] = {
-    val everyThree = data.zipWithIndex.filter{case (y, index) => index%3 == 0}
-    val value = everyThree.map{case (y, index) => y -> OGValue.toVector(index)._1}
-    everyThree.map{case (y, _) => addText("_",(y,xAxisYPos + 3))}
+  def roundOneDecimal(n: Double) = {
+    BigDecimal(n).setScale(1, BigDecimal.RoundingMode.HALF_UP).toDouble
   }
 
-  def addStampsY(data: (Double, Double), step: Double, yAxisXPos: Double): Array[javafx.scene.Node] = {
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI - data._2).toInt)
-    val step2 = ???
+  def addStampsX(first: (Double, Double), step: Double, scale: Double, xAxisYPos: Double): Array[javafx.scene.Node] = {
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]( (heightOfUI / step).toInt)
+    val stepOG = step * pow(scale, -1)
 
-    for(index <- 0 until (heightOfUI - data._2).toInt) {
-      val text = data._1 + step2 * index
-      val coord = data._2 - step * index
+    for(index <- 0 until (widthOfUI / step).toInt) {
+      val text = roundOneDecimal(first._1 + stepOG * index)
+      val coord = first._2 + 20 - step * index
 
       stamps(index) = (text, coord)
     }
 
-    stamps.map(x => addText(x._1.toString,(yAxisXPos - 10, x._2)))
+    val everyThree: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%3 == 0}.map(a => a._1)
+
+    everyThree.map(x => addText(x._1.toString,(x._2, xAxisYPos + 10)))
+  }
+
+  def addStampsY(first: (Double, Double), step: Double, scale: Double, yAxisXPos: Double): Array[javafx.scene.Node] = {
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]( (heightOfUI / step).toInt)
+    val stepOG = step * pow(scale, -1)
+
+    for(index <- 0 until (heightOfUI / step).toInt) {
+      val text = roundOneDecimal(first._1 + stepOG * index)
+      val coord = first._2 - 20 - step * index
+
+      stamps(index) = (text, coord)
+    }
+
+    val everyThree: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%3 == 0}.map(a => a._1)
+
+    everyThree.map(x => addText(x._1.toString,(yAxisXPos - 10, x._2)))
   }
 
 }

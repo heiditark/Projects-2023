@@ -114,7 +114,7 @@ object LineDiagram extends Graph {
     xPos
   }
 
-  def grid: Array[javafx.scene.Node] = addGrid(autoscaledDataPoints(0)._1, autoscaledDataPoints.minBy{case (x,y) => y}._2, scalingFactor())
+  def grid: Array[javafx.scene.Node] = addGridVertical(autoscaledDataPoints.minBy{case (x,y) => y}._2, scalingFactor()) ++ addGridHorizontal(autoscaledDataPoints(0)._1, scalingFactor())
   def axis: Array[javafx.scene.Node] = addAxis(yAxisXPos(), xAxisYPos())
 
 

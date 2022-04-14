@@ -4,33 +4,38 @@ import scalafx.scene.paint.Color
 
 object BarCharProject extends Graph {
 
-  val data: Map[String, Int] = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
+  val data: Map[String, Double] = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
  // Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
   val color = colorGenerator()
 
   // Counts percentage of each keys value
-  def percentage(key: String) = data(key).toDouble / data.values.sum.toDouble
+  def percentage(key: String) = data(key) / data.values.sum
 
   def locationInInterface(key: String) = {
     val index = data.keys.toVector.indexOf(key)
+    val gap = 30
+    val firstXPos = widthOfUI / 2 - width * data.size / 2 - gap
+
     val x = index match {
-      case i: Int if index == 0 => 20
-      case _: Int =>  width * index + 20
+      case i: Int if index == 0 => firstXPos
+      case _: Int =>  (width + gap) * index + firstXPos
     }
-    val y = heightOfUI - height(key) - 30
+    val y = heightOfUI - height(key) - gap
 
     (x, y)
   }
 
   //Each bar has equal width
-  val width = (widthOfUI - 20 ) / data.size
+  val width = ( widthOfUI * 1 / 2 ) / data.size
+
+  println(width)
 
   //Sets height of a bar so that key with biggest value has the biggest height. Other bars are made by scaling to the bar of biggest height.
   def height(key: String): Double = {
-    val biggestValue: (String, Int) = data.maxBy(_._2)
+    val biggestValue: (String, Double) = data.maxBy(_._2)
     var height = data(key) match {
       case _ if data(key) == biggestValue._2 => heightOfUI - 50
-      case a: Int => (heightOfUI - 50) * (a / biggestValue._2.toDouble)
+      case a: Double => (heightOfUI - 50) * (a / biggestValue._2)
     }
     height
   }
@@ -60,6 +65,11 @@ object BarCharProject extends Graph {
     bars ++ textBoxes
   }
 
-  val axis = addAxis(20, 570)
+  val axis = addAxis(30, 570)
+
+  val stampsOnY = addStampsY(data.map(og => og._2 -> locationInInterface(og._1)._2)
+    .toVector.maxBy{case (x, y) => y}, 100, 20.0)
+
+  println(stampsOnY.mkString("Array(", ", ", ")"))
 
 }

@@ -9,7 +9,8 @@ import scala.math._
 object PieDiagram extends Graph {
 
 
-  val data: Map[String, Int] = Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
+  val data: Map[String, Int] = //Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
+    Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
   val radius = heightOfUI / 2 - 50
   val centerPoint: (Double, Double) = (widthOfUI / 2, heightOfUI / 2)
   val pi = scala.math.Pi

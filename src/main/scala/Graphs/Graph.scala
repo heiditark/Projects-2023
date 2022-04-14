@@ -4,6 +4,7 @@ package Graphs
 import scalafx.scene.paint.Color
 import javafx.scene.shape._
 import scalafx.scene.text.{Font, Text}
+
 import scala.util.Random
 
 trait Graph {
@@ -39,7 +40,7 @@ trait Graph {
       size,
       3
     )
-    textField.setFont(Font.font("Proxima Nova"))
+  //  textField.setFont(Font.font("Proxima Nova"))
 
     textField
   }
@@ -69,9 +70,9 @@ trait Graph {
   def addGrid(startX1: Double, startY1: Double, scale: Double): Array[javafx.scene.Node] = {
     val countX = (widthOfUI / scale).toInt
     val countY = (heightOfUI / scale).toInt
-    var gridLinesHorizontal =
-      new Array[javafx.scene.Node]((0 until countX).count(b => b%10 == 0))
     var gridLinesVertical =
+      new Array[javafx.scene.Node]((0 until countX).count(b => b%10 == 0))
+    var gridLinesHorizontal =
       new Array[javafx.scene.Node]((0 until countY).count(a => a%10 == 0))
     var step1 = 0
     var step2 = 0
@@ -84,8 +85,9 @@ trait Graph {
         setEndX(startX1 + index * scale)
         setEndY(heightOfUI + 100)
         setStroke(Color.rgb(230, 230, 230))
+        //getStrokeDashArray.addAll(5d, 5d)
       }
-      gridLinesHorizontal(step1) = lineY
+      gridLinesVertical(step1) = lineY
       step1 += 1
     }
     //x
@@ -96,12 +98,33 @@ trait Graph {
         setEndX(widthOfUI + 100)
         setEndY(startY1 + index * scale)
         setStroke(Color.rgb(230, 230, 230))
+        //getStrokeDashArray.addAll(5d, 5d)
       }
-      gridLinesVertical(step2) = lineX
+      gridLinesHorizontal(step2) = lineX
       step2 += 1
     }
 
     gridLinesVertical ++ gridLinesHorizontal
+  }
+
+  def addStampsX(OGValue: Map[_, Double], data: Vector[Double], xAxisYPos: Double): Vector[javafx.scene.Node] = {
+    val everyThree = data.zipWithIndex.filter{case (y, index) => index%3 == 0}
+    val value = everyThree.map{case (y, index) => y -> OGValue.toVector(index)._1}
+    everyThree.map{case (y, _) => addText("_",(y,xAxisYPos + 3))}
+  }
+
+  def addStampsY(data: (Double, Double), step: Double, yAxisXPos: Double): Array[javafx.scene.Node] = {
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI - data._2).toInt)
+    val step2 = ???
+
+    for(index <- 0 until (heightOfUI - data._2).toInt) {
+      val text = data._1 + step2 * index
+      val coord = data._2 - step * index
+
+      stamps(index) = (text, coord)
+    }
+
+    stamps.map(x => addText(x._1.toString,(yAxisXPos - 10, x._2)))
   }
 
 }

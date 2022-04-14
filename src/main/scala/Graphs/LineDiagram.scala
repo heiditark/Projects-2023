@@ -6,6 +6,7 @@ import scalafx.scene.paint.Color
 object LineDiagram extends Graph {
 
   var colorDots = Color.Black
+  var colorLines = Color.Black
   var sizing = 1.0
   def widthUI2 = widthOfUI * sizing
   def heightUI2 = heightOfUI * sizing
@@ -75,6 +76,7 @@ object LineDiagram extends Graph {
         setStartY(autoscaledDataPoints(index)._2)
         setEndX(autoscaledDataPoints(index + 1)._1)
         setEndY(autoscaledDataPoints(index + 1)._2)
+        setStroke(colorLines)
       }
       lines(index) = line
     }

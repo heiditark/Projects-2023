@@ -13,6 +13,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.MenuItem
 import scalafx.scene.control.Menu
 import scalafx.scene.control.MenuBar
+import scalafx.scene.text.Text
 import scalafx.stage.FileChooser
 
 
@@ -30,10 +31,13 @@ object Interface extends JFXApp {
 
   val file2 = new Menu("File")
   val add = new Menu("Add")
-  val sideBar = new VBox {
+  val sideBar = new GridPane {
     minWidth = 190
-    spacing = 20
+    maxWidth = 190
     margin = Insets(5)
+    padding = Insets(5)
+    vgap = 15
+    hgap = 5
   }
 
   // Background color of sideBar
@@ -80,7 +84,8 @@ object Interface extends JFXApp {
 
 
   // MAKES GRAPHS, move to own class
-  val width = diagram.getPrefWidth
+  val width = diagram.getBoundsInLocal
+  println(width)
   val height = diagram.getHeight
 
   def emptyDiagram() = {
@@ -97,6 +102,7 @@ object Interface extends JFXApp {
     emptyDiagram()
     diagram.children ++= BarCharProject.doBars()
     diagram.children ++= BarCharProject.axis
+    diagram.children ++= BarCharProject.stampsOnY
   }
 
 
@@ -106,7 +112,10 @@ object Interface extends JFXApp {
   val colorPickerDot = new ColorPicker(Color.Black)
   colorPickerDot.onAction = (event) => makeLineDiagram()
 
-  val cbGrid = new CheckBox("Add Grid")
+  val colorPickerLine = new ColorPicker(Color.Black)
+  colorPickerLine.onAction = (event) => makeLineDiagram()
+
+  val cbGrid = new CheckBox("Grid")
   cbGrid.setIndeterminate(true)
   cbGrid.onAction = (event) => makeLineDiagram()
 
@@ -114,9 +123,10 @@ object Interface extends JFXApp {
     min = 0.6
     max = 1.0
     value = 1.0
+    minorTickCount = 5
   }
 
-  val resizeBtn = new Button("Resize")
+  val resizeBtn = new Button("OK")
   resizeBtn.onAction = (event) => makeLineDiagram()
 
   def addDotsLinesAxis() =
@@ -131,9 +141,18 @@ object Interface extends JFXApp {
     emptyDiagram()
 
     LineDiagram.colorDots = colorPickerDot.getValue
+    LineDiagram.colorLines = colorPickerLine.getValue
     LineDiagram.sizing = sizeSliderLine.getValue
 
-    sideBar.children += (colorPickerDot, cbGrid, sizeSliderLine, resizeBtn)
+    sideBar.add(new Text("Color of Dot:"),0,1)
+    sideBar.add(colorPickerDot, 0, 2)
+    sideBar.add(new Text("Color of Line:"),0,6)
+    sideBar.add(colorPickerLine, 0, 7)
+    sideBar.add(new Text("Resize:"),0,11)
+    sideBar.add(sizeSliderLine, 0, 12)
+    sideBar.add(resizeBtn, 1, 12)
+    sideBar.add(new Text("Add Grid:"),0,16)
+    sideBar.add(cbGrid, 0, 17)
 
     if(cbGrid.isSelected) addGrid()
     addDotsLinesAxis()

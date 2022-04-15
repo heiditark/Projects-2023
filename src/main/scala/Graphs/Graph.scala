@@ -45,7 +45,7 @@ trait Graph {
     textField
   }
 
-   def addTextMiddle(text: String, location: (Double, Double)) = {
+  def addTextMiddle(text: String, location: (Double, Double)) = {
     val size = text.length
     var textField = new Text()
     textField.setText(text)
@@ -152,7 +152,7 @@ trait Graph {
     everyThree.map(x => addTextLeft(x._1.toString,(x._2, xAxisYPos + 10)))
   }
 
-  def addStampsY(first: (Double, Double), step: Double, scale: Double, yAxisXPos: Double): Array[javafx.scene.Node] = {
+  def addStampsY(first: (Double, Double), step: Double, scale: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
     var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI / step).toInt)
     val stepOG = step * pow(scale, -1)
 
@@ -164,11 +164,11 @@ trait Graph {
     }
 
 
-    val everyThree: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%3 == 0}.map(a => a._1)
-    matchGridAndStamps = everyThree.map{case (x, y) => y}
+    val everyN: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%n == 0}.map(a => a._1)
+    matchGridAndStamps = everyN.map{case (x, y) => y}
 
-    val text: Array[javafx.scene.Node] = everyThree.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
-    val line: Array[javafx.scene.Node] = everyThree.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
+    val text: Array[javafx.scene.Node] = everyN.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
+    val line: Array[javafx.scene.Node] = everyN.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
 
     text ++ line
   }

@@ -2,6 +2,8 @@ package Graphs
 import javafx.scene.shape._
 import scalafx.scene.paint.Color
 
+import scala.math.pow
+
 
 object LineDiagram extends Graph {
 
@@ -12,12 +14,10 @@ object LineDiagram extends Graph {
   def heightUI2 = heightOfUI * sizing
 
 
-
-
   // Test dataPoints
   val dataPoints: Map[Double, Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
-    Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
-   // Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
+   // Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
+    Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
 
   //Flips the y-coordinates
   def flipYCoord(dataPoints2: Map[Double, Double]): Map[Double, Double] = dataPoints2.map{case (x, y) => x -> y * -1}
@@ -30,7 +30,7 @@ object LineDiagram extends Graph {
   def autoscaledDataPoints = autoscale(arrangedDataPoints)
 
   // Nää vaa prinnttaa
-  println(arrangedDataPoints)
+  println(dataPoints.toVector.sortBy(a => a._1))
   println(autoscaledDataPoints)
 
   def scalingFactor() = {
@@ -47,9 +47,9 @@ object LineDiagram extends Graph {
   def autoscale(data: Vector[(Double, Double)]): Vector[(Double, Double)] = {
     val scale = scalingFactor()
     val firstY = arrangedDataPoints.minBy(_._2)._2 match {
-      case a if a == arrangedDataPoints(0)._2 && a > 0 => 20
+      case a if a == arrangedDataPoints(0)._2 && a > 0 => 0
       case a if a == arrangedDataPoints(0)._2 && a < 0 => heightUI2
-      case a => (arrangedDataPoints(0)._2 - a) * scale  - 20
+      case a => (arrangedDataPoints(0)._2 - a) * scale
     }
 
 
@@ -114,8 +114,55 @@ object LineDiagram extends Graph {
     xPos
   }
 
+
+
+  def addPosYStamps(xAxisYPos: Double, step: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((xAxisYPos / step).toInt)
+
+    for(index <- 0 until (xAxisYPos / step).toInt) {
+      val text = roundOneDecimal(index) //0.0
+      val coord = xAxisYPos - step * index //xAxisYPos
+
+      stamps(index) = (text, coord)
+    }
+
+    val everyN: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%n == 0}.map(a => a._1)
+
+    val text: Array[javafx.scene.Node] = everyN.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
+    val line: Array[javafx.scene.Node] = everyN.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
+
+    text ++ line
+  }
+
+  def addNegYStamps(xAxisYPos: Double, step: Double, yAxisXPos: Double, n: Int) = {
+    var length = if(heightOfUI - xAxisYPos <= 0) 0 else ((heightOfUI - xAxisYPos) / step).toInt
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)](length)
+
+    for(index <- 0 until length) {
+      val distance = - (heightOfUI - xAxisYPos) * 1 / step
+      val text = roundOneDecimal(distance + index)
+      val coord = heightOfUI - step * index
+
+      stamps(index) = (text, coord)
+    }
+    var text: Array[javafx.scene.Node] = Array[javafx.scene.Node]()
+    var line: Array[javafx.scene.Node] = Array[javafx.scene.Node]()
+    length match {
+      case a if a > 0 =>
+        val everyN: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%n == 0}.map(a => a._1)
+        text = everyN.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
+        line = everyN.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
+      case _ => println("Negatiivisella x-akseli")
+    }
+
+    text ++ line
+  }
+
   def grid: Array[javafx.scene.Node] = addGridVertical(autoscaledDataPoints.minBy{case (x,y) => y}._2, scalingFactor()) ++ addGridHorizontal(autoscaledDataPoints(0)._1, scalingFactor())
   def axis: Array[javafx.scene.Node] = addAxis(yAxisXPos(), xAxisYPos())
+  def stamps: Array[javafx.scene.Node] = addPosYStamps(xAxisYPos(),
+    scalingFactor(), yAxisXPos(), 40) ++ addNegYStamps(xAxisYPos(),
+    scalingFactor(), yAxisXPos(), 40)
 
 
 }

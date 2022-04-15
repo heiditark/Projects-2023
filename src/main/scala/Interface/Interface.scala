@@ -1,6 +1,8 @@
 package Interface
 
+import Graphs.PieDiagram.colorGenerator
 import Graphs.{BarCharProject, LineDiagram, PieDiagram}
+import javafx.scene.shape.Rectangle
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.geometry.Insets
@@ -26,11 +28,14 @@ object Interface extends JFXApp {
   }
 
   // Parts of the interface
-  val diagram = new Pane
+  val diagram = new Pane {
+    margin = Insets(5)
+  }
 
   val file2 = new Menu("File")
   val add = new Menu("Add")
   val sideBar = new GridPane {
+    background = new Background(Array(new BackgroundFill(Color.rgb(186, 188, 190), CornerRadii.Empty, Insets.Empty)))
     minWidth = 190
     maxWidth = 190
     margin = Insets(5)
@@ -39,8 +44,6 @@ object Interface extends JFXApp {
     hgap = 5
   }
 
-  // Background color of sideBar
-  sideBar.background = new Background(Array(new BackgroundFill(Color.rgb(186, 188, 190), CornerRadii.Empty, Insets.Empty)))
 
 
 
@@ -72,6 +75,7 @@ object Interface extends JFXApp {
 
   val scene = new Scene(root)
   stage.scene = scene
+  scene.fill = Color.rgb(4, 5, 7)
 
 
 
@@ -88,8 +92,6 @@ object Interface extends JFXApp {
     diagram.getChildren.clear()
     sideBar.getChildren.clear()
   }
-
-
 
 
   //To make a bar chart
@@ -128,7 +130,7 @@ object Interface extends JFXApp {
 
   //To make a bar chart
 
-  val colorPickerBar = new ColorPicker(Color.rgb(204,51,51))
+  val colorPickerBar = new ColorPicker(colorGenerator())
   colorPickerBar.onAction = (event) => makeBarChart()
 
   val cbGridBar = new CheckBox("Grid")
@@ -190,7 +192,7 @@ object Interface extends JFXApp {
   resizeBtn.onAction = (event) => makeLineDiagram()
 
   def addDotsLinesAxis() =
-    diagram.children ++= LineDiagram.axis  ++ LineDiagram.doLines() ++ LineDiagram.doDots()
+    diagram.children ++= LineDiagram.axis ++ LineDiagram.stamps ++ LineDiagram.doLines() ++ LineDiagram.doDots()
 
 
   def addGridLine() =

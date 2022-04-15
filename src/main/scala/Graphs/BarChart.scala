@@ -102,7 +102,7 @@ object BarCharProject extends Graph {
   val smallest = data.minBy{case (x, y) => y}._2 -> locationInInterface(data.minBy{case (x, y) => y}._1)._2
 
 
-  val stampsOnY = addStampsY((0, xAxis), 20, scale, yAxis)
+  val stampsOnY = addStampsY((0, xAxis), 20, scale, yAxis,3)
   val grid = addGrid(matchGridAndStamps)
   val axis = addAxis(yAxis, xAxis)
 

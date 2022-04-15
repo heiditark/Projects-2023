@@ -9,3 +9,8 @@ EDIT: I had to make a new project since I couldn't get the sbt working. I'll del
 such as drawing the axis and adding the grid. After that I'm going to focus on how the user is able to edit the graphs from the interface.
  When that is done I have only thing I've left is adding and reading a file containing the data points through the Interface.
  I've used 25 hours on the project.
+
+ 3. I've managed to progress well on the project. Pretty much all the graphs are working like they should. I still have a couple of things missing
+ such as stamps from the LineDiagram axis and other small things. One bigger thing that I have left is implementing the file management where the data is going
+ to be read. So far I've tested the graphs with test datapoints so since I'll have the file management done I'm going to start the unit testing and such.
+ Hours: 60h.

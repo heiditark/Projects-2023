@@ -16,8 +16,18 @@ object PieDiagram extends Graph {
   val radius = heightOfUI / 2 - 50
   val centerPoint: (Double, Double) = (widthOfUI / 2, heightOfUI / 2)
   val pi = scala.math.Pi
-  var colorsUsed: Map[String, Color] = Map[String,Color]()
+  var colorsUsed: Map[String, Color] = data.keys.map(key => key -> colorGenerator()).toMap
+  var allcolorsUsed: LazyList[Map[String, Color]] = LazyList[Map[String, Color]](colorsUsed)
 
+  def changeColor() = {
+    colorsUsed = data.keys.map(key => key -> colorGenerator()).toMap
+    colorsUsed #:: allcolorsUsed
+  }
+
+  def unChangeColor() = {
+    if(allcolorsUsed.length > 1) allcolorsUsed = allcolorsUsed.dropRight(1)
+    colorsUsed = allcolorsUsed.last
+  }
 
   // Counts percentage of each keys value
   def percentage(key: String) = data(key).toDouble / data.values.sum.toDouble
@@ -42,13 +52,11 @@ object PieDiagram extends Graph {
         radiusY = radius
         startAngle = startAngle2
         length = angle(dataPoint._1)
-        fill = color
+        fill = colorsUsed(dataPoint._1)
         stroke = Color.White
         strokeWidth = 2
       }
       sector.setType(ArcType.Round)
-
-      colorsUsed += dataPoint._1 -> color
       sectors(index) = sector
 
       //Adds textBox

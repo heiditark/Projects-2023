@@ -82,7 +82,6 @@ object Interface extends JFXApp {
 
   // MAKES GRAPHS, move to own class
   val width = diagram.getBoundsInLocal
-  println(width)
   val height = diagram.getHeight
 
   def emptyDiagram() = {
@@ -99,6 +98,18 @@ object Interface extends JFXApp {
   cbPieInfo.setIndeterminate(false)
   cbPieInfo.onAction = (event) => makePieDiagram()
 
+  val pieColor = new Button("Change Colors")
+  pieColor.onAction = (event) => {
+    PieDiagram.changeColor()
+    makePieDiagram()
+  }
+
+  val backPieColor = new Button("Back")
+  backPieColor.onAction = (event) => {
+    PieDiagram.unChangeColor()
+    makePieDiagram()
+  }
+
   def doPieInfo() =
     diagram.children ++= PieDiagram.info()
 
@@ -108,6 +119,9 @@ object Interface extends JFXApp {
     diagram.children ++= PieDiagram.doSectors()
     if(cbPieInfo.isSelected) doPieInfo()
 
+    sideBar.add(new Text("Color of Sector :"),0,1)
+    sideBar.add(pieColor, 0, 2)
+    sideBar.add(backPieColor, 1, 2)
     sideBar.add(new Text("Show Info:"),0,6)
     sideBar.add(cbPieInfo, 0, 7)
   }
@@ -151,7 +165,6 @@ object Interface extends JFXApp {
     sideBar.add(cbGridBar, 0, 12)
 
   }
-
 
 
   // To make a line diagram

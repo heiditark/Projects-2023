@@ -42,8 +42,6 @@ trait Graph {
       3
     )
   //  textField.setFont(Font.font("Proxima Nova"))
-    textField.setTextAlignment(TextAlignment.Left)
-
     textField
   }
 
@@ -62,7 +60,6 @@ trait Graph {
       3
     )
   //  textField.setFont(Font.font("Proxima Nova"))
-    textField.setTextAlignment(TextAlignment.Left)
 
     textField
   }

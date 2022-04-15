@@ -4,6 +4,7 @@ import javafx.scene.shape.Circle
 import scalafx.scene.effect.Glow
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.{Arc, ArcType}
+import scalafx.scene.text.{Text, TextAlignment}
 
 import scala.math._
 
@@ -16,6 +17,7 @@ object PieDiagram extends Graph {
   val centerPoint: (Double, Double) = (widthOfUI / 2, heightOfUI / 2)
   val pi = scala.math.Pi
   var colorsUsed: Map[String, Color] = Map[String,Color]()
+
 
   // Counts percentage of each keys value
   def percentage(key: String) = data(key).toDouble / data.values.sum.toDouble
@@ -56,7 +58,7 @@ object PieDiagram extends Graph {
       val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 1.1
       val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 1.1 - 15
 
-      textBox(index) = addText(dataPoint._1, (textBoxPositionX, textBoxPositionY))
+      textBox(index) = addTextMiddle(dataPoint._1, (textBoxPositionX, textBoxPositionY))
 
       startAngle2 = startAngle2 + angle(dataPoint._1)
       index += 1
@@ -79,7 +81,7 @@ object PieDiagram extends Graph {
         setFill(info._2)
       }
       var text: String = info._1 + ": " + roundOneDecimal(percentage(info._1) * 100) + "%" +" (" + data(info._1) + ") "
-      var textWithPos: javafx.scene.Node = addText(text, (xCoord + 60 + text.length / 2, yCoord - 17))
+      var textWithPos: javafx.scene.Node = addTextLeft(text, (xCoord + 10, yCoord))
 
       dots(stepper) = circle
       texts(stepper) = textWithPos

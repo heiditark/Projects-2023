@@ -1,7 +1,6 @@
 package Interface
 
 import Graphs.{BarCharProject, LineDiagram, PieDiagram}
-import javafx.beans.value.ChangeListener
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.geometry.Insets
@@ -109,18 +108,26 @@ object Interface extends JFXApp {
     diagram.children ++= PieDiagram.doSectors()
     if(cbPieInfo.isSelected) doPieInfo()
 
-    sideBar.add(new Text("Add Info:"),0,6)
+    sideBar.add(new Text("Show Info:"),0,6)
     sideBar.add(cbPieInfo, 0, 7)
   }
 
   //To make a bar chart
 
-  val colorPickerBar = new ColorPicker(Color.Black)
+  val colorPickerBar = new ColorPicker(Color.rgb(204,51,51))
   colorPickerBar.onAction = (event) => makeBarChart()
 
   val cbGridBar = new CheckBox("Grid")
-  cbGridBar.setIndeterminate(true)
+  cbGridBar.setIndeterminate(false)
   cbGridBar.onAction = (event) => makeBarChart()
+
+  val cbBarInfo = new CheckBox("Info")
+  cbBarInfo.setIndeterminate(false)
+  cbBarInfo.onAction = (event) => makeBarChart()
+
+  def doBarInfo() = {
+    diagram.children ++= BarCharProject.info()
+  }
 
   def addGridBar() =
     diagram.children ++= BarCharProject.grid
@@ -131,14 +138,18 @@ object Interface extends JFXApp {
     BarCharProject.color = colorPickerBar.getValue
 
     if(cbGridBar.isSelected) addGridBar()
+    if(cbBarInfo.isSelected) doBarInfo()
     diagram.children ++= BarCharProject.doBars()
     diagram.children ++= BarCharProject.axis
     diagram.children ++= BarCharProject.stampsOnY
 
     sideBar.add(new Text("Color of Bar:"),0,1)
     sideBar.add(colorPickerBar, 0, 2)
-    sideBar.add(new Text("Add Grid:"),0,6)
-    sideBar.add(cbGridBar, 0, 7)
+    sideBar.add(new Text("Show Info:"),0,6)
+    sideBar.add(cbBarInfo, 0, 7)
+    sideBar.add(new Text("Add Grid:"),0,11)
+    sideBar.add(cbGridBar, 0, 12)
+
   }
 
 
@@ -152,7 +163,7 @@ object Interface extends JFXApp {
   colorPickerLine.onAction = (event) => makeLineDiagram()
 
   val cbGridLine = new CheckBox("Grid")
-  cbGridLine.setIndeterminate(true)
+  cbGridLine.setIndeterminate(false)
   cbGridLine.onAction = (event) => makeLineDiagram()
 
   val sizeSliderLine = new Slider() {

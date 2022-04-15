@@ -15,6 +15,7 @@ trait Graph {
 
   var heightOfUI = 600.0
   var widthOfUI = 1060.0
+  var fontSize = 34
 
   //Generates a random color
   def colorGenerator() = {
@@ -27,7 +28,26 @@ trait Graph {
   }
 
 
-  def addText(text: String, location: (Double, Double)) = {
+  def addTextLeft(text: String, location: (Double, Double)) = {
+    val size = text.length
+    var textField = new Text(text)
+
+    val textFieldWidth = textField.getBoundsInLocal.getWidth
+    val textFieldHeight = textField.getBoundsInLocal.getHeight
+
+    textField.resizeRelocate(
+      location._1,
+      location._2 - textFieldHeight / 2,
+      size,
+      3
+    )
+  //  textField.setFont(Font.font("Proxima Nova"))
+    textField.setTextAlignment(TextAlignment.Left)
+
+    textField
+  }
+
+   def addTextMiddle(text: String, location: (Double, Double)) = {
     val size = text.length
     var textField = new Text()
     textField.setText(text)
@@ -132,27 +152,31 @@ trait Graph {
 
     val everyThree: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%3 == 0}.map(a => a._1)
 
-    everyThree.map(x => addText(x._1.toString,(x._2, xAxisYPos + 10)))
+    everyThree.map(x => addTextLeft(x._1.toString,(x._2, xAxisYPos + 10)))
   }
 
   def addStampsY(first: (Double, Double), step: Double, scale: Double, yAxisXPos: Double): Array[javafx.scene.Node] = {
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]( (heightOfUI / step).toInt)
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI / step).toInt)
     val stepOG = step * pow(scale, -1)
 
     for(index <- 0 until (heightOfUI / step).toInt) {
       val text = roundOneDecimal(first._1 + stepOG * index)
-      val coord = first._2 - 15 - step * index
+      val coord = first._2 - step * index
 
       stamps(index) = (text, coord)
     }
 
-    val everyThree: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%3 == 0}.map(a => a._1)
 
-    val text: Array[javafx.scene.Node] = everyThree.map(x => addText(x._1.toString,(yAxisXPos - 20, x._2)))
-    val line: Array[javafx.scene.Node] = everyThree.map(x => addStampLine(yAxisXPos - 5, x._2 + 17, yAxisXPos + 5, x._2 + 17))
+    val everyThree: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%3 == 0}.map(a => a._1)
+    matchGridAndStamps = everyThree.map{case (x, y) => y}
+
+    val text: Array[javafx.scene.Node] = everyThree.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
+    val line: Array[javafx.scene.Node] = everyThree.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
 
     text ++ line
   }
+
+  var matchGridAndStamps = Array[Double]()
 
   def addStampLine(startX: Double, startY: Double, endX: Double, endY: Double): javafx.scene.Node = {
     var line = new Line() {

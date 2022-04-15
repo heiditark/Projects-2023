@@ -60,20 +60,20 @@ object BarCharProject extends Graph {
         setFill(color)
       }
       bars(index) = bar
-      textBoxes(index) = addText(key, (locationInInterface(key)._1 + width / 2, 575))
+      textBoxes(index) = addTextMiddle(key, (locationInInterface(key)._1 + width / 2, 575))
 
       index += 1
     }
     bars ++ textBoxes
   }
 
-  def addGrid(startY1: Double, step: Double): Array[javafx.scene.Node] = {
-    var gridLines: Array[javafx.scene.Node] = new Array[javafx.scene.Node]((heightOfUI / step).toInt)
+  def addGrid(stampsCoord: Array[Double]) = {
+    var gridLines: Array[javafx.scene.Node] = new Array[javafx.scene.Node](stampsCoord.length)
 
-    for(index <- 0 until (heightOfUI / step).toInt) {
-      val yCoord = startY1 - 20 - step * index
+    for(index <- stampsCoord.indices) {
+      val yCoord = stampsCoord(index)
       var line = new Line() {
-        setStartX(30)
+        setStartX(yAxis)
         setStartY(yCoord)
         setEndX(widthOfUI + 100)
         setEndY(yCoord)
@@ -81,20 +81,29 @@ object BarCharProject extends Graph {
       }
       gridLines(index) = line
     }
-
-    val everyFour= gridLines.zipWithIndex.filter{case (y, index) => index%4 == 0}.map(a => a._1)
-
-    everyFour
+    gridLines
   }
 
-  val axis = addAxis(yAxis, xAxis)
+  def info(): Array[javafx.scene.Node] = {
+    var textBoxes = new Array[javafx.scene.Node](data.size)
+    var index = 0
+
+    for(key <- data.keys) {
+      val text = data(key) + " (" + roundOneDecimal(percentage(key) * 100) + "%)"
+      textBoxes(index) = addTextMiddle(text, (locationInInterface(key)._1 + width / 2, locationInInterface(key)._2 - 25))
+
+      index += 1
+    }
+    textBoxes
+  }
 
   val valueHeight = data.map(og => og._2 -> height(og._1)).toVector.sortBy{case (x, height) => x}
   val scale = (valueHeight.last._2 - valueHeight.head._2) / (valueHeight.last._1 - valueHeight.head._1)
   val smallest = data.minBy{case (x, y) => y}._2 -> locationInInterface(data.minBy{case (x, y) => y}._1)._2
 
 
-  val stampsOnY = addStampsY(smallest, 20, scale, yAxis)
-  val grid = addGrid(570, 20)
+  val stampsOnY = addStampsY((0, xAxis), 20, scale, yAxis)
+  val grid = addGrid(matchGridAndStamps)
+  val axis = addAxis(yAxis, xAxis)
 
 }

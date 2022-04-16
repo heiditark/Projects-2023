@@ -12,21 +12,27 @@ object PieDiagram extends Graph {
 
 
   val data: Map[String, Int] = //Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
-    Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
+    //Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
+    Map(("Maanantai" -> 100), ("Tiistai" -> 120), ("Keskiviikko" -> 103), ("Torstai" -> 70), ("Perjantai" -> 23), ("Lauantai" -> 85), ("Sunnuntai" -> 180))
+
   val radius = heightOfUI / 2 - 50
   val centerPoint: (Double, Double) = (widthOfUI / 2, heightOfUI / 2)
   val pi = scala.math.Pi
   var colorsUsed: Map[String, Color] = data.keys.map(key => key -> colorGenerator()).toMap
-  var allcolorsUsed: LazyList[Map[String, Color]] = LazyList[Map[String, Color]](colorsUsed)
+  var allColorsUsed: Vector[Map[String, Color]] = Vector[Map[String, Color]](colorsUsed)
 
   def changeColor() = {
     colorsUsed = data.keys.map(key => key -> colorGenerator()).toMap
-    colorsUsed #:: allcolorsUsed
+    allColorsUsed = allColorsUsed :+ colorsUsed
   }
 
   def unChangeColor() = {
-    if(allcolorsUsed.length > 1) allcolorsUsed = allcolorsUsed.dropRight(1)
-    colorsUsed = allcolorsUsed.last
+    if(allColorsUsed.length > 1) {
+      allColorsUsed = allColorsUsed.dropRight(1)
+      colorsUsed = allColorsUsed.last
+    } else {
+      colorsUsed = allColorsUsed(0)
+    }
   }
 
   // Counts percentage of each keys value

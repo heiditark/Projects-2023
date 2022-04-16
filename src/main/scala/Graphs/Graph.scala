@@ -11,8 +11,6 @@ import scala.util.Random
 trait Graph {
 
 
- /* val data: Data */
-
   var heightOfUI = 600.0
   var widthOfUI = 1060.0
   var fontSize = 34
@@ -136,20 +134,8 @@ trait Graph {
     BigDecimal(n).setScale(1, BigDecimal.RoundingMode.HALF_UP).toDouble
   }
 
-  def addStampsX(first: (Double, Double), step: Double, scale: Double, xAxisYPos: Double): Array[javafx.scene.Node] = {
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]( (heightOfUI / step).toInt)
-    val stepOG = step * pow(scale, -1)
-
-    for(index <- 0 until (widthOfUI / step).toInt) {
-      val text = roundOneDecimal(first._1 + stepOG * index)
-      val coord = first._2 + 20 - step * index
-
-      stamps(index) = (text, coord)
-    }
-
-    val everyThree: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%3 == 0}.map(a => a._1)
-
-    everyThree.map(x => addTextLeft(x._1.toString,(x._2, xAxisYPos + 10)))
+  def everyN(array: Array[(Double, Double)], n: Int): Array[(Double, Double)] = {
+    array.zipWithIndex.filter{case (y, index) => index%n == 0}.map(a => a._1)
   }
 
   def addStampsY(first: (Double, Double), step: Double, scale: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
@@ -164,11 +150,11 @@ trait Graph {
     }
 
 
-    val everyN: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%n == 0}.map(a => a._1)
-    matchGridAndStamps = everyN.map{case (x, y) => y}
+    val every: Array[(Double, Double)] = everyN(stamps,n)
+    matchGridAndStamps = every.map{case (x, y) => y}
 
-    val text: Array[javafx.scene.Node] = everyN.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
-    val line: Array[javafx.scene.Node] = everyN.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
+    val text: Array[javafx.scene.Node] = every.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
+    val line: Array[javafx.scene.Node] = every.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
 
     text ++ line
   }

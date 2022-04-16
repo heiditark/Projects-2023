@@ -12,6 +12,7 @@ object LineDiagram extends Graph {
   var sizing = 1.0
   def widthUI2 = widthOfUI * sizing
   def heightUI2 = heightOfUI * sizing
+//  def n = scalingFactor().toInt * 10
 
 
   // Test dataPoints
@@ -114,34 +115,32 @@ object LineDiagram extends Graph {
     xPos
   }
 
-
-
   def addPosYStamps(xAxisYPos: Double, step: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((xAxisYPos / step).toInt)
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((xAxisYPos / step).toInt + 1)
 
-    for(index <- 0 until (xAxisYPos / step).toInt) {
-      val text = roundOneDecimal(index) //0.0
+    for(index <- 0 to (xAxisYPos / step).toInt) {
+      val text = index //0.0
       val coord = xAxisYPos - step * index //xAxisYPos
 
       stamps(index) = (text, coord)
     }
 
-    val everyN: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%n == 0}.map(a => a._1)
+    val every: Array[(Double, Double)] = everyN(stamps, n).drop(1)
 
-    val text: Array[javafx.scene.Node] = everyN.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
-    val line: Array[javafx.scene.Node] = everyN.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
+    val text: Array[javafx.scene.Node] = every.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
+    val line: Array[javafx.scene.Node] = every.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
 
     text ++ line
   }
 
   def addNegYStamps(xAxisYPos: Double, step: Double, yAxisXPos: Double, n: Int) = {
     var length = if(heightOfUI - xAxisYPos <= 0) 0 else ((heightOfUI - xAxisYPos) / step).toInt
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)](length)
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)](length + 1)
 
-    for(index <- 0 until length) {
-      val distance = - (heightOfUI - xAxisYPos) * 1 / step
-      val text = roundOneDecimal(distance + index)
-      val coord = heightOfUI - step * index
+    for(index <- 0 to length) {
+      val text = - index
+      val coord = xAxisYPos + step * index
+
 
       stamps(index) = (text, coord)
     }
@@ -149,9 +148,50 @@ object LineDiagram extends Graph {
     var line: Array[javafx.scene.Node] = Array[javafx.scene.Node]()
     length match {
       case a if a > 0 =>
-        val everyN: Array[(Double, Double)] = stamps.zipWithIndex.filter{case (y, index) => index%n == 0}.map(a => a._1)
-        text = everyN.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
-        line = everyN.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
+        val every: Array[(Double, Double)] = everyN(stamps, n).drop(1)
+        text = every.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
+        line = every.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
+      case _ => println("Negatiivisella x-akseli")
+    }
+
+    text ++ line
+  }
+
+  def addPosXStamps(yAxisXPos: Double, step: Double, xAxisYPos: Double,  n: Int): Array[javafx.scene.Node] = {
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)](((widthOfUI - yAxisXPos) / step).toInt)
+
+    for(index <- 0 until ((widthOfUI - yAxisXPos) / step).toInt) {
+      val text = - index //0.0
+      val coord = yAxisXPos + step * index //yAxisXPos
+
+      stamps(index) = (text, coord)
+    }
+
+    val every: Array[(Double, Double)] = everyN(stamps, n).drop(1)
+
+    val text: Array[javafx.scene.Node] = every.map(x => addTextMiddle(x._1.toString,(x._2, xAxisYPos)))
+    val line: Array[javafx.scene.Node] = every.map(x => addStampLine(x._2,  xAxisYPos - 5, x._2, xAxisYPos + 5))
+
+    text ++ line
+  }
+
+  def addNegXStamps(yAxisXPos: Double, step: Double, xAxisYPos: Double, n: Int) = {
+    var length = if(yAxisXPos <= 0) 0 else (yAxisXPos / step).toInt
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)](length + 1)
+
+    for(index <- 0 to length) {
+      val text = - index
+      val coord = yAxisXPos - step * index
+
+      stamps(index) = (text, coord)
+    }
+    var text: Array[javafx.scene.Node] = Array[javafx.scene.Node]()
+    var line: Array[javafx.scene.Node] = Array[javafx.scene.Node]()
+    length match {
+      case a if a > 0 =>
+        val every: Array[(Double, Double)] = everyN(stamps, n).drop(1)
+        text = every.map(x => addTextMiddle(x._1.toString,(x._2, xAxisYPos)))
+        line = every.map(x => addStampLine(x._2,  xAxisYPos - 5, x._2, xAxisYPos + 5))
       case _ => println("Negatiivisella x-akseli")
     }
 
@@ -161,8 +201,10 @@ object LineDiagram extends Graph {
   def grid: Array[javafx.scene.Node] = addGridVertical(autoscaledDataPoints.minBy{case (x,y) => y}._2, scalingFactor()) ++ addGridHorizontal(autoscaledDataPoints(0)._1, scalingFactor())
   def axis: Array[javafx.scene.Node] = addAxis(yAxisXPos(), xAxisYPos())
   def stamps: Array[javafx.scene.Node] = addPosYStamps(xAxisYPos(),
-    scalingFactor(), yAxisXPos(), 40) ++ addNegYStamps(xAxisYPos(),
-    scalingFactor(), yAxisXPos(), 40)
+    scalingFactor(), yAxisXPos(), 50) ++ addNegYStamps(xAxisYPos(),
+    scalingFactor(), yAxisXPos(), 50) ++ addPosXStamps(yAxisXPos(),
+    scalingFactor(), xAxisYPos(), 50) ++ addNegXStamps(yAxisXPos(),
+    scalingFactor(), xAxisYPos(), 50)
 
 
 }

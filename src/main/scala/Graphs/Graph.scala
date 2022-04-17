@@ -84,47 +84,46 @@ trait Graph {
     axis
   }
 
-  def addGridHorizontal(startY1: Double, scale: Double) = {
-    val countY = (heightOfUI / scale).toInt
+  def addGridHorizontal(xAxisYPos: Double, step: Int) = {
+    val countY = (heightOfUI / step).toInt
     var gridLinesHorizontal =
-      new Array[javafx.scene.Node]((0 until countY).count(a => a%10 == 0))
-    var step = 0
+      new Array[javafx.scene.Node](countY)
+    val start = (xAxisYPos / step) * step - (xAxisYPos / step).floor * step
 
     //x
-    for(index <- (0 until countY).filter(b => b%10 == 0)) {
+    for(index <- (0 until countY)) {
       var lineX = new Line {
         setStartX(0)
-        setStartY(startY1 + index * scale)
+        setStartY(index * step + start)
         setEndX(widthOfUI + 100)
-        setEndY(startY1 + index * scale)
+        setEndY(index * step + start)
         setStroke(Color.rgb(230, 230, 230))
         //getStrokeDashArray.addAll(5d, 5d)
       }
-      gridLinesHorizontal(step) = lineX
-      step += 1
+      gridLinesHorizontal(index) = lineX
     }
     gridLinesHorizontal
   }
 
 
-  def addGridVertical(startX1: Double, scale: Double): Array[javafx.scene.Node] = {
-    val countX = (widthOfUI / scale).toInt
+  def addGridVertical(yAxisXPos: Double, step: Double): Array[javafx.scene.Node] = {
+    val countX = (widthOfUI / step).toInt
     var gridLinesVertical =
-      new Array[javafx.scene.Node]((0 until countX).count(b => b%10 == 0))
+      new Array[javafx.scene.Node](countX)
+    val start = (yAxisXPos / step) * step - (yAxisXPos / step).floor * step
 
-    var step = 0
+
     //y
-    for(index <- (0 until countX).filter(a => a%10 == 0)) {
+    for(index <- (0 until countX)) {
       var lineY = new Line {
-        setStartX(startX1 + index * scale)
+        setStartX(index * step + start)
         setStartY(0)
-        setEndX(startX1 + index * scale)
+        setEndX(index * step + start)
         setEndY(heightOfUI + 100)
         setStroke(Color.rgb(230, 230, 230))
         //getStrokeDashArray.addAll(5d, 5d)
       }
-      gridLinesVertical(step) = lineY
-      step += 1
+      gridLinesVertical(index) = lineY
     }
 
     gridLinesVertical

@@ -181,15 +181,38 @@ object Interface extends JFXApp {
   cbGridLine.setIndeterminate(false)
   cbGridLine.onAction = (event) => makeLineDiagram()
 
-  val sizeSliderLine = new Slider() {
-    min = 0.6
-    max = 1.0
-    value = 1.0
-    minorTickCount = 5
+
+  val resizePlus = new Button("+")
+  resizePlus.onAction = (event) => {
+    if(LineDiagram.sizing <= 0.9) {
+      LineDiagram.sizing += 0.1
+      makeLineDiagram()
+    }
   }
 
-  val resizeBtn = new Button("OK")
-  resizeBtn.onAction = (event) => makeLineDiagram()
+  val resizeMinus = new Button("-")
+  resizeMinus.onAction = (event) => {
+    if(LineDiagram.sizing >= 0.7) {
+      LineDiagram.sizing -= 0.1
+      makeLineDiagram()
+    }
+  }
+
+  val resizeGridPlus = new Button("+")
+  resizeGridPlus.onAction = (event) => {
+    if(LineDiagram.gridSize <= 115) {
+      LineDiagram.gridSize += 5
+      makeLineDiagram()
+    }
+  }
+
+  val resizeGridMinus = new Button("-")
+  resizeGridMinus.onAction = (event) => {
+    if(LineDiagram.gridSize >= 15) {
+      LineDiagram.gridSize -= 5
+      makeLineDiagram()
+    }
+  }
 
   def addDotsLinesAxis() =
     diagram.children ++= LineDiagram.axis ++ LineDiagram.stamps ++ LineDiagram.doLines() ++ LineDiagram.doDots()
@@ -204,17 +227,20 @@ object Interface extends JFXApp {
 
     LineDiagram.colorDots = colorPickerDot.getValue
     LineDiagram.colorLines = colorPickerLine.getValue
-    LineDiagram.sizing = sizeSliderLine.getValue
 
     sideBar.add(new Text("Color of Dot:"),0,1)
     sideBar.add(colorPickerDot, 0, 2)
     sideBar.add(new Text("Color of Line:"),0,6)
     sideBar.add(colorPickerLine, 0, 7)
     sideBar.add(new Text("Resize:"),0,11)
-    sideBar.add(sizeSliderLine, 0, 12)
-    sideBar.add(resizeBtn, 1, 12)
+    sideBar.add(resizeMinus, 0, 12)
+    sideBar.add(resizePlus, 1, 12)
     sideBar.add(new Text("Add Grid:"),0,16)
     sideBar.add(cbGridLine, 0, 17)
+    if(cbGridLine.isSelected) {
+      sideBar.add(resizeGridMinus, 0, 18)
+      sideBar.add(resizeGridPlus, 1, 18)
+    }
 
     if(cbGridLine.isSelected) addGridLine()
     addDotsLinesAxis()

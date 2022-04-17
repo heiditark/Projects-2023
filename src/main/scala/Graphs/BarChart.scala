@@ -91,7 +91,7 @@ object BarCharProject extends Graph {
     var index = 0
 
     for(key <- data.keys) {
-      val text = data(key) + " (" + roundOneDecimal(percentage(key) * 100) + "%)"
+      val text = data(key).toString
       textBoxes(index) = addTextMiddle(text, (locationInInterface(key)._1 + width / 2, locationInInterface(key)._2 - 25))
 
       index += 1

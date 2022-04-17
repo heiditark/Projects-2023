@@ -10,6 +10,7 @@ object LineDiagram extends Graph {
   var colorDots = Color.Black
   var colorLines = Color.Black
   var sizing = 1.0
+  var gridSize = 50
   def widthUI2 = widthOfUI * sizing
   def heightUI2 = heightOfUI * sizing
 //  def n = scalingFactor().toInt * 10
@@ -57,7 +58,7 @@ object LineDiagram extends Graph {
     val autoScaledData = new Array[(Double, Double)](data.length)
 
     // Puts the smallest datapoint on the very left
-    autoScaledData(0) = (20, firstY)
+    autoScaledData(0) = (0, firstY)
 
     for(i <- 1 until data.length) {
       autoScaledData(i) =
@@ -115,96 +116,44 @@ object LineDiagram extends Graph {
     xPos
   }
 
-  def addPosYStamps(xAxisYPos: Double, step: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((xAxisYPos / step).toInt + 1)
+  def addYStamps2(step: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI / step).toInt)
 
-    for(index <- 0 to (xAxisYPos / step).toInt) {
-      val text = index //0.0
-      val coord = xAxisYPos - step * index //xAxisYPos
-
-      stamps(index) = (text, coord)
-    }
-
-    val every: Array[(Double, Double)] = everyN(stamps, n).drop(1)
-
-    val text: Array[javafx.scene.Node] = every.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
-    val line: Array[javafx.scene.Node] = every.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
-
-    text ++ line
-  }
-
-  def addNegYStamps(xAxisYPos: Double, step: Double, yAxisXPos: Double, n: Int) = {
-    var length = if(heightOfUI - xAxisYPos <= 0) 0 else ((heightOfUI - xAxisYPos) / step).toInt
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)](length + 1)
-
-    for(index <- 0 to length) {
-      val text = - index
-      val coord = xAxisYPos + step * index
-
-
-      stamps(index) = (text, coord)
-    }
-    var text: Array[javafx.scene.Node] = Array[javafx.scene.Node]()
-    var line: Array[javafx.scene.Node] = Array[javafx.scene.Node]()
-    length match {
-      case a if a > 0 =>
-        val every: Array[(Double, Double)] = everyN(stamps, n).drop(1)
-        text = every.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
-        line = every.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
-      case _ => println("Negatiivisella x-akseli")
-    }
-
-    text ++ line
-  }
-
-  def addPosXStamps(yAxisXPos: Double, step: Double, xAxisYPos: Double,  n: Int): Array[javafx.scene.Node] = {
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)](((widthOfUI - yAxisXPos) / step).toInt)
-
-    for(index <- 0 until ((widthOfUI - yAxisXPos) / step).toInt) {
-      val text = - index //0.0
-      val coord = yAxisXPos + step * index //yAxisXPos
+    for(index <- 0 until (heightOfUI / step).toInt) {
+      val biggestY = dataPoints.maxBy{case (x,y) => y}._2
+      val diff = autoscaledDataPoints.minBy{case (x,y) => y}._2
+      val text: Double = roundOneDecimal(biggestY + diff * 1 / scalingFactor() - index * step / scalingFactor())
+      val coord = step * index
 
       stamps(index) = (text, coord)
     }
 
-    val every: Array[(Double, Double)] = everyN(stamps, n).drop(1)
-
-    val text: Array[javafx.scene.Node] = every.map(x => addTextMiddle(x._1.toString,(x._2, xAxisYPos)))
-    val line: Array[javafx.scene.Node] = every.map(x => addStampLine(x._2,  xAxisYPos - 5, x._2, xAxisYPos + 5))
+    val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
+    val line: Array[javafx.scene.Node] = stamps.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
 
     text ++ line
   }
 
-  def addNegXStamps(yAxisXPos: Double, step: Double, xAxisYPos: Double, n: Int) = {
-    var length = if(yAxisXPos <= 0) 0 else (yAxisXPos / step).toInt
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)](length + 1)
 
-    for(index <- 0 to length) {
-      val text = - index
-      val coord = yAxisXPos - step * index
+  def addXStamps(step: Double, xAxisYPos: Double,  n: Int): Array[javafx.scene.Node] = {
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((widthOfUI / step).toInt)
+
+    for(index <- 0 until (widthOfUI / step).toInt) {
+      val text = roundOneDecimal(arrangedDataPoints(0)._1 + index * step * 1 / scalingFactor())
+      val coord = step * index
 
       stamps(index) = (text, coord)
     }
-    var text: Array[javafx.scene.Node] = Array[javafx.scene.Node]()
-    var line: Array[javafx.scene.Node] = Array[javafx.scene.Node]()
-    length match {
-      case a if a > 0 =>
-        val every: Array[(Double, Double)] = everyN(stamps, n).drop(1)
-        text = every.map(x => addTextMiddle(x._1.toString,(x._2, xAxisYPos)))
-        line = every.map(x => addStampLine(x._2,  xAxisYPos - 5, x._2, xAxisYPos + 5))
-      case _ => println("Negatiivisella x-akseli")
-    }
+
+    val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(x._2, xAxisYPos)))
+    val line: Array[javafx.scene.Node] = stamps.map(x => addStampLine(x._2,  xAxisYPos - 5, x._2, xAxisYPos + 5))
 
     text ++ line
   }
 
-  def grid: Array[javafx.scene.Node] = addGridVertical(autoscaledDataPoints.minBy{case (x,y) => y}._2, scalingFactor()) ++ addGridHorizontal(autoscaledDataPoints(0)._1, scalingFactor())
+  def grid: Array[javafx.scene.Node] = addGridVertical(yAxisXPos(), gridSize) ++ addGridHorizontal(xAxisYPos(), gridSize)
   def axis: Array[javafx.scene.Node] = addAxis(yAxisXPos(), xAxisYPos())
-  def stamps: Array[javafx.scene.Node] = addPosYStamps(xAxisYPos(),
-    scalingFactor(), yAxisXPos(), 50) ++ addNegYStamps(xAxisYPos(),
-    scalingFactor(), yAxisXPos(), 50) ++ addPosXStamps(yAxisXPos(),
-    scalingFactor(), xAxisYPos(), 50) ++ addNegXStamps(yAxisXPos(),
-    scalingFactor(), xAxisYPos(), 50)
+  def stamps: Array[javafx.scene.Node] = addYStamps2(50, yAxisXPos(), 50) ++ addXStamps(50,xAxisYPos(), 50)
 
 
 }

@@ -13,7 +13,12 @@ object LineDiagram extends Graph {
   var gridSize = 50
   def widthUI2 = widthOfUI * sizing
   def heightUI2 = heightOfUI * sizing
-//  def n = scalingFactor().toInt * 10
+  def n = gridSize match {
+    case a if a >= 50 => 1
+    case a if a >= 40 => 2
+    case a if a >= 20 => 3
+    case _ => 4
+  }
 
 
   // Test dataPoints
@@ -116,17 +121,30 @@ object LineDiagram extends Graph {
     xPos
   }
 
+  def startYStamp = (xAxisYPos() / gridSize) * gridSize - (xAxisYPos() / gridSize).floor * gridSize
+  def startXStamp = (yAxisXPos() / gridSize) * gridSize - (yAxisXPos() / gridSize).floor * gridSize
+
   def addYStamps2(step: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI / step).toInt)
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI / step).toInt + 2)
 
-    for(index <- 0 until (heightOfUI / step).toInt) {
-      val biggestY = dataPoints.maxBy{case (x,y) => y}._2
-      val diff = autoscaledDataPoints.minBy{case (x,y) => y}._2
-      val text: Double = roundOneDecimal(biggestY + diff * 1 / scalingFactor() - index * step / scalingFactor())
-      val coord = step * index
+    val biggestY = dataPoints.maxBy{case (x,y) => y}._2
+    val diff: Double = autoscaledDataPoints.minBy{case (x,y) => y}._2
+    val text1: Double = roundOneDecimal(biggestY + diff * 1 / scalingFactor())
 
-      stamps(index) = (text, coord)
+    stamps(0) = (text1, 0)
+
+    for(index <- 0 to (heightOfUI / step).toInt) {
+      val text: Double = roundOneDecimal(biggestY + (diff - startYStamp) * 1 / scalingFactor() - index * step / scalingFactor())
+      val coord = startYStamp + step * index
+
+      stamps(index + 1) = (text, coord)
     }
+
+    if((stamps(0)._2 - stamps(1)._2).abs < 20) stamps = stamps.tail
+    stamps = everyN(stamps, n)
+    stamps = stamps.filterNot(a => a._1 == 0.0)
+
+    stamps = stamps :+ (0.0,xAxisYPos())
 
     val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
     val line: Array[javafx.scene.Node] = stamps.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
@@ -136,14 +154,21 @@ object LineDiagram extends Graph {
 
 
   def addXStamps(step: Double, xAxisYPos: Double,  n: Int): Array[javafx.scene.Node] = {
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((widthOfUI / step).toInt)
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((widthOfUI / step).toInt + 2)
 
-    for(index <- 0 until (widthOfUI / step).toInt) {
-      val text = roundOneDecimal(arrangedDataPoints(0)._1 + index * step * 1 / scalingFactor())
-      val coord = step * index
+    val text1: Double = roundOneDecimal(arrangedDataPoints(0)._1)
+    stamps(0) = (text1, 0)
 
-      stamps(index) = (text, coord)
+    for(index <- 0 to (widthOfUI / step).toInt) {
+      val text = roundOneDecimal(arrangedDataPoints(0)._1 + (startXStamp + index * step ) / scalingFactor())
+      val coord = startXStamp + step * index
+
+      stamps(index + 1) = (text, coord)
     }
+
+    if((stamps(0)._2 - stamps(1)._2).abs < 25) stamps = stamps.tail
+    stamps = everyN(stamps, n)
+    stamps = stamps.filterNot(a => a._1 == 0.0)
 
     val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(x._2, xAxisYPos)))
     val line: Array[javafx.scene.Node] = stamps.map(x => addStampLine(x._2,  xAxisYPos - 5, x._2, xAxisYPos + 5))
@@ -153,7 +178,7 @@ object LineDiagram extends Graph {
 
   def grid: Array[javafx.scene.Node] = addGridVertical(yAxisXPos(), gridSize) ++ addGridHorizontal(xAxisYPos(), gridSize)
   def axis: Array[javafx.scene.Node] = addAxis(yAxisXPos(), xAxisYPos())
-  def stamps: Array[javafx.scene.Node] = addYStamps2(50, yAxisXPos(), 50) ++ addXStamps(50,xAxisYPos(), 50)
+  def stamps: Array[javafx.scene.Node] = addYStamps2(gridSize, yAxisXPos(), n) ++ addXStamps(gridSize, xAxisYPos(), n)
 
 
 }

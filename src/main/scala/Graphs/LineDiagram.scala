@@ -7,6 +7,8 @@ import scala.math.pow
 
 object LineDiagram extends Graph {
 
+  var titleY = "y"
+  var titleX = "x"
   var colorDots = Color.Black
   var colorLines = Color.Black
   var sizing = 1.0
@@ -180,6 +182,8 @@ object LineDiagram extends Graph {
   def grid: Array[javafx.scene.Node] = addGridVertical(yAxisXPos(), gridSize) ++ addGridHorizontal(xAxisYPos(), gridSize)
   def axis: Array[javafx.scene.Node] = addAxis(yAxisXPos(), xAxisYPos())
   def stamps: Array[javafx.scene.Node] = addYStamps2(gridSize, yAxisXPos(), n) ++ addXStamps(gridSize, xAxisYPos(), n)
+  def addTitleY = addGraphTitleY(yAxisXPos(), titleY)
+  def addTitleX = addGraphTitleX(xAxisYPos(), titleX)
 
 
 }

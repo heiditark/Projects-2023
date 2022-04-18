@@ -2,15 +2,16 @@ package Graphs
 import javafx.scene.shape.{Line, Rectangle}
 import scalafx.scene.paint.Color
 
-import scala.math.pow
-
 object BarCharProject extends Graph {
 
-  val data: Map[String, Double] = //Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
+  val data: Map[String, Double] =  //Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
  // Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
   Map(("Maanantai" -> 100), ("Tiistai" -> 120), ("Keskiviikko" -> 103), ("Torstai" -> 70), ("Perjantai" -> 23), ("Lauantai" -> 85), ("Sunnuntai" -> 180))
 
+  var title = "Test"
+  var titleY = "y"
   var color = Color.Black
+  val heightOfUI2 = heightOfUI - 30
   val yAxis = 30.0
   val xAxis = 570.0
   val n = {
@@ -46,8 +47,8 @@ object BarCharProject extends Graph {
   def height(key: String): Double = {
     val biggestValue: (String, Double) = data.maxBy(_._2)
     var height = data(key) match {
-      case _ if data(key) == biggestValue._2 => heightOfUI - 50
-      case a: Double => (heightOfUI - 50) * (a / biggestValue._2)
+      case _ if data(key) == biggestValue._2 => heightOfUI2 - 50
+      case a: Double => (heightOfUI2 - 50) * (a / biggestValue._2)
     }
     height
   }
@@ -113,8 +114,10 @@ object BarCharProject extends Graph {
   val smallest = data.minBy{case (x, y) => y}._2 -> locationInInterface(data.minBy{case (x, y) => y}._1)._2
 
 
-  val stampsOnY = addStampsY((0, xAxis), n, scale, yAxis, 3)
+  val stampsOnY = addStampsY((0, xAxis), n, scale, yAxis, 2)
   val grid = addGrid(matchGridAndStamps)
   val axis = addAxis(yAxis, xAxis)
+  def addTitle = addGraphTitle(title, (widthOfUI / 2, 10))
+  def addTitleY: javafx.scene.Node = addGraphTitleY(yAxis, titleY)
 
 }

@@ -43,10 +43,26 @@ trait Graph {
     textField
   }
 
+  def addTextRight(text: String, location: (Double, Double)) = {
+    val size = text.length
+    var textField = new Text(text)
+
+    val textFieldWidth = textField.getBoundsInLocal.getWidth
+    val textFieldHeight = textField.getBoundsInLocal.getHeight
+
+    textField.resizeRelocate(
+      location._1 - textFieldWidth,
+      location._2 - textFieldHeight,
+      size,
+      3
+    )
+  //  textField.setFont(Font.font("Proxima Nova"))
+    textField
+  }
+
   def addTextMiddle(text: String, location: (Double, Double)) = {
     val size = text.length
-    var textField = new Text()
-    textField.setText(text)
+    var textField = new Text(text)
 
     val textFieldWidth = textField.getBoundsInLocal.getWidth
     val textFieldHeight = textField.getBoundsInLocal.getHeight
@@ -57,25 +73,35 @@ trait Graph {
       size,
       3
     )
-  //  textField.setFont(Font.font("Proxima Nova"))
 
     textField
+
   }
 
   def addGraphTitle(text: String, location: (Double, Double)) = {
     val size = text.length
-    var textField = new Text()
+    var textField = new Text(text)
 
-    textField.setText(text)
-    textField.setStyle("-fx-font-size: 18;-fx-alignment: left;")
+    textField.setStyle("-fx-font-size: 18;")
 
     val textFieldWidth = textField.getBoundsInLocal.getWidth
+
+    println(textFieldWidth)
+    println(location)
 
     textField.resizeRelocate(location._1 - textFieldWidth / 2,
       location._2, size, 18)
 
     textField
 
+  }
+
+  def addGraphTitleY(yAxisXPos: Double, text: String): javafx.scene.Node = {
+    addTextLeft(text, (yAxisXPos + 5, 5))
+  }
+
+  def addGraphTitleX(xAxisYPos: Double, text: String): javafx.scene.Node  = {
+    addTextRight(text, (widthOfUI - 5, xAxisYPos - 5))
   }
 
   def addAxis(x: Double, y: Double) = {

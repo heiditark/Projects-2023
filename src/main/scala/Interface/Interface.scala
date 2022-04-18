@@ -8,7 +8,7 @@ import scalafx.application.JFXApp
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
 import scalafx.scene.control._
-import scalafx.scene.layout._
+import scalafx.scene.layout.{HBox, _}
 import scalafx.scene.paint.Color
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.MenuItem
@@ -84,7 +84,7 @@ object Interface extends JFXApp {
 
 
   // MAKES GRAPHS, move to own class
-  val width = diagram.getBoundsInLocal
+  val width = diagram.getBoundsInLocal.getWidth
   val height = diagram.getHeight
 
   def emptyDiagram() = {
@@ -92,9 +92,14 @@ object Interface extends JFXApp {
     sideBar.getChildren.clear()
   }
 
-  def vbox() =  new VBox { spacing = 10 }
+  def vbox() = new VBox { spacing = 10 }
 
-  def titleBox() = new TextField()
+  def hbox() = new HBox {
+    spacing = 5
+    alignment = Pos.Center
+  }
+
+  def titleBox() = new TextField() { maxWidth = 120 }
 
 
 
@@ -118,8 +123,8 @@ object Interface extends JFXApp {
 
   val pieTitle = titleBox()
 
-  val changeTitle = new Button("OK")
-  changeTitle.onAction = (event) => {
+  val changeTitlePie = new Button("OK")
+  changeTitlePie.onAction = (event) => {
     PieDiagram.title = pieTitle.getText
     pieTitle.setText("")
     makePieDiagram()
@@ -155,7 +160,8 @@ object Interface extends JFXApp {
     val titleHBox = new HBox {  spacing = 5  }
     changeTitleBox.getChildren.add(titleHBox)
     titleHBox.getChildren.add(pieTitle)
-    titleHBox.getChildren.add(changeTitle)
+    titleHBox.getChildren.add(changeTitlePie)
+
   }
 
   //To make a bar chart
@@ -167,9 +173,27 @@ object Interface extends JFXApp {
   cbGridBar.setIndeterminate(false)
   cbGridBar.onAction = (event) => makeBarChart()
 
-  val cbBarInfo = new CheckBox("Value")
+  val cbBarInfo = new CheckBox("Values")
   cbBarInfo.setIndeterminate(false)
   cbBarInfo.onAction = (event) => makeBarChart()
+
+  val barTitle = titleBox()
+
+  val changeTitleBar = new Button("OK")
+  changeTitleBar.onAction = (event) => {
+    BarCharProject.title = barTitle.getText
+    barTitle.setText("")
+    makeBarChart()
+  }
+
+  val barTitleY = titleBox()
+
+  val changeTitleYBar = new Button("OK")
+  changeTitleYBar.onAction = (event) => {
+    BarCharProject.titleY = barTitleY.getText
+    barTitleY.setText("")
+    makeBarChart()
+  }
 
   def doBarInfo() = {
     diagram.children ++= BarCharProject.info()
@@ -188,6 +212,8 @@ object Interface extends JFXApp {
     diagram.children ++= BarCharProject.doBars()
     diagram.children ++= BarCharProject.axis
     diagram.children ++= BarCharProject.stampsOnY
+    diagram.children += BarCharProject.addTitle
+    diagram.children += BarCharProject.addTitleY
 
     val colorVbox = vbox()
     sideBar.getChildren.add(colorVbox)
@@ -199,13 +225,26 @@ object Interface extends JFXApp {
     valueVbox.getChildren.add(new Text("Show Values:"))
     valueVbox.getChildren.add(cbBarInfo)
 
-    val infoVbox = vbox()
-    sideBar.getChildren.add(infoVbox)
-
     val gridVbox = vbox()
     sideBar.getChildren.add(gridVbox)
     gridVbox.getChildren.add(new Text("Add Grid:"))
     gridVbox.getChildren.add(cbGridBar)
+
+    val changeTitleBox = vbox()
+    sideBar.getChildren.add(changeTitleBox)
+    changeTitleBox.getChildren.add(new Text("Change Title:"))
+    val titleHBox = new HBox {  spacing = 5  }
+    changeTitleBox.getChildren.add(titleHBox)
+    titleHBox.getChildren.add(barTitle)
+    titleHBox.getChildren.add(changeTitleBar)
+
+    val changeNameY = vbox()
+    sideBar.getChildren.add(changeNameY)
+    changeNameY.getChildren.add(new Text("Change Title of Axis:"))
+    val titleYHBox = new HBox {  spacing = 5  }
+    changeNameY.getChildren.add(titleYHBox)
+    titleYHBox.getChildren.add(barTitleY)
+    titleYHBox.getChildren.add(changeTitleYBar)
   }
 
 
@@ -254,6 +293,25 @@ object Interface extends JFXApp {
     }
   }
 
+  val lineTitleX = titleBox()
+
+  val changeTitleXLine = new Button("OK")
+  changeTitleXLine.onAction = (event) => {
+    LineDiagram.titleX = lineTitleX.getText
+    makeLineDiagram()
+    lineTitleX.setText("")
+  }
+
+  val lineTitleY = titleBox()
+
+  val changeTitleYLine = new Button("OK")
+  changeTitleYLine.onAction = (event) => {
+    LineDiagram.titleY = lineTitleY.getText
+    makeLineDiagram()
+    lineTitleY.setText("")
+  }
+
+
   def addDotsLinesAxis() =
     diagram.children ++= LineDiagram.axis ++ LineDiagram.stamps ++ LineDiagram.doLines() ++ LineDiagram.doDots()
 
@@ -282,7 +340,7 @@ object Interface extends JFXApp {
     val resizeVbox = vbox()
     sideBar.getChildren.add(resizeVbox)
     resizeVbox.getChildren.add(new Text("Resize:"))
-    val resizeBox = new HBox {  spacing = 5  }
+    val resizeBox = hbox()
     resizeBox.getChildren.add(resizeMinus)
     resizeBox.getChildren.add(resizePlus)
     resizeVbox.getChildren.add(resizeBox)
@@ -293,14 +351,33 @@ object Interface extends JFXApp {
     resizeGridBox.getChildren.add(cbGridLine)
 
     if(cbGridLine.isSelected) {
-      val resizeGridHBox = new HBox {  spacing = 5  }
+      val resizeGridHBox = hbox()
       resizeGridHBox.getChildren.add(resizeGridMinus)
       resizeGridHBox.getChildren.add(resizeGridPlus)
-      sideBar.getChildren.add(resizeGridHBox)
+      resizeGridBox.getChildren.add(resizeGridHBox)
       addGridLine()
     }
 
+    val changeName = vbox()
+    sideBar.getChildren.add(changeName)
+    changeName.getChildren.add(new Text("Change Title of Axis:"))
+
+    val titleXHBox = hbox()
+    changeName.getChildren.add(titleXHBox)
+    titleXHBox.getChildren.add(new Text("x: "))
+    titleXHBox.getChildren.add(lineTitleX)
+    titleXHBox.getChildren.add(changeTitleXLine)
+
+    val titleYHBox = hbox()
+    changeName.getChildren.add(titleYHBox)
+    titleYHBox.getChildren.add(new Text("y: "))
+    titleYHBox.getChildren.add(lineTitleY)
+    titleYHBox.getChildren.add(changeTitleYLine)
+
     addDotsLinesAxis()
+
+    diagram.children += LineDiagram.addTitleY
+    diagram.children += LineDiagram.addTitleX
   }
 
 

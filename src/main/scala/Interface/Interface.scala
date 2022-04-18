@@ -1,6 +1,6 @@
 package Interface
 
-import Graphs.PieDiagram.colorGenerator
+import Graphs.PieDiagram.{changeColor, colorGenerator}
 import Graphs.{BarCharProject, LineDiagram, PieDiagram}
 import javafx.scene.shape.Rectangle
 import scalafx.Includes._
@@ -34,14 +34,13 @@ object Interface extends JFXApp {
 
   val file2 = new Menu("File")
   val add = new Menu("Add")
-  val sideBar = new GridPane {
+  val sideBar = new VBox {
     background = new Background(Array(new BackgroundFill(Color.rgb(186, 188, 190), CornerRadii.Empty, Insets.Empty)))
     minWidth = 190
     maxWidth = 190
     margin = Insets(5)
     padding = Insets(5)
-    vgap = 15
-    hgap = 5
+    spacing = 30
   }
 
 
@@ -93,6 +92,11 @@ object Interface extends JFXApp {
     sideBar.getChildren.clear()
   }
 
+  def vbox() =  new VBox { spacing = 10 }
+
+  def titleBox() = new TextField()
+
+
 
   //To make a bar chart
 
@@ -100,7 +104,7 @@ object Interface extends JFXApp {
   cbPieInfo.setIndeterminate(false)
   cbPieInfo.onAction = (event) => makePieDiagram()
 
-  val pieColor = new Button("Change Colors")
+  val pieColor = new Button("Change")
   pieColor.onAction = (event) => {
     PieDiagram.changeColor()
     makePieDiagram()
@@ -112,6 +116,15 @@ object Interface extends JFXApp {
     makePieDiagram()
   }
 
+  val pieTitle = titleBox()
+
+  val changeTitle = new Button("OK")
+  changeTitle.onAction = (event) => {
+    PieDiagram.title = pieTitle.getText
+    pieTitle.setText("")
+    makePieDiagram()
+  }
+
   def doPieInfo() =
     diagram.children ++= PieDiagram.info()
 
@@ -119,13 +132,30 @@ object Interface extends JFXApp {
     emptyDiagram()
 
     diagram.children ++= PieDiagram.doSectors()
+    diagram.children += PieDiagram.addTitle
+
     if(cbPieInfo.isSelected) doPieInfo()
 
-    sideBar.add(new Text("Color of Sector :"),0,1)
-    sideBar.add(pieColor, 0, 2)
-    sideBar.add(backPieColor, 1, 2)
-    sideBar.add(new Text("Show Info:"),0,6)
-    sideBar.add(cbPieInfo, 0, 7)
+    val colorVbox = vbox()
+    sideBar.getChildren.add(colorVbox)
+    colorVbox.getChildren.add(new Text("Color of Sector:"))
+    val colorbox = new HBox {  spacing = 5  }
+    colorbox.getChildren.add(pieColor)
+    colorbox.getChildren.add(backPieColor)
+    colorVbox.getChildren.add(colorbox)
+
+    val infoVbox = vbox()
+    sideBar.getChildren.add(infoVbox)
+    infoVbox.getChildren.add(new Text("Show Info:"))
+    infoVbox.getChildren.add(cbPieInfo)
+
+    val changeTitleBox = vbox()
+    sideBar.getChildren.add(changeTitleBox)
+    changeTitleBox.getChildren.add(new Text("Change Title:"))
+    val titleHBox = new HBox {  spacing = 5  }
+    changeTitleBox.getChildren.add(titleHBox)
+    titleHBox.getChildren.add(pieTitle)
+    titleHBox.getChildren.add(changeTitle)
   }
 
   //To make a bar chart
@@ -137,7 +167,7 @@ object Interface extends JFXApp {
   cbGridBar.setIndeterminate(false)
   cbGridBar.onAction = (event) => makeBarChart()
 
-  val cbBarInfo = new CheckBox("Info")
+  val cbBarInfo = new CheckBox("Value")
   cbBarInfo.setIndeterminate(false)
   cbBarInfo.onAction = (event) => makeBarChart()
 
@@ -159,13 +189,23 @@ object Interface extends JFXApp {
     diagram.children ++= BarCharProject.axis
     diagram.children ++= BarCharProject.stampsOnY
 
-    sideBar.add(new Text("Color of Bar:"),0,1)
-    sideBar.add(colorPickerBar, 0, 2)
-    sideBar.add(new Text("Show Info:"),0,6)
-    sideBar.add(cbBarInfo, 0, 7)
-    sideBar.add(new Text("Add Grid:"),0,11)
-    sideBar.add(cbGridBar, 0, 12)
+    val colorVbox = vbox()
+    sideBar.getChildren.add(colorVbox)
+    colorVbox.getChildren.add(new Text("Color of Bar:"))
+    colorVbox.getChildren.add(colorPickerBar)
 
+    val valueVbox = vbox()
+    sideBar.getChildren.add(valueVbox)
+    valueVbox.getChildren.add(new Text("Show Values:"))
+    valueVbox.getChildren.add(cbBarInfo)
+
+    val infoVbox = vbox()
+    sideBar.getChildren.add(infoVbox)
+
+    val gridVbox = vbox()
+    sideBar.getChildren.add(gridVbox)
+    gridVbox.getChildren.add(new Text("Add Grid:"))
+    gridVbox.getChildren.add(cbGridBar)
   }
 
 
@@ -228,21 +268,38 @@ object Interface extends JFXApp {
     LineDiagram.colorDots = colorPickerDot.getValue
     LineDiagram.colorLines = colorPickerLine.getValue
 
-    sideBar.add(new Text("Color of Dot:"),0,1)
-    sideBar.add(colorPickerDot, 0, 2)
-    sideBar.add(new Text("Color of Line:"),0,6)
-    sideBar.add(colorPickerLine, 0, 7)
-    sideBar.add(new Text("Resize:"),0,11)
-    sideBar.add(resizeMinus, 0, 12)
-    sideBar.add(resizePlus, 1, 12)
-    sideBar.add(new Text("Add Grid:"),0,16)
-    sideBar.add(cbGridLine, 0, 17)
+    val colorDotVbox = vbox()
+    sideBar.getChildren.add(colorDotVbox)
+    colorDotVbox.getChildren.add(new Text("Color of Dot:"))
+    colorDotVbox.getChildren.add(colorPickerDot)
+
+    val colorLineVbox = vbox()
+    sideBar.getChildren.add(colorLineVbox)
+    colorLineVbox.getChildren.add(new Text("Color of Line:"))
+    colorLineVbox.getChildren.add(colorPickerLine)
+
+
+    val resizeVbox = vbox()
+    sideBar.getChildren.add(resizeVbox)
+    resizeVbox.getChildren.add(new Text("Resize:"))
+    val resizeBox = new HBox {  spacing = 5  }
+    resizeBox.getChildren.add(resizeMinus)
+    resizeBox.getChildren.add(resizePlus)
+    resizeVbox.getChildren.add(resizeBox)
+
+    val resizeGridBox = vbox()
+    sideBar.getChildren.add(resizeGridBox)
+    resizeGridBox.getChildren.add(new Text("Add Grid:"))
+    resizeGridBox.getChildren.add(cbGridLine)
+
     if(cbGridLine.isSelected) {
-      sideBar.add(resizeGridMinus, 0, 18)
-      sideBar.add(resizeGridPlus, 1, 18)
+      val resizeGridHBox = new HBox {  spacing = 5  }
+      resizeGridHBox.getChildren.add(resizeGridMinus)
+      resizeGridHBox.getChildren.add(resizeGridPlus)
+      sideBar.getChildren.add(resizeGridHBox)
+      addGridLine()
     }
 
-    if(cbGridLine.isSelected) addGridLine()
     addDotsLinesAxis()
   }
 

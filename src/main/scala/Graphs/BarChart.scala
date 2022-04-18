@@ -13,6 +13,14 @@ object BarCharProject extends Graph {
   var color = Color.Black
   val yAxis = 30.0
   val xAxis = 570.0
+  val n = {
+    val sorted = data.toVector.sortBy(_._2).map(a => a._2)
+    var diffs = Vector[Double]()
+    for (index <- sorted.indices.dropRight(1)) {
+      diffs = diffs :+ (sorted(index) - sorted(index + 1)).abs
+    }
+    diffs.sum / diffs.size
+  }
 
   // Counts percentage of each keys value
   def percentage(key: String) = data(key) / data.values.sum
@@ -71,6 +79,7 @@ object BarCharProject extends Graph {
 
   def addGrid(stampsCoord: Array[Double]) = {
     var gridLines: Array[javafx.scene.Node] = new Array[javafx.scene.Node](stampsCoord.length)
+    println(stampsCoord.mkString("Array(", ", ", ")"))
 
     for(index <- stampsCoord.indices) {
       val yCoord = stampsCoord(index)
@@ -104,7 +113,7 @@ object BarCharProject extends Graph {
   val smallest = data.minBy{case (x, y) => y}._2 -> locationInInterface(data.minBy{case (x, y) => y}._1)._2
 
 
-  val stampsOnY = addStampsY((0, xAxis), 20, scale, yAxis,3)
+  val stampsOnY = addStampsY((0, xAxis), n, scale, yAxis, 3)
   val grid = addGrid(matchGridAndStamps)
   val axis = addAxis(yAxis, xAxis)
 

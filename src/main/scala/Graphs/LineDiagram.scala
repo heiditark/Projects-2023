@@ -14,9 +14,9 @@ object LineDiagram extends Graph {
   def widthUI2 = widthOfUI * sizing
   def heightUI2 = heightOfUI * sizing
   def n = gridSize match {
-    case a if a >= 50 => 1
-    case a if a >= 40 => 2
-    case a if a >= 20 => 3
+    case a if a > 35 => 1
+    case a if a >= 20 => 2
+    case a if a == 15 => 3
     case _ => 4
   }
 
@@ -52,6 +52,7 @@ object LineDiagram extends Graph {
 
   // Autoscales datapoints to fit the measures of the Interface
   def autoscale(data: Vector[(Double, Double)]): Vector[(Double, Double)] = {
+            println(gridSize)
     val scale = scalingFactor()
     val firstY = arrangedDataPoints.minBy(_._2)._2 match {
       case a if a == arrangedDataPoints(0)._2 && a > 0 => 0

@@ -15,11 +15,12 @@ object PieDiagram extends Graph {
     //Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
     Map(("Maanantai" -> 100), ("Tiistai" -> 120), ("Keskiviikko" -> 103), ("Torstai" -> 70), ("Perjantai" -> 23), ("Lauantai" -> 85), ("Sunnuntai" -> 180))
 
-  val radius = heightOfUI / 2 - 50
-  val centerPoint: (Double, Double) = (widthOfUI / 2, heightOfUI / 2)
+  var title = "Test"
+  var radius = heightOfUI / 2 - 50
+  val centerPoint: (Double, Double) = (widthOfUI / 2, heightOfUI / 2 + 30)
   val pi = scala.math.Pi
   var colorsUsed: Map[String, Color] = data.keys.map(key => key -> colorGenerator()).toMap
-  var allColorsUsed: Vector[Map[String, Color]] = Vector[Map[String, Color]](colorsUsed)
+  var allColorsUsed: LazyList[Map[String, Color]] = LazyList[Map[String, Color]](colorsUsed)
 
   def changeColor() = {
     colorsUsed = data.keys.map(key => key -> colorGenerator()).toMap
@@ -31,7 +32,7 @@ object PieDiagram extends Graph {
       allColorsUsed = allColorsUsed.dropRight(1)
       colorsUsed = allColorsUsed.last
     } else {
-      colorsUsed = allColorsUsed(0)
+      colorsUsed = allColorsUsed.head
     }
   }
 
@@ -106,4 +107,6 @@ object PieDiagram extends Graph {
 
     dots ++ texts
   }
+
+  def addTitle: javafx.scene.Node = addGraphTitle(title, (centerPoint._1, 10))
 }

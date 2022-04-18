@@ -62,6 +62,22 @@ trait Graph {
     textField
   }
 
+  def addGraphTitle(text: String, location: (Double, Double)) = {
+    val size = text.length
+    var textField = new Text()
+
+    textField.setText(text)
+    textField.setStyle("-fx-font-size: 18;-fx-alignment: left;")
+
+    val textFieldWidth = textField.getBoundsInLocal.getWidth
+
+    textField.resizeRelocate(location._1 - textFieldWidth / 2,
+      location._2, size, 18)
+
+    textField
+
+  }
+
   def addAxis(x: Double, y: Double) = {
     val axis = new Array[javafx.scene.Node](2)
 
@@ -147,7 +163,6 @@ trait Graph {
 
       stamps(index) = (text, coord)
     }
-
 
     val every: Array[(Double, Double)] = everyN(stamps,n)
     matchGridAndStamps = every.map{case (x, y) => y}

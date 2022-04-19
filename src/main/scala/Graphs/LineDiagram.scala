@@ -34,16 +34,15 @@ object LineDiagram extends Graph {
   // Sorts the data points in ascending order by x-coordinate and adds them in a vector
   def arrangeDataPoints(dataPoints2: Map[Double, Double]) = dataPoints2.toVector.sortWith(_._1 < _._1)
 
-  def yCoordsFlipped = flipYCoord(dataPoints)
-  def arrangedDataPoints = arrangeDataPoints(yCoordsFlipped)
-  def autoscaledDataPoints = autoscale(arrangedDataPoints)
+  val yCoordsFlipped = flipYCoord(dataPoints)
+  val arrangedDataPoints = arrangeDataPoints(yCoordsFlipped)
+  var autoscaledDataPoints = autoscale()
 
   // Nää vaa prinnttaa
   println(dataPoints.toVector.sortBy(a => a._1))
   println(autoscaledDataPoints)
 
   def scalingFactor() = {
-
     // Scaling factor
     val scaledByX = widthUI2 / (arrangedDataPoints.last._1 - arrangedDataPoints.head._1)
     val scaledByY = heightUI2 / (arrangedDataPoints.maxBy(_._2)._2 - arrangedDataPoints.minBy(_._2)._2)
@@ -53,8 +52,7 @@ object LineDiagram extends Graph {
   }
 
   // Autoscales datapoints to fit the measures of the Interface
-  def autoscale(data: Vector[(Double, Double)]): Vector[(Double, Double)] = {
-            println(gridSize)
+  def autoscale(): Vector[(Double, Double)] = {
     val scale = scalingFactor()
     val firstY = arrangedDataPoints.minBy(_._2)._2 match {
       case a if a == arrangedDataPoints(0)._2 && a > 0 => 0
@@ -62,17 +60,19 @@ object LineDiagram extends Graph {
       case a => (arrangedDataPoints(0)._2 - a) * scale
     }
 
-
-    val autoScaledData = new Array[(Double, Double)](data.length)
+    val autoScaledData = new Array[(Double, Double)](arrangedDataPoints.length)
 
     // Puts the smallest datapoint on the very left
     autoScaledData(0) = (0, firstY)
 
-    for(i <- 1 until data.length) {
+    for(i <- 1 until arrangedDataPoints.length) {
       autoScaledData(i) =
         (autoScaledData(i - 1)._1 + ((arrangedDataPoints(i)._1 - arrangedDataPoints(i - 1)._1) * scale).abs,
           (autoScaledData(i - 1)._2 + ((arrangedDataPoints(i)._2 - arrangedDataPoints(i - 1)._2)) * scale).abs)
     }
+
+    autoscaledDataPoints = autoScaledData.toVector
+
     autoScaledData.toVector
   }
 
@@ -143,11 +143,14 @@ object LineDiagram extends Graph {
       stamps(index + 1) = (text, coord)
     }
 
+    // Biggest y-stamps not overlapping
     if((stamps(0)._2 - stamps(1)._2).abs < 20) stamps = stamps.tail
-    stamps = everyN(stamps, n)
-    stamps = stamps.filterNot(a => a._1 == 0.0)
 
-    stamps = stamps :+ (0.0,xAxisYPos())
+    // Filters every n index
+    stamps = everyN(stamps, n)
+
+    // Adds stamp at origin
+    if(stamps.indexWhere(a => a._1 == 0.0) == -1) stamps = stamps :+ (0.0, xAxisYPos())
 
     val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
     val line: Array[javafx.scene.Node] = stamps.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))

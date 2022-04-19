@@ -83,7 +83,8 @@ object Interface extends JFXApp {
 
 
 
-  // MAKES GRAPHS, move to own class
+  // MAKES GRAPHS, move to own classes?
+
   val width = diagram.getBoundsInLocal.getWidth
   val height = diagram.getHeight
 
@@ -95,8 +96,8 @@ object Interface extends JFXApp {
   def vbox() = new VBox { spacing = 10 }
 
   def hbox() = new HBox {
-    spacing = 5
-    alignment = Pos.Center
+    spacing = 8
+    margin = Insets(10)
   }
 
   def titleBox() = new TextField() { maxWidth = 120 }
@@ -265,6 +266,7 @@ object Interface extends JFXApp {
   resizePlus.onAction = (event) => {
     if(LineDiagram.sizing <= 0.9) {
       LineDiagram.sizing += 0.1
+      LineDiagram.autoscale()
       makeLineDiagram()
     }
   }
@@ -273,6 +275,7 @@ object Interface extends JFXApp {
   resizeMinus.onAction = (event) => {
     if(LineDiagram.sizing >= 0.7) {
       LineDiagram.sizing -= 0.1
+      LineDiagram.autoscale()
       makeLineDiagram()
     }
   }

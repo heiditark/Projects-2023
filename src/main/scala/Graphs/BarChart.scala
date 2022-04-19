@@ -14,6 +14,7 @@ object BarCharProject extends Graph {
   val heightOfUI2 = heightOfUI - 30
   val yAxis = 30.0
   val xAxis = 570.0
+
   val n = {
     val sorted = data.toVector.sortBy(_._2).map(a => a._2)
     var diffs = Vector[Double]()

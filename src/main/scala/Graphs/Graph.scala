@@ -39,7 +39,6 @@ trait Graph {
       size,
       3
     )
-  //  textField.setFont(Font.font("Proxima Nova"))
     textField
   }
 
@@ -56,7 +55,6 @@ trait Graph {
       size,
       3
     )
-  //  textField.setFont(Font.font("Proxima Nova"))
     textField
   }
 
@@ -73,9 +71,7 @@ trait Graph {
       size,
       3
     )
-
     textField
-
   }
 
   def addGraphTitle(text: String, location: (Double, Double)) = {
@@ -85,9 +81,6 @@ trait Graph {
     textField.setStyle("-fx-font-size: 18;")
 
     val textFieldWidth = textField.getBoundsInLocal.getWidth
-
-    println(textFieldWidth)
-    println(location)
 
     textField.resizeRelocate(location._1 - textFieldWidth / 2,
       location._2, size, 18)

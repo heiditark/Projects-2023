@@ -16,6 +16,10 @@ import scalafx.scene.control.Menu
 import scalafx.scene.control.MenuBar
 import scalafx.scene.text.Text
 import scalafx.stage.FileChooser
+import scalafx.stage.FileChooser.ExtensionFilter
+
+import java.nio.file.{Files, Paths}
+import scala.reflect.io.File
 
 
 
@@ -43,10 +47,19 @@ object Interface extends JFXApp {
     spacing = 30
   }
 
-
+//File management
 
 
   val file = new MenuItem("Add file")
+  file.onAction = (event) => {
+    val fileChooser = new FileChooser()
+    fileChooser.getExtensionFilters.add(new ExtensionFilter("Text Files", "*.txt"))
+    val selectedFile = fileChooser.showOpenDialog(stage)
+
+    if(selectedFile != null) {
+      //adds file to project directory
+    }
+  }
 
   // To add graphs
   val line = new MenuItem("Line diagram")
@@ -75,10 +88,6 @@ object Interface extends JFXApp {
   val scene = new Scene(root)
   stage.scene = scene
   scene.fill = Color.rgb(4, 5, 7)
-
-
-
-
 
 
 
@@ -145,7 +154,7 @@ object Interface extends JFXApp {
     val colorVbox = vbox()
     sideBar.getChildren.add(colorVbox)
     colorVbox.getChildren.add(new Text("Color of Sector:"))
-    val colorbox = new HBox {  spacing = 5  }
+    val colorbox = hbox()
     colorbox.getChildren.add(pieColor)
     colorbox.getChildren.add(backPieColor)
     colorVbox.getChildren.add(colorbox)
@@ -158,7 +167,7 @@ object Interface extends JFXApp {
     val changeTitleBox = vbox()
     sideBar.getChildren.add(changeTitleBox)
     changeTitleBox.getChildren.add(new Text("Change Title:"))
-    val titleHBox = new HBox {  spacing = 5  }
+    val titleHBox = hbox()
     changeTitleBox.getChildren.add(titleHBox)
     titleHBox.getChildren.add(pieTitle)
     titleHBox.getChildren.add(changeTitlePie)
@@ -234,7 +243,7 @@ object Interface extends JFXApp {
     val changeTitleBox = vbox()
     sideBar.getChildren.add(changeTitleBox)
     changeTitleBox.getChildren.add(new Text("Change Title:"))
-    val titleHBox = new HBox {  spacing = 5  }
+    val titleHBox = hbox()
     changeTitleBox.getChildren.add(titleHBox)
     titleHBox.getChildren.add(barTitle)
     titleHBox.getChildren.add(changeTitleBar)
@@ -242,7 +251,7 @@ object Interface extends JFXApp {
     val changeNameY = vbox()
     sideBar.getChildren.add(changeNameY)
     changeNameY.getChildren.add(new Text("Change Title of Axis:"))
-    val titleYHBox = new HBox {  spacing = 5  }
+    val titleYHBox = hbox()
     changeNameY.getChildren.add(titleYHBox)
     titleYHBox.getChildren.add(barTitleY)
     titleYHBox.getChildren.add(changeTitleYBar)
@@ -284,6 +293,7 @@ object Interface extends JFXApp {
   resizeGridPlus.onAction = (event) => {
     if(LineDiagram.gridSize <= 115) {
       LineDiagram.gridSize += 5
+      LineDiagram.autoscale()
       makeLineDiagram()
     }
   }
@@ -342,7 +352,7 @@ object Interface extends JFXApp {
 
     val resizeVbox = vbox()
     sideBar.getChildren.add(resizeVbox)
-    resizeVbox.getChildren.add(new Text("Resize:"))
+    resizeVbox.getChildren.add(new Text("Resize Graph:"))
     val resizeBox = hbox()
     resizeBox.getChildren.add(resizeMinus)
     resizeBox.getChildren.add(resizePlus)
@@ -355,6 +365,7 @@ object Interface extends JFXApp {
 
     if(cbGridLine.isSelected) {
       val resizeGridHBox = hbox()
+      sideBar.getChildren.add(new Text("Resize Grid:"))
       resizeGridHBox.getChildren.add(resizeGridMinus)
       resizeGridHBox.getChildren.add(resizeGridPlus)
       resizeGridBox.getChildren.add(resizeGridHBox)
@@ -365,13 +376,13 @@ object Interface extends JFXApp {
     sideBar.getChildren.add(changeName)
     changeName.getChildren.add(new Text("Change Title of Axis:"))
 
-    val titleXHBox = hbox()
+    val titleXHBox = new HBox {  spacing = 5  }
     changeName.getChildren.add(titleXHBox)
     titleXHBox.getChildren.add(new Text("x: "))
     titleXHBox.getChildren.add(lineTitleX)
     titleXHBox.getChildren.add(changeTitleXLine)
 
-    val titleYHBox = hbox()
+    val titleYHBox = new HBox {  spacing = 5  }
     changeName.getChildren.add(titleYHBox)
     titleYHBox.getChildren.add(new Text("y: "))
     titleYHBox.getChildren.add(lineTitleY)

@@ -1,11 +1,13 @@
 package Graphs
+
+
+import Graphs.fileManagement.readFile
 import javafx.scene.shape._
 import scalafx.scene.paint.Color
 
-import scala.math.pow
-
 
 object LineDiagram extends Graph {
+  val file = "esim2.txt"
 
   var titleY = "y"
   var titleX = "x"
@@ -26,7 +28,10 @@ object LineDiagram extends Graph {
   // Test dataPoints
   val dataPoints: Map[Double, Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
    // Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
-    Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
+ //   Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
+    readFile(file).map{case (x, y) => x.toDouble -> y}
+    
+  println(dataPoints)
 
   //Flips the y-coordinates
   def flipYCoord(dataPoints2: Map[Double, Double]): Map[Double, Double] = dataPoints2.map{case (x, y) => x -> y * -1}
@@ -36,7 +41,9 @@ object LineDiagram extends Graph {
 
   val yCoordsFlipped = flipYCoord(dataPoints)
   val arrangedDataPoints = arrangeDataPoints(yCoordsFlipped)
-  var autoscaledDataPoints = autoscale()
+  var autoscaledDataPoints = Vector[(Double, Double)]()
+
+  autoscale()
 
   // Nää vaa prinnttaa
   println(dataPoints.toVector.sortBy(a => a._1))
@@ -52,7 +59,7 @@ object LineDiagram extends Graph {
   }
 
   // Autoscales datapoints to fit the measures of the Interface
-  def autoscale(): Vector[(Double, Double)] = {
+  def autoscale() = {
     val scale = scalingFactor()
     val firstY = arrangedDataPoints.minBy(_._2)._2 match {
       case a if a == arrangedDataPoints(0)._2 && a > 0 => 0
@@ -70,10 +77,7 @@ object LineDiagram extends Graph {
         (autoScaledData(i - 1)._1 + ((arrangedDataPoints(i)._1 - arrangedDataPoints(i - 1)._1) * scale).abs,
           (autoScaledData(i - 1)._2 + ((arrangedDataPoints(i)._2 - arrangedDataPoints(i - 1)._2)) * scale).abs)
     }
-
     autoscaledDataPoints = autoScaledData.toVector
-
-    autoScaledData.toVector
   }
 
   // Adds lines in scalafx

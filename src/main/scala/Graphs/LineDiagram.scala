@@ -143,13 +143,8 @@ object LineDiagram extends Graph {
       stamps(index + 1) = (text, coord)
     }
 
-    // Biggest y-stamps not overlapping
     if((stamps(0)._2 - stamps(1)._2).abs < 20) stamps = stamps.tail
-
-    // Filters every n index
     stamps = everyN(stamps, n)
-
-    // Adds stamp at origin
     if(stamps.indexWhere(a => a._1 == 0.0) == -1) stamps = stamps :+ (0.0, xAxisYPos())
 
     val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))

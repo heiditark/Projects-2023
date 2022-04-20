@@ -23,33 +23,25 @@ object LineDiagram extends Graph {
 
 
   // Test dataPoints
-  var data: Map[String, Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
+  var data: Option[Map[String, Double]] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
    // Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
  //   Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
     //readFile(file).map{case (x, y) => x.toDouble -> y}
-  Map[String, Double]()
+    None
 
 
-  //Flips the y-coordinates
-  def flipYCoord(dataPoints2: Map[Double, Double]): Map[Double, Double] = {
-    if(data.isEmpty) throw new Exception("File Corrupted.")
-    dataPoints2.map{case (x, y) => x -> y * -1}
+  //Flips the y-coordinates and sorts the data points in ascending order by x-coordinate
+  def flipYCoordAndArrange() = {
+    if(data.isEmpty) throw new Exception("Data Corrupted.")
+
+    val yFlipped = data.get.map(xy => xy._1.toDouble -> xy._2).map{case (x, y) => x -> y * -1}
+    val arranged = yFlipped.toVector.sortWith(_._1 < _._1)
+
+    arrangedDataPoints = arranged
   }
 
-
-
-  // Sorts the data points in ascending order by x-coordinate and adds them in a vector
-  def arrangeDataPoints(dataPoints2: Map[Double, Double]) = dataPoints2.toVector.sortWith(_._1 < _._1)
-
-  def yCoordsFlipped = flipYCoord(data.map{case (x, y) => x.toDouble -> y})
-  def arrangedDataPoints = arrangeDataPoints(yCoordsFlipped)
+  var arrangedDataPoints = Vector[(Double, Double)]()
   var autoscaledDataPoints = Vector[(Double, Double)]()
-
-  autoscale()
-
-  // Nää vaa prinnttaa
-  println(data.toVector.sortBy(a => a._1))
-  println(autoscaledDataPoints)
 
   def scalingFactor() = {
     // Scaling factor
@@ -140,7 +132,7 @@ object LineDiagram extends Graph {
   def addYStamps2(step: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
     var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI / step).toInt + 2)
 
-    val biggestY = data.maxBy{case (x,y) => y}._2
+    val biggestY = data.get.maxBy{case (x,y) => y}._2
     val diff: Double = autoscaledDataPoints.minBy{case (x,y) => y}._2
     val text1: Double = roundOneDecimal(biggestY + diff * 1 / scalingFactor())
 
@@ -157,7 +149,9 @@ object LineDiagram extends Graph {
     stamps = everyN(stamps, n)
     if(stamps.indexWhere(a => a._1 == 0.0) == -1) stamps = stamps :+ (0.0, xAxisYPos())
 
-    val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
+    var yStampsSide = if(arrangedDataPoints(0)._1 >= 0) 20 else -20
+
+    val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(yAxisXPos + yStampsSide, x._2 - fontSize / 2)))
     val line: Array[javafx.scene.Node] = stamps.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
 
     text ++ line

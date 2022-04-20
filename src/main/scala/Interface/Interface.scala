@@ -2,7 +2,6 @@ package Interface
 
 import Graphs.PieDiagram.{changeColor, colorGenerator}
 import Graphs.{BarCharProject, LineDiagram, PieDiagram, fileManagement}
-import javafx.scene.shape.Rectangle
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.geometry.Insets

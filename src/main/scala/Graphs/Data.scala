@@ -11,27 +11,30 @@ object fileManagement {
 
   def getData = readFile(file)
 
-  def readFile(sourceFile: String)/*: Map[String, Double] */= {
-    println(file)
+  def readFile(sourceFile: String)= {
     try {
 
       val fileIn = new FileReader(sourceFile)
       val linesIn = new BufferedReader(fileIn)
 
       try {
-        var graphType = readLine(linesIn).dropWhile(_ != ':').drop(1).trim.toLowerCase
-        println(graphType)
 
+        var graphType = readLine(linesIn).dropWhile(_ != ':').drop(1).trim.toLowerCase
         val data = graphType match {
           case "piediagram" =>
             startOfData(linesIn)
-            PieDiagram.data = dataPieOrBar(linesIn)
+            PieDiagram.data = Some(dataPieOrBar(linesIn))
+            PieDiagram.changeColor()
           case  "barchart" =>
             startOfData(linesIn)
-            BarCharProject.data = dataPieOrBar(linesIn)
+            BarCharProject.data = Some(dataPieOrBar(linesIn))
+            BarCharProject.defineN()
+            BarCharProject.addStampsOnY()
           case "linediagram" =>
             startOfData(linesIn)
-            LineDiagram.data =dataLine(linesIn)
+            LineDiagram.data = Some(dataLine(linesIn))
+            LineDiagram.flipYCoordAndArrange()
+            LineDiagram.autoscale()
           case other => {
             throw new Exception("Graph type not found.")
           }

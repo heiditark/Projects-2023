@@ -1,13 +1,10 @@
 package Graphs
 
-
-import Graphs.fileManagement.readFile
 import javafx.scene.shape._
 import scalafx.scene.paint.Color
 
 
 object LineDiagram extends Graph {
-  val file = "esim2.txt"
 
   var titleY = "y"
   var titleX = "x"
@@ -26,27 +23,32 @@ object LineDiagram extends Graph {
 
 
   // Test dataPoints
-  val dataPoints: Map[Double, Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
+  var data: Map[String, Double] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
    // Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
  //   Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
-    readFile(file).map{case (x, y) => x.toDouble -> y}
-    
-  println(dataPoints)
+    //readFile(file).map{case (x, y) => x.toDouble -> y}
+  Map[String, Double]()
+
 
   //Flips the y-coordinates
-  def flipYCoord(dataPoints2: Map[Double, Double]): Map[Double, Double] = dataPoints2.map{case (x, y) => x -> y * -1}
+  def flipYCoord(dataPoints2: Map[Double, Double]): Map[Double, Double] = {
+    if(data.isEmpty) throw new Exception("File Corrupted.")
+    dataPoints2.map{case (x, y) => x -> y * -1}
+  }
+
+
 
   // Sorts the data points in ascending order by x-coordinate and adds them in a vector
   def arrangeDataPoints(dataPoints2: Map[Double, Double]) = dataPoints2.toVector.sortWith(_._1 < _._1)
 
-  val yCoordsFlipped = flipYCoord(dataPoints)
-  val arrangedDataPoints = arrangeDataPoints(yCoordsFlipped)
+  def yCoordsFlipped = flipYCoord(data.map{case (x, y) => x.toDouble -> y})
+  def arrangedDataPoints = arrangeDataPoints(yCoordsFlipped)
   var autoscaledDataPoints = Vector[(Double, Double)]()
 
   autoscale()
 
   // Nää vaa prinnttaa
-  println(dataPoints.toVector.sortBy(a => a._1))
+  println(data.toVector.sortBy(a => a._1))
   println(autoscaledDataPoints)
 
   def scalingFactor() = {
@@ -66,11 +68,15 @@ object LineDiagram extends Graph {
       case a if a == arrangedDataPoints(0)._2 && a < 0 => heightUI2
       case a => (arrangedDataPoints(0)._2 - a) * scale
     }
+    val firstX = arrangedDataPoints(0)._1 match {
+      case a if a <= 0 => 0
+      case a if a > 0 => arrangedDataPoints(0)._1 * scale
+    }
 
     val autoScaledData = new Array[(Double, Double)](arrangedDataPoints.length)
 
     // Puts the smallest datapoint on the very left
-    autoScaledData(0) = (0, firstY)
+    autoScaledData(0) = (firstX, firstY)
 
     for(i <- 1 until arrangedDataPoints.length) {
       autoScaledData(i) =
@@ -134,7 +140,7 @@ object LineDiagram extends Graph {
   def addYStamps2(step: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
     var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI / step).toInt + 2)
 
-    val biggestY = dataPoints.maxBy{case (x,y) => y}._2
+    val biggestY = data.maxBy{case (x,y) => y}._2
     val diff: Double = autoscaledDataPoints.minBy{case (x,y) => y}._2
     val text1: Double = roundOneDecimal(biggestY + diff * 1 / scalingFactor())
 
@@ -161,11 +167,12 @@ object LineDiagram extends Graph {
   def addXStamps(step: Double, xAxisYPos: Double,  n: Int): Array[javafx.scene.Node] = {
     var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((widthOfUI / step).toInt + 2)
 
-    val text1: Double = roundOneDecimal(arrangedDataPoints(0)._1)
+    val firstX = if(arrangedDataPoints(0)._1 >= 0) 0.0 else arrangedDataPoints(0)._1
+    val text1: Double = roundOneDecimal(firstX)
     stamps(0) = (text1, 0)
 
     for(index <- 0 to (widthOfUI / step).toInt) {
-      val text = roundOneDecimal(arrangedDataPoints(0)._1 + (startXStamp + index * step ) / scalingFactor())
+      val text = roundOneDecimal(firstX + (startXStamp + index * step ) / scalingFactor())
       val coord = startXStamp + step * index
 
       stamps(index + 1) = (text, coord)
@@ -175,7 +182,7 @@ object LineDiagram extends Graph {
     stamps = everyN(stamps, n)
     stamps = stamps.filterNot(a => a._1 == 0.0)
 
-    val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(x._2, xAxisYPos)))
+    val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString, (x._2, xAxisYPos)))
     val line: Array[javafx.scene.Node] = stamps.map(x => addStampLine(x._2,  xAxisYPos - 5, x._2, xAxisYPos + 5))
 
     text ++ line

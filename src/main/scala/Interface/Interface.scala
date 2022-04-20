@@ -1,7 +1,7 @@
 package Interface
 
 import Graphs.PieDiagram.{changeColor, colorGenerator}
-import Graphs.{BarCharProject, LineDiagram, PieDiagram}
+import Graphs.{BarCharProject, LineDiagram, PieDiagram, fileManagement}
 import javafx.scene.shape.Rectangle
 import scalafx.Includes._
 import scalafx.application.JFXApp
@@ -19,7 +19,9 @@ import scalafx.stage.FileChooser
 import scalafx.stage.FileChooser.ExtensionFilter
 
 import java.nio.file.{Files, Paths}
+import scala.io.Source
 import scala.reflect.io.File
+import scala.util.Using
 
 
 
@@ -57,7 +59,14 @@ object Interface extends JFXApp {
     val selectedFile = fileChooser.showOpenDialog(stage)
 
     if(selectedFile != null) {
-      //adds file to project directory
+      val filePath = selectedFile.getAbsolutePath
+
+      fileManagement.file = filePath
+      fileManagement.getData
+
+      val text = new Text("File: " + filePath)
+      text.relocate(10, 10)
+      diagram.children += text
     }
   }
 

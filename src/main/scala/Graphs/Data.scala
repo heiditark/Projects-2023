@@ -1,15 +1,20 @@
 package Graphs
 
-import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException, Reader}
+import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException}
+import scala.io.{BufferedSource, Source}
+import scala.util.{Try, Using}
 
 object fileManagement {
 
- /* val dataOne = Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
-  val dataTwo = Map(("Koira" -> 13), ("Kissa" -> 8), ("Hevonen" -> 19), ("Pupu" -> 28))
-  val data = Map(("Maanantai" -> 100), ("Tiistai" -> 120), ("Keskiviikko" -> 103), ("Torstai" -> 70), ("Perjantai" -> 23), ("Lauantai" -> 85), ("Sunnuntai" -> 180))*/
+  var file: String = ""
+ // var linesFromFile = Using(Source.fromFile(file)) { _.getLines.toArray }
 
-  def readFile(sourceFile: String): Map[String, Double] = {
+  def getData = readFile(file)
+
+  def readFile(sourceFile: String)/*: Map[String, Double] */= {
+    println(file)
     try {
+
       val fileIn = new FileReader(sourceFile)
       val linesIn = new BufferedReader(fileIn)
 
@@ -19,21 +24,18 @@ object fileManagement {
 
         val data = graphType match {
           case "piediagram" =>
-            println("joo")
             startOfData(linesIn)
-            dataPieOrBar(linesIn)
+            PieDiagram.data = dataPieOrBar(linesIn)
           case  "barchart" =>
             startOfData(linesIn)
-            dataPieOrBar(linesIn)
+            BarCharProject.data = dataPieOrBar(linesIn)
           case "linediagram" =>
             startOfData(linesIn)
-            dataLine(linesIn)
+            LineDiagram.data =dataLine(linesIn)
           case other => {
             throw new Exception("Graph type not found.")
-            Map[String, Double]()
           }
         }
-        data
       } finally {
         fileIn.close()
         linesIn.close()
@@ -82,6 +84,7 @@ object fileManagement {
           dataMapped = dataMapped + (key -> value)
         }
       }
+      println(dataMapped)
       dataMapped
     } catch {
       case a: Exception => throw new Exception("Data corrupted.")
@@ -111,4 +114,5 @@ object fileManagement {
       case a: Exception => throw new Exception("Data corrupted.")
     }
   }
+
 }

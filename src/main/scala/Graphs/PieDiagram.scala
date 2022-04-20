@@ -1,6 +1,5 @@
 package Graphs
 
-import Graphs.fileManagement.readFile
 import javafx.scene.shape.Circle
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.{Arc, ArcType}
@@ -8,13 +7,13 @@ import scalafx.scene.shape.{Arc, ArcType}
 import scala.math._
 
 object PieDiagram extends Graph {
-  val file = "esim1.txt"
+ //val file = "esim1.txt"
 
 
-  val data: Map[String, Double] = //Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
-    //Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
+  var data: Map[String, Double] = //Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
+   //Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
    // Map(("Maanantai" -> 100), ("Tiistai" -> 120), ("Keskiviikko" -> 103), ("Torstai" -> 70), ("Perjantai" -> 23), ("Lauantai" -> 85), ("Sunnuntai" -> 180))
-    readFile(file)
+    Map[String, Double]()
 
   var title = "Test"
   var radius = heightOfUI / 2 - 50
@@ -45,6 +44,9 @@ object PieDiagram extends Graph {
 
   //Makes sectors and textboxs
   def doSectors() = {
+    println(data)
+    if(data.isEmpty) throw new Exception("File Corrupted.")
+
     var startAngle2: Double = 90.0
     var sectors = new Array[javafx.scene.Node](data.size)
     var textBox = new Array[javafx.scene.Node](data.size)

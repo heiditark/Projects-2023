@@ -17,7 +17,8 @@ object PieDiagram extends Graph {
 
   var title = "Test"
   var radius = heightOfUI / 2 - 50
-  val centerPoint: (Double, Double) = (widthOfUI / 2, heightOfUI / 2 + 30)
+  val centerPoint: (Double, Double) = (widthOfUI / 2, heightOfUI / 2)
+  println(centerPoint)
   val pi = scala.math.Pi
   var colorsUsed: Map[String, Color] = Map[String, Color]()
   var allColorsUsed: LazyList[Map[String, Color]] = LazyList[Map[String, Color]]()
@@ -74,7 +75,7 @@ object PieDiagram extends Graph {
       val angleInBetween = toRadians(startAngle2 + angle(dataPoint._1) / 2)
       // Calculate the x and y coordinates of the middle of the sector
       val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 1.1
-      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 1.1 - 15
+      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 1.1
 
       textBox(index) = addTextMiddle(dataPoint._1, (textBoxPositionX, textBoxPositionY))
 

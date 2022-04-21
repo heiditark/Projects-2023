@@ -124,8 +124,8 @@ object BarCharProject extends Graph {
   }
 
   var stampsOnY = Array[javafx.scene.Node]()
-  def grid = addGrid(matchGridAndStamps)
   val axis = addAxis(yAxis, xAxis)
+  def grid = addGrid(matchGridAndStamps)
   def addTitle = addGraphTitle(title, (widthOfUI / 2, 10))
   def addTitleY: javafx.scene.Node = addGraphTitleY(yAxis, titleY)
 

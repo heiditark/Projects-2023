@@ -1,7 +1,8 @@
 package Interface
 
-import Graphs.PieDiagram.{changeColor, colorGenerator}
-import Graphs.{BarCharProject, LineDiagram, PieDiagram, fileManagement}
+import Graphs.Graph
+import Graphs.PieDiagram.colorGenerator
+import Graphs._
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.geometry.Insets
@@ -17,19 +18,12 @@ import scalafx.scene.text.Text
 import scalafx.stage.FileChooser
 import scalafx.stage.FileChooser.ExtensionFilter
 
-import java.nio.file.{Files, Paths}
-import scala.io.Source
-import scala.reflect.io.File
-import scala.util.Using
-
-
 
 object Interface extends JFXApp {
 
   stage = new JFXApp.PrimaryStage {
-    title.value = "Visualization of numerical data"
-    width = 1291
-    height = 693
+    title.value = "Visualization of Numerical Data"
+    maximized = true
   }
 
   // Parts of the interface
@@ -37,8 +31,9 @@ object Interface extends JFXApp {
     margin = Insets(5)
   }
 
+
   val file2 = new Menu("File")
-  val add = new Menu("Add")
+  val add = new Menu("Add Graph")
   val sideBar = new VBox {
     background = new Background(Array(new BackgroundFill(Color.rgb(186, 188, 190), CornerRadii.Empty, Insets.Empty)))
     minWidth = 190
@@ -51,20 +46,22 @@ object Interface extends JFXApp {
 //File management
 
 
-  val file = new MenuItem("Add file")
+  val file = new MenuItem("Add File")
   file.onAction = (event) => {
     val fileChooser = new FileChooser()
     fileChooser.getExtensionFilters.add(new ExtensionFilter("Text Files", "*.txt"))
     val selectedFile = fileChooser.showOpenDialog(stage)
 
     if(selectedFile != null) {
+      emptyDiagram()
+
       val filePath = selectedFile.getAbsolutePath
 
       fileManagement.file = filePath
       fileManagement.getData
 
-      val text = new Text("File: " + filePath)
-      text.relocate(10, 10)
+      val text = new Text("File Added: " + filePath)
+      text.relocate(910 - 3 * ("File Added: " + filePath).length, 600)
       diagram.children += text
     }
   }

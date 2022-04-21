@@ -3,16 +3,15 @@ package Graphs
 
 import scalafx.scene.paint.Color
 import javafx.scene.shape._
-import scalafx.scene.text.{Font, Text, TextAlignment}
+import scalafx.scene.text._
 
 import scala.math.pow
 import scala.util.Random
 
 trait Graph {
 
-
-  var heightOfUI = 600.0
-  var widthOfUI = 1060.0
+  var heightOfUI = 613.3333129882812
+  var widthOfUI = 1068.6666259765625
   var fontSize = 34
 
   //Generates a random color
@@ -82,7 +81,7 @@ trait Graph {
 
     val textFieldWidth = textField.getBoundsInLocal.getWidth
 
-    textField.resizeRelocate(location._1 - textFieldWidth / 2,
+    textField.resizeRelocate(location._1 - 1.5 * textFieldWidth / 2,
       location._2, size, 18)
 
     textField
@@ -133,7 +132,6 @@ trait Graph {
         setEndX(widthOfUI + 100)
         setEndY(index * step + start)
         setStroke(Color.rgb(230, 230, 230))
-        //getStrokeDashArray.addAll(5d, 5d)
       }
       gridLinesHorizontal(index) = lineX
     }
@@ -146,7 +144,6 @@ trait Graph {
     var gridLinesVertical =
       new Array[javafx.scene.Node](countX)
     val start = (yAxisXPos / step) * step - (yAxisXPos / step).floor * step
-
 
     //y
     for(index <- (0 until countX)) {

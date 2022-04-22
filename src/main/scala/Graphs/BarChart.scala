@@ -3,29 +3,19 @@ package Graphs
 import javafx.scene.shape.{Line, Rectangle}
 import scalafx.scene.paint.Color
 
+import scala.math.pow
+
 object BarCharProject extends Graph {
 
-  var data: Option[Map[String, Double]] =  //Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
- // Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
-  // Map(("Maanantai" -> 100), ("Tiistai" -> 120), ("Keskiviikko" -> 103), ("Torstai" -> 70), ("Perjantai" -> 23), ("Lauantai" -> 85), ("Sunnuntai" -> 180))
-   None
+  var data: Option[Map[String, Double]] = None
 
   var title = "Test"
   var titleY = "y"
   var color = Color.Black
-  val heightOfUI2 = heightOfUI - 30
   val yAxis = 30.0
-  val xAxis = 570.0
-  var n = 0.0
-
-  def defineN() = {
-    val sorted = data.get.toVector.sortBy(_._2).map(a => a._2)
-    var diffs = Vector[Double]()
-    for (index <- sorted.indices.dropRight(1)) {
-      diffs = diffs :+ (sorted(index) - sorted(index + 1)).abs
-    }
-    n = diffs.sum / diffs.size
-  }
+  val xAxis = heightOfUI - 30
+  var gridSize = 12
+  var matchGridAndStamps = Array[Double]()
 
   // Counts percentage of each keys value
   def percentage(key: String) = data.get(key) / data.get.values.sum
@@ -45,14 +35,14 @@ object BarCharProject extends Graph {
   }
 
   //Each bar has equal width
-  def width = (widthOfUI * 1 / 2) / data.get.size
+  def width = if(widthOfUI - 30 - (80 + 30) * data.get.size > 0) 80 else  (widthOfUI * 1 / 2) / data.get.size
 
   //Sets height of a bar so that key with biggest value has the biggest height. Other bars are made by scaling to the bar of biggest height.
   def height(key: String): Double = {
     val biggestValue: (String, Double) = data.get.maxBy(_._2)
     var height = data.get(key) match {
-      case _ if data.get(key) == biggestValue._2 => heightOfUI2 - 50
-      case a: Double => (heightOfUI2 - 50) * (a / biggestValue._2)
+      case _ if data.get(key) == biggestValue._2 => heightOfUI - 70
+      case a: Double => (heightOfUI - 70) * (a / biggestValue._2)
     }
     height
   }
@@ -116,11 +106,23 @@ object BarCharProject extends Graph {
   }
 
   def addStampsOnY(): Unit = {
+    val countOfStamps = (xAxis / gridSize).toInt
     val valueHeight = data.get.map(og => og._2 -> height(og._1)).toVector.sortBy{case (x, height) => x}
-    val scale = (valueHeight.last._2 - valueHeight.head._2) / (valueHeight.last._1 - valueHeight.head._1)
-    val smallest = data.get.minBy{case (x, y) => y}._2 -> locationInInterface(data.get.minBy{case (x, y) => y}._1)._2
+    val scale = pow((valueHeight.last._2 - valueHeight.head._2) / (valueHeight.last._1 - valueHeight.head._1), -1)
+    var stamps: Array[(Double, Double)] = new Array[(Double, Double)](countOfStamps)
 
-    stampsOnY = addStampsY((0, xAxis), n, scale, yAxis, 2)
+    for(index <- 0 until countOfStamps) {
+      val text = roundOneDecimal(index * countOfStamps * scale)
+      val coord = xAxis - index * countOfStamps
+
+      stamps(index) = (text, coord)
+    }
+    matchGridAndStamps = stamps.map(_._2)
+
+    val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(yAxis - 20, x._2 - fontSize / 2)))
+    val line: Array[javafx.scene.Node] = stamps.map(x => addStampLine(yAxis - 5, x._2, yAxis + 5, x._2))
+
+    stampsOnY = text ++ line
   }
 
   var stampsOnY = Array[javafx.scene.Node]()

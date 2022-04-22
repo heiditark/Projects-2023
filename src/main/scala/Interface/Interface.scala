@@ -61,7 +61,7 @@ object Interface extends JFXApp {
       fileManagement.getData
 
       val text = new Text("File Added: " + filePath)
-      text.relocate(910 - 3 * ("File Added: " + filePath).length, 600)
+      text.relocate(0, 600)
       diagram.children += text
     }
   }
@@ -184,9 +184,29 @@ object Interface extends JFXApp {
   val colorPickerBar = new ColorPicker(colorGenerator())
   colorPickerBar.onAction = (event) => makeBarChart()
 
+  val resizeGridPlusBar = new Button("+")
+  resizeGridPlusBar.onAction = (event) => {
+    if(BarCharProject.gridSize > 6) {
+      BarCharProject.gridSize -= 2
+      BarCharProject.addStampsOnY()
+      makeBarChart()
+    }
+  }
+
+  val resizeGridMinusBar = new Button("-")
+  resizeGridMinusBar.onAction = (event) => {
+    if(BarCharProject.gridSize <= 18) {
+      BarCharProject.gridSize += 2
+      BarCharProject.addStampsOnY()
+      makeBarChart()
+    }
+  }
+
   val cbGridBar = new CheckBox("Grid")
   cbGridBar.setIndeterminate(false)
-  cbGridBar.onAction = (event) => makeBarChart()
+  cbGridBar.onAction = (event) => {
+    makeBarChart()
+  }
 
   val cbBarInfo = new CheckBox("Values")
   cbBarInfo.setIndeterminate(false)
@@ -222,14 +242,6 @@ object Interface extends JFXApp {
 
     BarCharProject.color = colorPickerBar.getValue
 
-    if(cbGridBar.isSelected) addGridBar()
-    if(cbBarInfo.isSelected) doBarInfo()
-    diagram.children ++= BarCharProject.doBars()
-    diagram.children ++= BarCharProject.axis
-    diagram.children ++= BarCharProject.stampsOnY
-    diagram.children += BarCharProject.addTitle
-    diagram.children += BarCharProject.addTitleY
-
     val colorVbox = vbox()
     sideBar.getChildren.add(colorVbox)
     colorVbox.getChildren.add(new Text("Color of Bar:"))
@@ -244,6 +256,14 @@ object Interface extends JFXApp {
     sideBar.getChildren.add(gridVbox)
     gridVbox.getChildren.add(new Text("Add Grid:"))
     gridVbox.getChildren.add(cbGridBar)
+
+    if(cbGridBar.isSelected) {
+      val resizeGridHBox = hbox()
+      resizeGridHBox.getChildren.add(resizeGridMinusBar)
+      resizeGridHBox.getChildren.add(resizeGridPlusBar)
+      gridVbox.getChildren.add(resizeGridHBox)
+      addGridBar()
+    }
 
     val changeTitleBox = vbox()
     sideBar.getChildren.add(changeTitleBox)
@@ -260,6 +280,13 @@ object Interface extends JFXApp {
     changeNameY.getChildren.add(titleYHBox)
     titleYHBox.getChildren.add(barTitleY)
     titleYHBox.getChildren.add(changeTitleYBar)
+
+    if(cbBarInfo.isSelected) doBarInfo()
+    diagram.children ++= BarCharProject.doBars()
+    diagram.children ++= BarCharProject.axis
+    diagram.children ++= BarCharProject.stampsOnY
+    diagram.children += BarCharProject.addTitle
+    diagram.children += BarCharProject.addTitleY
   }
 
 
@@ -307,6 +334,7 @@ object Interface extends JFXApp {
   resizeGridMinus.onAction = (event) => {
     if(LineDiagram.gridSize >= 15) {
       LineDiagram.gridSize -= 5
+      LineDiagram.autoscale()
       makeLineDiagram()
     }
   }
@@ -370,7 +398,6 @@ object Interface extends JFXApp {
 
     if(cbGridLine.isSelected) {
       val resizeGridHBox = hbox()
-      sideBar.getChildren.add(new Text("Resize Grid:"))
       resizeGridHBox.getChildren.add(resizeGridMinus)
       resizeGridHBox.getChildren.add(resizeGridPlus)
       resizeGridBox.getChildren.add(resizeGridHBox)

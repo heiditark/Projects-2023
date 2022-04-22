@@ -10,10 +10,7 @@ object PieDiagram extends Graph {
  //val file = "esim1.txt"
 
 
-  var data: Option[Map[String, Double]] = //Map(("Car" -> 7), ("Bike" -> 6), ("Bus" -> 8), ("Train" -> 21), ("Metro" -> 17))
-   //Map(("Car" -> 10), ("Bike" -> 20), ("Bus" -> 50), ("Train" -> 19), ("Metro" -> 4),("Airplane" -> 54))
-   // Map(("Maanantai" -> 100), ("Tiistai" -> 120), ("Keskiviikko" -> 103), ("Torstai" -> 70), ("Perjantai" -> 23), ("Lauantai" -> 85), ("Sunnuntai" -> 180))
-    None
+  var data: Option[Map[String, Double]] = None
 
   var title = "Test"
   var radius = heightOfUI / 2 - 50
@@ -74,8 +71,9 @@ object PieDiagram extends Graph {
       // Calculate the angle at the middle of the sector
       val angleInBetween = toRadians(startAngle2 + angle(dataPoint._1) / 2)
       // Calculate the x and y coordinates of the middle of the sector
-      val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 1.1
-      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 1.1
+      val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 0.6
+      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 0.6
+      val text = addTextMiddle(dataPoint._1, (textBoxPositionX, textBoxPositionY))
 
       textBox(index) = addTextMiddle(dataPoint._1, (textBoxPositionX, textBoxPositionY))
 

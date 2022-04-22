@@ -169,27 +169,8 @@ trait Graph {
     array.zipWithIndex.filter{case (y, index) => index%n == 0}.map(a => a._1)
   }
 
-  def addStampsY(first: (Double, Double), step: Double, scale: Double, yAxisXPos: Double, n: Int): Array[javafx.scene.Node] = {
-    var stamps: Array[(Double, Double)] = new Array[(Double, Double)]((heightOfUI / step).toInt)
-    val stepOG = step * pow(scale, -1)
 
-    for(index <- 0 until (heightOfUI / step).toInt) {
-      val text = roundOneDecimal(first._1 + stepOG * index)
-      val coord = first._2 - step * index
 
-      stamps(index) = (text, coord)
-    }
-
-    val every: Array[(Double, Double)] = everyN(stamps,n)
-    matchGridAndStamps = every.map{case (x, y) => y}
-
-    val text: Array[javafx.scene.Node] = every.map(x => addTextMiddle(x._1.toString,(yAxisXPos - 20, x._2 - fontSize / 2)))
-    val line: Array[javafx.scene.Node] = every.map(x => addStampLine(yAxisXPos - 5, x._2, yAxisXPos + 5, x._2))
-
-    text ++ line
-  }
-
-  var matchGridAndStamps = Array[Double]()
 
   def addStampLine(startX: Double, startY: Double, endX: Double, endY: Double): javafx.scene.Node = {
     var line = new Line() {

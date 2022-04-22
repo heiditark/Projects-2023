@@ -7,7 +7,6 @@ import scala.util.{Try, Using}
 object fileManagement {
 
   var file: String = ""
- // var linesFromFile = Using(Source.fromFile(file)) { _.getLines.toArray }
 
   def getData = readFile(file)
 

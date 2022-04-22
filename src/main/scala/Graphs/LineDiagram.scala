@@ -22,12 +22,7 @@ object LineDiagram extends Graph {
   }
 
 
-  // Test dataPoints
-  var data: Option[Map[String, Double]] = //Map((-3.0 -> 2.0), (2.0 -> 5.0), (10.0 -> -11.0), (-12.0, 4.0))
-   // Map((0.0 -> 100.0), (100.0 -> 200.0), (200.0 -> 300.0), (300.0 -> 400.0), (350.0 -> 175.0), (-50.0, 80.0))
- //   Map((9.8 -> 100.0), (13.4 -> -10.0), (76.3 -> 62.3), (300.0 -> 400.0), (-69.0 -> 175.0), (-50.0, 80.0))
-    //readFile(file).map{case (x, y) => x.toDouble -> y}
-    None
+  var data: Option[Map[String, Double]] = None
 
 
   //Flips the y-coordinates and sorts the data points in ascending order by x-coordinate

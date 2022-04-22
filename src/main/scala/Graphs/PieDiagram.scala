@@ -2,29 +2,33 @@ package Graphs
 
 import javafx.scene.shape.Circle
 import scalafx.scene.paint.Color
+import scalafx.scene.paint.Paint
 import scalafx.scene.shape.{Arc, ArcType}
 
 import scala.math._
 
 object PieDiagram extends Graph {
- //val file = "esim1.txt"
-
 
   var data: Option[Map[String, Double]] = None
 
-  var title = "Test"
+  var title = ""
   var radius = heightOfUI / 2 - 50
   val centerPoint: (Double, Double) = (widthOfUI / 2, heightOfUI / 2)
-  println(centerPoint)
   val pi = scala.math.Pi
+
+  // Keep colors used on making sectors mapped to a key
   var colorsUsed: Map[String, Color] = Map[String, Color]()
+
+  // Keep a memory of used colors
   var allColorsUsed: LazyList[Map[String, Color]] = LazyList[Map[String, Color]]()
 
+  // Change colors used on making sectors
   def changeColor() = {
     colorsUsed = data.get.keys.map(key => key -> colorGenerator()).toMap
     allColorsUsed = allColorsUsed :+ colorsUsed
   }
 
+  // Unchange colors
   def unChangeColor() = {
     if(allColorsUsed.length > 1) {
       allColorsUsed = allColorsUsed.dropRight(1)
@@ -34,13 +38,13 @@ object PieDiagram extends Graph {
     }
   }
 
-  // Counts percentage of each keys value
+  // Count percentage of each keys value
   def percentage(key: String) = data.get(key) / data.get.values.sum
 
-  //Counts angle using percentage of a key
+  // Count angle using percentage of a key
   def angle(key: String) = percentage(key) * 360
 
-  //Makes sectors and textboxs
+  // Make sectors and textboxs
   def doSectors() = {
     var data2 = Map[String, Double]()
     if(data.isEmpty) throw new Exception("Data Corrupted.") else data2 = data.get
@@ -51,7 +55,7 @@ object PieDiagram extends Graph {
     var textBox = new Array[javafx.scene.Node](data2.size)
     var index = 0
 
-    //Adds sectors
+    // Add sectors
     for(dataPoint <- data2) {
       var sector = new Arc() {
         centerX = centerPoint._1
@@ -67,15 +71,14 @@ object PieDiagram extends Graph {
       sector.setType(ArcType.Round)
       sectors(index) = sector
 
-      //Adds textBox
+      // Add textBox
       // Calculate the angle at the middle of the sector
       val angleInBetween = toRadians(startAngle2 + angle(dataPoint._1) / 2)
       // Calculate the x and y coordinates of the middle of the sector
-      val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 0.6
-      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 0.6
-      val text = addTextMiddle(dataPoint._1, (textBoxPositionX, textBoxPositionY))
+      val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 1.1 - 10
+      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 1.1
 
-      textBox(index) = addTextMiddle(dataPoint._1, (textBoxPositionX, textBoxPositionY))
+      textBox(index) = addTextLeft(dataPoint._1, (textBoxPositionX, textBoxPositionY))
 
       startAngle2 = startAngle2 + angle(dataPoint._1)
       index += 1
@@ -83,6 +86,7 @@ object PieDiagram extends Graph {
     sectors ++ textBox
   }
 
+  // Add information of which color is which key and percentage and count of a key
   def info() = {
     val size = data.get.size
 

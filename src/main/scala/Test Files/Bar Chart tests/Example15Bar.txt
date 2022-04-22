@@ -1,0 +1,9 @@
+Graph Type: BarChart
+
+DataPoints:
+
+Mathematics, 801
+Science, 761
+Social science, 810
+English, 1999
+Hindi, 133

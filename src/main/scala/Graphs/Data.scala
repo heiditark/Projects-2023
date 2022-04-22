@@ -1,8 +1,6 @@
 package Graphs
 
 import java.io.{BufferedReader, FileNotFoundException, FileReader, IOException}
-import scala.io.{BufferedSource, Source}
-import scala.util.{Try, Using}
 
 object fileManagement {
 
@@ -18,7 +16,10 @@ object fileManagement {
 
       try {
 
+        // Reads graph type
         var graphType = readLine(linesIn).dropWhile(_ != ':').drop(1).trim.toLowerCase
+
+        // Depending on for which graph type the data is designed for adds data to that graphs' object
         val data = graphType match {
           case "piediagram" =>
             startOfData(linesIn)
@@ -27,7 +28,6 @@ object fileManagement {
           case  "barchart" =>
             startOfData(linesIn)
             BarCharProject.data = Some(dataPieOrBar(linesIn))
-            BarCharProject.defineN()
             BarCharProject.addStampsOnY()
           case "linediagram" =>
             startOfData(linesIn)
@@ -54,10 +54,12 @@ object fileManagement {
     }
   }
 
+  // Reads one line at a time
   def readLine(input: BufferedReader) = {
     input.readLine()
   }
 
+  // Reads file to a point where the data starts
   def startOfData(input: BufferedReader): Unit = {
     var oneLine: String = null
     try {
@@ -69,6 +71,7 @@ object fileManagement {
     }
   }
 
+  // Reads data designed for Bar Chart or Pie Diagram
   def dataPieOrBar(input: BufferedReader): Map[String, Double] = {
     var oneLine: String = null
     var dataMapped = Map[String, Double]()
@@ -86,13 +89,13 @@ object fileManagement {
           dataMapped = dataMapped + (key -> value)
         }
       }
-      println(dataMapped)
       dataMapped
     } catch {
       case a: Exception => throw new Exception("Data corrupted.")
     }
   }
 
+  // Read data desingned for Line Diagram
   def dataLine(input: BufferedReader): Map[String, Double] = {
     var oneLine: String = null
     var dataMapped = Map[String, Double]()

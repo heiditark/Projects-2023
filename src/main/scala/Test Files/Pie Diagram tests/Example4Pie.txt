@@ -1,0 +1,10 @@
+Graph Type: PieDiagram
+
+DataPoints:
+
+Europe, 12
+Asia, 9
+Africa, 33
+North America, 19
+South America, 4
+Australia, 10

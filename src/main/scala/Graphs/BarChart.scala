@@ -2,14 +2,13 @@ package Graphs
 
 import javafx.scene.shape.{Line, Rectangle}
 import scalafx.scene.paint.Color
-
 import scala.math.pow
 
 object BarCharProject extends Graph {
 
   var data: Option[Map[String, Double]] = None
 
-  var title = "Test"
+  var title = ""
   var titleY = "y"
   var color = Color.Black
   val yAxis = 30.0
@@ -17,9 +16,10 @@ object BarCharProject extends Graph {
   var gridSize = 12
   var matchGridAndStamps = Array[Double]()
 
-  // Counts percentage of each keys value
+  // Count percentage of each keys value
   def percentage(key: String) = data.get(key) / data.get.values.sum
 
+  // Set location of each bar so that the graph will appear at the middle of x-axis and so that there is a gap between each bar
   def locationInInterface(key: String) = {
     val index = data.get.keys.toVector.indexOf(key)
     val gap = 30
@@ -35,9 +35,9 @@ object BarCharProject extends Graph {
   }
 
   //Each bar has equal width
-  def width = if(widthOfUI - 30 - (80 + 30) * data.get.size > 0) 80 else  (widthOfUI * 1 / 2) / data.get.size
+  def width = if(widthOfUI - 30 - (80 + 30) * data.get.size > 0) 80 else (widthOfUI * 1 / 2) / data.get.size
 
-  //Sets height of a bar so that key with biggest value has the biggest height. Other bars are made by scaling to the bar of biggest height.
+  //Set height of a bar so that key with biggest value has the biggest height. Other bars are made by scaling to the bar of biggest height.
   def height(key: String): Double = {
     val biggestValue: (String, Double) = data.get.maxBy(_._2)
     var height = data.get(key) match {
@@ -48,7 +48,7 @@ object BarCharProject extends Graph {
   }
 
 
-  //Makes bars using the methods above
+  //Make bars and title below each bar using the methods above
   def doBars(): Array[javafx.scene.Node] = {
     if(data.isEmpty) throw new Exception("File Corrupted.")
     val size = data.get.size
@@ -75,6 +75,7 @@ object BarCharProject extends Graph {
     bars ++ textBoxes
   }
 
+  // Make horizontal grid lines using gridSize
   def addGrid(stampsCoord: Array[Double]) = {
     var gridLines: Array[javafx.scene.Node] = new Array[javafx.scene.Node](stampsCoord.length)
 
@@ -92,6 +93,7 @@ object BarCharProject extends Graph {
     gridLines
   }
 
+  // Add count of each key above each bar
   def info(): Array[javafx.scene.Node] = {
     var textBoxes = new Array[javafx.scene.Node](data.get.size)
     var index = 0
@@ -105,6 +107,7 @@ object BarCharProject extends Graph {
     textBoxes
   }
 
+  // Add stamps on y-axis by using gridSize
   def addStampsOnY(): Unit = {
     val countOfStamps = (xAxis / gridSize).toInt
     val valueHeight = data.get.map(og => og._2 -> height(og._1)).toVector.sortBy{case (x, height) => x}
@@ -117,6 +120,8 @@ object BarCharProject extends Graph {
 
       stamps(index) = (text, coord)
     }
+
+    // To match gridLines to stamps
     matchGridAndStamps = stamps.map(_._2)
 
     val text: Array[javafx.scene.Node] = stamps.map(x => addTextMiddle(x._1.toString,(yAxis - 20, x._2 - fontSize / 2)))

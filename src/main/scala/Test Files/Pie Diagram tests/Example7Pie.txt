@@ -1,0 +1,8 @@
+Graph Type: PieDiagram
+
+DataPoints:
+
+Mathematics, 88
+Science, 66
+French, 16
+English, 7

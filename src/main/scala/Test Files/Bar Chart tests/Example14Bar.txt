@@ -1,0 +1,11 @@
+Graph Type: BarChart
+
+DataPoints:
+
+Helsinki, 11002
+Espoo, 9822
+Vantaa, 7002
+Sipoo, 2388
+Lohja, 800
+Porvoo, 2928
+Salo, 8191

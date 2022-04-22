@@ -1,0 +1,9 @@
+Graph Type: BarChart
+
+DataPoints:
+
+Apples, 8
+Mangoes, 9
+Watermelons, 11
+Strawberries, 18
+Oranges, 29

@@ -1,0 +1,8 @@
+Graph Type: BarChart
+
+DataPoints:
+
+Dog, 181
+Lion, 19
+Horse, 10
+Cow, 1

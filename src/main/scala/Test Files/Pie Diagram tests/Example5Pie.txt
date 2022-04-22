@@ -1,0 +1,12 @@
+Graph Type: PieDiagram
+
+DataPoints:
+
+Badminton, 109
+Boxing, 9
+Diving, 49
+Hockey, 97
+Sailing, 79
+Tennis, 88
+Volleyball, 44
+Triathlon, 19

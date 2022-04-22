@@ -4,8 +4,6 @@ package Graphs
 import scalafx.scene.paint.Color
 import javafx.scene.shape._
 import scalafx.scene.text._
-
-import scala.math.pow
 import scala.util.Random
 
 trait Graph {
@@ -24,7 +22,7 @@ trait Graph {
     Color.rgb(red, green, blue)
   }
 
-
+    // Add text so that the left side of the text box is at location given
   def addTextLeft(text: String, location: (Double, Double)) = {
     val size = text.length
     var textField = new Text(text)
@@ -41,6 +39,7 @@ trait Graph {
     textField
   }
 
+  // Add text so that the right side of the text box is at location given
   def addTextRight(text: String, location: (Double, Double)) = {
     val size = text.length
     var textField = new Text(text)
@@ -57,6 +56,7 @@ trait Graph {
     textField
   }
 
+  // Add text so that the middle of the text box is at location given
   def addTextMiddle(text: String, location: (Double, Double)) = {
     val size = text.length
     var textField = new Text(text)
@@ -73,6 +73,7 @@ trait Graph {
     textField
   }
 
+  // Add a title for a graph in bigger font
   def addGraphTitle(text: String, location: (Double, Double)) = {
     val size = text.length
     var textField = new Text(text)
@@ -88,14 +89,17 @@ trait Graph {
 
   }
 
+  // Add a title on y-axis
   def addGraphTitleY(yAxisXPos: Double, text: String): javafx.scene.Node = {
     addTextLeft(text, (yAxisXPos + 5, 5))
   }
 
+  // Add a title on x-axis
   def addGraphTitleX(xAxisYPos: Double, text: String): javafx.scene.Node  = {
     addTextRight(text, (widthOfUI - 5, xAxisYPos - 5))
   }
 
+  // Add axis at spesific location
   def addAxis(x: Double, y: Double) = {
     val axis = new Array[javafx.scene.Node](2)
 
@@ -118,6 +122,7 @@ trait Graph {
     axis
   }
 
+  // Add horizontal grid lines. Used by line diagram
   def addGridHorizontal(xAxisYPos: Double, step: Int) = {
     val countY = (heightOfUI / step).toInt
     var gridLinesHorizontal =
@@ -139,6 +144,7 @@ trait Graph {
   }
 
 
+  // Add vertical grid lines. Used by line diagram
   def addGridVertical(yAxisXPos: Double, step: Double): Array[javafx.scene.Node] = {
     val countX = (widthOfUI / step).toInt
     var gridLinesVertical =
@@ -161,17 +167,17 @@ trait Graph {
     gridLinesVertical
   }
 
+  // Round a double by one decimal
   def roundOneDecimal(n: Double) = {
     BigDecimal(n).setScale(1, BigDecimal.RoundingMode.HALF_UP).toDouble
   }
 
+  // Take every n element of an array
   def everyN(array: Array[(Double, Double)], n: Int): Array[(Double, Double)] = {
     array.zipWithIndex.filter{case (y, index) => index%n == 0}.map(a => a._1)
   }
 
-
-
-
+  // Add small line on an axis
   def addStampLine(startX: Double, startY: Double, endX: Double, endY: Double): javafx.scene.Node = {
     var line = new Line() {
       setStartX(startX)

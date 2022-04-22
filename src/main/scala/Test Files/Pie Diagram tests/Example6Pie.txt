@@ -1,0 +1,9 @@
+Graph Type: PieDiagram
+
+DataPoints:
+
+Happy, 8
+Angry, 2
+Surprise, 4
+Sad, 19
+Fear, 22

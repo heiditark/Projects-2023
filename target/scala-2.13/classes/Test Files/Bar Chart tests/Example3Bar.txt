@@ -1,8 +1,0 @@
-Graph Type: BarChart
-
-DataPoints:
-
-Koira, 14
-Kissa, 39
-Hevonen, 22
-Pupu, 12

@@ -3,7 +3,7 @@ package Interface
 import Graphs.LineDiagram
 import scalafx.scene.layout.HBox
 import scalafx.scene.text.Text
-import Interface._
+import UI._
 import scalafx.Includes.observableList2ObservableBuffer
 import scalafx.scene.control.{Button, CheckBox, ColorPicker}
 import scalafx.scene.paint.Color

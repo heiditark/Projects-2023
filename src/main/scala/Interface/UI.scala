@@ -1,14 +1,12 @@
 package Interface
 
-
-import Graphs.PieDiagram.colorGenerator
 import Graphs._
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
 import scalafx.scene.control._
-import scalafx.scene.layout.{HBox, _}
+import scalafx.scene.layout._
 import scalafx.scene.paint.Color
 import scalafx.scene.control.Menu
 import scalafx.scene.control.MenuBar
@@ -17,7 +15,7 @@ import scalafx.stage.FileChooser
 import scalafx.stage.FileChooser.ExtensionFilter
 
 
-object Interface extends JFXApp {
+object UI extends JFXApp {
 
   stage = new JFXApp.PrimaryStage {
     title.value = "Visualization of Numerical Data"
@@ -29,9 +27,6 @@ object Interface extends JFXApp {
     margin = Insets(5)
   }
 
-
-  val file2 = new Menu("File")
-  val add = new Menu("Add Graph")
   val sideBar = new VBox {
     background = new Background(Array(new BackgroundFill(Color.rgb(186, 188, 190), CornerRadii.Empty, Insets.Empty)))
     minWidth = 190
@@ -41,9 +36,23 @@ object Interface extends JFXApp {
     spacing = 30
   }
 
-//File management
+  val file2 = new Menu("File")
+  val add = new Menu("Add Graph")
 
+  // To add graphs
+  val line = new MenuItem("Line Diagram")
+  val pie = new MenuItem("Pie Diagram")
+  val bar = new MenuItem("Bar Chart")
 
+  // When chosen what graph to use, calls the method which makes it
+  line.onAction = (event) => LineDiagramUI.makeLineDiagram()
+  bar.onAction = (event) => BarChartUI.makeBarChart()
+  pie.onAction = (event) => PieDiagramUI.makePieDiagram()
+
+  val menubar = new MenuBar()
+  menubar.menus += (file2, add)
+
+// File management
   val file = new MenuItem("Add File")
   file.onAction = (event) => {
     val fileChooser = new FileChooser()
@@ -51,7 +60,8 @@ object Interface extends JFXApp {
     val selectedFile = fileChooser.showOpenDialog(stage)
 
     if(selectedFile != null) {
-      emptyDiagram()
+      diagram.getChildren.clear()
+      sideBar.getChildren.clear()
 
       val filePath = selectedFile.getAbsolutePath
 
@@ -64,22 +74,8 @@ object Interface extends JFXApp {
     }
   }
 
-  // To add graphs
-  val line = new MenuItem("Line Diagram")
-  val pie = new MenuItem("Pie Diagram")
-  val bar = new MenuItem("Bar Chart")
-
-  // When chosen what graph to use, calls the method which makes it
-  line.onAction = (event) => LineDiagramUI.makeLineDiagram()
-  bar.onAction = (event) => BarChartUI.makeBarChart()
-  pie.onAction = (event) => PieDiagramUI.makePieDiagram()
-
   file2.items += file
   add.items += (line, pie, bar)
-
-  val menubar = new MenuBar()
-  menubar.menus += (file2, add)
-
 
   val root = new BorderPane {
     center = diagram
@@ -91,22 +87,4 @@ object Interface extends JFXApp {
   stage.scene = scene
   scene.fill = Color.rgb(4, 5, 7)
 
-
-
-
-  // MAKES GRAPHS, move to own classes?
-
-  def emptyDiagram() = {
-    diagram.getChildren.clear()
-    sideBar.getChildren.clear()
-  }
-
-  def vbox() = new VBox { spacing = 10 }
-
-  def hbox() = new HBox {
-    spacing = 8
-    margin = Insets(10)
-  }
-
-  def titleBox() = new TextField() { maxWidth = 120 }
 }

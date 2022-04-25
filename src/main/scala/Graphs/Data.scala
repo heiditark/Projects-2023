@@ -48,7 +48,7 @@ object fileManagement {
         Map[String, Double]()
       }
       case e: IOException => {
-        println("Error occured")
+        println("Error occured.")
         Map[String, Double]()
       }
     }

@@ -2,7 +2,7 @@ package Interface
 
 import Graphs.PieDiagram
 import scalafx.scene.text.Text
-import Interface._
+import UI._
 import scalafx.Includes.observableList2ObservableBuffer
 import scalafx.scene.control.{Button, CheckBox}
 

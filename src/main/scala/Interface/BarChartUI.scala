@@ -3,7 +3,7 @@ package Interface
 import Graphs.BarCharProject
 import Graphs.PieDiagram.colorGenerator
 import scalafx.scene.text.Text
-import Interface._
+import UI._
 import scalafx.Includes.observableList2ObservableBuffer
 import scalafx.Includes._
 import scalafx.scene.control.{Button, CheckBox, ColorPicker}

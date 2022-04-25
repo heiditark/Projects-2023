@@ -5,6 +5,7 @@ import scalafx.scene.paint.Color
 import scalafx.scene.paint.Paint
 import scalafx.scene.shape.{Arc, ArcType}
 
+import scala.collection.mutable
 import scala.math._
 
 object PieDiagram extends Graph {
@@ -20,7 +21,7 @@ object PieDiagram extends Graph {
   var colorsUsed: Map[String, Color] = Map[String, Color]()
 
   // Keep a memory of used colors
-  var allColorsUsed: LazyList[Map[String, Color]] = LazyList[Map[String, Color]]()
+  var allColorsUsed: mutable.Stack[Map[String, Color]] = mutable.Stack[Map[String, Color]]()
 
   // Change colors used on making sectors
   def changeColor() = {
@@ -75,10 +76,10 @@ object PieDiagram extends Graph {
       // Calculate the angle at the middle of the sector
       val angleInBetween = toRadians(startAngle2 + angle(dataPoint._1) / 2)
       // Calculate the x and y coordinates of the middle of the sector
-      val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 1.1 - 10
-      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 1.1
+      val textBoxPositionX = centerPoint._1 + radius * cos(angleInBetween) * 1.12
+      val textBoxPositionY = centerPoint._2 - radius * sin(angleInBetween) * 1.12 - 10
 
-      textBox(index) = addTextLeft(dataPoint._1, (textBoxPositionX, textBoxPositionY))
+      textBox(index) = addTextMiddle(dataPoint._1, (textBoxPositionX, textBoxPositionY))
 
       startAngle2 = startAngle2 + angle(dataPoint._1)
       index += 1

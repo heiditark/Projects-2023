@@ -3,7 +3,7 @@ package Interface
 import scalafx.geometry.Insets
 import scalafx.scene.control.TextField
 import scalafx.scene.layout.{HBox, VBox}
-import Interface._
+import UI._
 
 //noinspection FieldFromDelayedInit
 trait UIController {

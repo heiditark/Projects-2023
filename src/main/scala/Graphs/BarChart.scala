@@ -16,9 +16,6 @@ object BarCharProject extends Graph {
   var gridSize = 12
   var matchGridAndStamps = Array[Double]()
 
-  // Count percentage of each keys value
-  def percentage(key: String) = data.get(key) / data.get.values.sum
-
   // Set location of each bar so that the graph will appear at the middle of x-axis and so that there is a gap between each bar
   def locationInInterface(key: String) = {
     val index = data.get.keys.toVector.indexOf(key)

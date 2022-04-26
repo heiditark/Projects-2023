@@ -2,7 +2,6 @@ package Graphs
 
 import javafx.scene.shape.Circle
 import scalafx.scene.paint.Color
-import scalafx.scene.paint.Paint
 import scalafx.scene.shape.{Arc, ArcType}
 
 import scala.collection.mutable

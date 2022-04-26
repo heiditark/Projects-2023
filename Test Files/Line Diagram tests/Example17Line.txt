@@ -1,0 +1,8 @@
+Graph Type: LineDiagram
+
+DataPoints:
+
+(1101, 12)
+(1000, 19)
+(1200, 9)
+(20011, 19)

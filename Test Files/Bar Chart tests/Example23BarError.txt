@@ -1,0 +1,3 @@
+Graph Type: BarChart
+
+DataPoints:

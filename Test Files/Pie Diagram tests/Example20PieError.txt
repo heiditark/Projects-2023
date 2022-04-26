@@ -1,0 +1,8 @@
+Graph Type: LineDiagram
+
+DataPoints:
+
+Koira, 44
+Kissa, 32
+Hevonen, 33
+Pupu, 12

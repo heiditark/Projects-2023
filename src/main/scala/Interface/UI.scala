@@ -37,7 +37,7 @@ object UI extends JFXApp {
   }
 
   val file2 = new Menu("File")
-  val add = new Menu("Add Graph")
+  val add = new Menu("Analyze")
 
   // To add graphs
   val line = new MenuItem("Line Diagram")

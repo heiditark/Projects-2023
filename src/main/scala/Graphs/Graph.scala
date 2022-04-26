@@ -126,11 +126,11 @@ trait Graph {
   def addGridHorizontal(xAxisYPos: Double, step: Int) = {
     val countY = (heightOfUI / step).toInt
     var gridLinesHorizontal =
-      new Array[javafx.scene.Node](countY)
+      new Array[javafx.scene.Node](countY + 1)
     val start = (xAxisYPos / step) * step - (xAxisYPos / step).floor * step
 
     //x
-    for(index <- (0 until countY)) {
+    for(index <- (0 to countY)) {
       var lineX = new Line {
         setStartX(0)
         setStartY(index * step + start)
@@ -148,11 +148,11 @@ trait Graph {
   def addGridVertical(yAxisXPos: Double, step: Double): Array[javafx.scene.Node] = {
     val countX = (widthOfUI / step).toInt
     var gridLinesVertical =
-      new Array[javafx.scene.Node](countX)
+      new Array[javafx.scene.Node](countX + 1)
     val start = (yAxisXPos / step) * step - (yAxisXPos / step).floor * step
 
     //y
-    for(index <- (0 until countX)) {
+    for(index <- (0 to countX)) {
       var lineY = new Line {
         setStartX(index * step + start)
         setStartY(0)

@@ -1,4 +1,4 @@
-[debug] not up to date. inChanged = true, force = false
+[debug] not up to date. inChanged = false, force = false
 [debug] Updating ProjectRef(uri("file:/C:/Users/heidi/IdeaProjects/Numerical%20data%20visualization%202/project/"), "numerical-data-visualization-2-build")...
 [warn] Unrecognized repository Scala Plugin Bundled Repository, ignoring it
 [warn] Unrecognized repository Scala Plugin Bundled Repository, ignoring it

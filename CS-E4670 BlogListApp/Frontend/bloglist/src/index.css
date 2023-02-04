@@ -1,0 +1,313 @@
+.pass {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 50px;
+  margin-left: 46px;
+  text-align: center;
+  margin-bottom: 27px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.un {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 50px;
+  margin-left: 46px;
+  text-align: center;
+  margin-bottom: 27px;
+  font-family: 'Ubuntu', sans-serif;
+  }
+  
+form.form1 {
+  padding-top: 40px;
+}
+
+form.form2 {
+  padding-top: px;
+}
+
+.main1 {
+    background-color: #FFFFFF;
+    width: 400px;
+    height: 400px;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+
+.main2 {
+  background-color: #FFFFFF;
+  width: 450px;
+  height: 350px;
+  margin: 3em auto;
+  border-radius: 1.5em;
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+
+button.signIn {
+    cursor: pointer;
+    border-radius: 5em;
+    color: #fff;
+    background: linear-gradient(to right, #9C27B0, #E040FB);
+    border: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    margin-left: 35%;
+    font-size: 13px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+button.save {
+  cursor: pointer;
+  border-radius: 5em;
+  color: #fff;
+  background: linear-gradient(to right, #9C27B0, #E040FB);
+  border: 0;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-family: 'Ubuntu', sans-serif;
+  margin-top: 15px;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+button.likeButton {
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  color: rgb(221, 160, 221);
+  font-weight: 900;
+  margin-left: 3px;
+}
+
+button.likeButton:hover {
+  transition: all 0.3s ease;
+  transform: scale(1.01) perspective(0.8px);
+  font-weight: 900;
+  color: rgb(218, 112, 214);
+}
+
+button.likeButton:active {
+  transition: all 0.5s ease;
+  transform: scale(1.7) perspective(0.8px);
+  font-weight: 900;
+  color: rgb(218, 112, 214);
+}
+
+button.blogSubmit {
+  cursor: pointer;
+  border-radius: 5em;
+  color: #fff;
+  background: linear-gradient(to right, #9C27B0, #E040FB);
+  border: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-family: 'Ubuntu', sans-serif;
+  margin-left: 1%;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+button.logOut {
+  cursor: pointer;
+  border-radius: 5em;
+  color: #fff;
+  background: linear-gradient(to right, #9C27B0, #E040FB);
+  border: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-family: 'Ubuntu', sans-serif;
+  margin-left: 1%;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+.sign {
+  padding-top: 40px;
+  color: #8C55AA;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+  font-size: 23px;
+}
+
+.title {
+  color: #8C55AA;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+  font-size: 23px;
+  letter-spacing: 5px;
+}
+
+body {
+  background-color: #F3EBF6;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.author {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 5px;
+  text-align: center;
+  margin-top: 5px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.blogTitle {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.url {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 5px;
+  margin-top: 5px;
+  text-align: center;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+li {
+  color: rgb(33, 38, 41);
+  list-style: none;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 650;
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-top: 5.7px;
+}
+
+li:hover {
+  color: rgb(37, 16, 37);
+}
+
+.arrow {
+  margin-bottom: 15px;
+  position: absolute;
+  padding: 0.3rem; /* Arrow size */
+  -shadow: 1px -1px 0 1px plum inset;
+  -webkit-box-shadow: 2px -2px plum inset;
+  border: solid transparent;
+  border-width: 0 0 2rem 2rem;
+  transition: 0.2s;
+}
+
+.arrow:hover {
+  box-shadow: 2px -2px 0 2px orchid inset;
+  -webkit-box-shadow: 4px -4px orchid inset;
+}
+
+.arrow-right { transform:rotate(225deg) }
+
+#blogs {
+  width:45%;
+  padding: 0.3em;
+  margin:0 auto;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  transform-origin: bottom;
+}
+
+#blogs:hover {
+  animation-name: bounce;
+  animation-timing-function: ease;
+}
+@keyframes bounce {
+0%   { transform: translateX(0); }
+50%  { transform: translateX(15px); }
+100% { transform: translateX(0); }
+}
+
+.blog {
+  padding: 0.3em;
+  margin-left: 10px;
+}
+
+.logOutElement {
+  margin-top: 70px;
+  bottom: 0px;
+  left: 50%;
+  font-family: 'Ubuntu', sans-serif;
+  color: rgb(27, 31, 32);
+}
+
+.error {
+  margin-bottom: -16px;
+  color: rgb(255, 0, 0);
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.notification {
+  margin-bottom: -26px;
+  margin-top: -6px;
+  color: rgb(19, 161, 0);
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-family: 'Ubuntu', sans-serif;
+}
+

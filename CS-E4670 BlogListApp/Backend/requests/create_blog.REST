@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "id": 2,
+    "title": "Kuu paistaa",
+    "author": "Maija Meikalainen",
+    "url": "www.aurinko-paistaa.com",
+    "likes": 6
+}
